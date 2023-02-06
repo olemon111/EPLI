@@ -25,7 +25,6 @@ namespace epltree
         void Init()
         {
             entry_head = (Entry *)NVM::data_alloc->alloc_aligned(sizeof(Entry));
-            cout << "entry size: " << sizeof(Entry) << endl;
             new (entry_head) Entry(INVALID_KEY);
             NVM::Mem_persist(entry_head, sizeof(Entry));
         }

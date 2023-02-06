@@ -62,6 +62,7 @@ if(OPENMP_FOUND)
 endif()
 
 add_definitions(-DNDEBUG -DNDEBUGGING)
+add_compile_definitions(CORES_PER_SOCKET=16) # for clht
 
 # MK for RMI
 link_directories(${MKL_LINK_DIRECTORY})
@@ -73,6 +74,10 @@ include_directories(include)
 set(EPLI_SRC
   src/epltree.h
   src/enviroment.cc
+  src/clht_gc.cc
+  src/clht_lb_res.cc
+  src/measurements.cc
+  src/ssmem.cc
 )
 
 add_library(epli SHARED ${EPLI_SRC})
@@ -83,12 +88,17 @@ add_executable(benchmark_epl tests/benchmark_epl.cc)
 target_link_libraries(benchmark_epl epli)
 add_test(benchmark_epl benchmark_epl)
 
+# benchmark_epli
+add_executable(benchmark_epli tests/benchmark_epli.cc)
+target_link_libraries(benchmark_epli epli)
+add_test(benchmark_epli benchmark_epli)
+
 # Unit Test
 enable_testing()
 
 include_directories(src)
 
 # microbench_epl
-add_executable(microbench_epl tests/micro_bench_epl.cc)
-target_link_libraries(microbench_epl epli)
-add_test(microbench_epl microbench_epl)
+add_executable(microbench_epli tests/microbench_epli.cc)
+target_link_libraries(microbench_epli epli)
+add_test(microbench_epli microbench_epli)

@@ -8,10 +8,12 @@
 #include "ycsb/ycsb-c.h"
 #include "random.h"
 #include "alex/alex.h"
+#include "../src/epli.h"
 
 // #define USE_MEM
 
 using namespace std;
+using namespace epltree;
 
 /*
  *file_exists -- checks if file exists
@@ -168,4 +170,58 @@ namespace dbInter
     alex_t *alex_;
   };
 
+  class EPLIDB : public ycsbc::KvDB
+  {
+  public:
+    EPLIDB() : epli_(nullptr) {}
+    virtual ~EPLIDB()
+    {
+      delete epli_;
+    }
+
+    void Init()
+    {
+      epli_ = new EPLI();
+      epli_->Init();
+    }
+
+    void Bulk_load(const std::pair<uint64_t, uint64_t> data[], int size)
+    {
+      epli_->BulkLoad(data, size);
+    }
+
+    void Info()
+    {
+      epli_->Info();
+    }
+
+    int Put(uint64_t key, uint64_t value)
+    {
+      epli_->Put(key, value);
+      return 1;
+    }
+
+    int Get(uint64_t key, uint64_t &value)
+    {
+      epli_->Get(key, value);
+      return 1;
+    }
+
+    int Update(uint64_t key, uint64_t value) // TODO:
+    {
+      return 1;
+    }
+
+    int Delete(uint64_t key)
+    {
+      return 1;
+    }
+
+    int Scan(uint64_t start_key, int len, std::vector<std::pair<uint64_t, uint64_t>> &results)
+    {
+    }
+
+  private:
+    EPLI *epli_;
+  };
 } // namespace dbInter

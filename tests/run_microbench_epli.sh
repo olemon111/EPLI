@@ -1,6 +1,6 @@
 #!/bin/bash
 BUILDDIR=$(dirname "$0")/../build
-Loadname="ycsb-swp"
+Loadname="ycsb"
 
 function Run() {
     dbname=$1
@@ -11,7 +11,7 @@ function Run() {
     reverse=$6
     rw=$7
 
-    # microbench_swp
+    # microbench_epli
     if [ $rw == "r" ]; then
         test_read $dbname $loadnum $opnum $scansize $thread $reverse
     else
@@ -35,14 +35,14 @@ function test_write() {
     # Write
     # rm -f /mnt/pmem1/lbl/*
     Loadname="ycsb-write"
-    date | tee output/swp-${dbname}-${Loadname}-${reverse}.txt
+    date | tee output/${dbname}-${Loadname}-${reverse}.txt
     # gdb --args \
-    ${BUILDDIR}/microbench_swp --dbname ${dbname} --load-size ${loadnum} \
+    ${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} \
     --put-size ${opnum} --get-size 0 \
-    --loadstype 3 --reverse ${reverse} -t $thread | tee -a output/swp-${dbname}-${Loadname}-${reverse}.txt
+    --loadstype 3 --reverse ${reverse} -t $thread | tee -a output/${dbname}-${Loadname}-${reverse}.txt
     # rm -f /mnt/pmem1/lbl/*
 
-    echo "${BUILDDIR}/microbench_swp --dbname ${dbname} --load-size ${loadnum} "\
+    echo "${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} "\
     "--put-size ${opnum} --get-size 0 --loadstype 3 --reverse ${reverse} -t $thread"
 }
 
@@ -57,14 +57,14 @@ function test_read() {
     # Read
     # rm -f /mnt/pmem1/lbl/*
     Loadname="ycsb-read"
-    date | tee output/swp-${dbname}-${Loadname}-${reverse}.txt
+    date | tee output/${dbname}-${Loadname}-${reverse}.txt
     # gdb --args \
-    ${BUILDDIR}/microbench_swp --dbname ${dbname} --load-size ${loadnum} \
+    ${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} \
     --put-size 0 --get-size ${opnum} \
-    --loadstype 3 --reverse ${reverse} -t $thread | tee -a output/swp-${dbname}-${Loadname}-${reverse}.txt
+    --loadstype 3 --reverse ${reverse} -t $thread | tee -a output/${dbname}-${Loadname}-${reverse}.txt
     # rm -f /mnt/pmem1/lbl/*
 
-    echo "${BUILDDIR}/microbench_swp --dbname ${dbname} --load-size ${loadnum} "\
+    echo "${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} "\
     "--put-size 0 --get-size ${opnum} --loadstype 3 --reverse ${reverse} -t $thread"
 }
 
@@ -81,20 +81,20 @@ function test_read_write() {
     # rm -f /mnt/pmem1/lbl/*
     # Loadname="llt"
     Loadname="ycsb"
-    date | tee output/swp-${dbname}-${Loadname}.txt
+    date | tee output/${dbname}-${Loadname}.txt
     # gdb --args \
-    numactl --cpubind=1 --membind=1 ${BUILDDIR}/microbench_swp --dbname ${dbname} --load-size ${loadnum} \
+    numactl --cpubind=1 --membind=1 ${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} \
     --put-size ${opnum} --get-size ${opnum} \
-    --loadstype ${loadstype} --reverse ${reverse} -t $thread | tee -a output/swp-${dbname}-${Loadname}.txt
+    --loadstype ${loadstype} --reverse ${reverse} -t $thread | tee -a output/${dbname}-${Loadname}.txt
     # rm -f /mnt/pmem1/lbl/*
 
-    echo "${BUILDDIR}/microbench_swp --dbname ${dbname} --load-size ${loadnum} "\
+    echo "${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} "\
     "--put-size ${opnum} --get-size ${opnum} --loadstype ${loadstype} --reverse ${reverse} -t $thread"
 }
 
 
 function run_all() {
-    dbs="alex swptree"
+    dbs="epli"
     for dbname in $dbs; do
         echo "Run: " $dbname
         Run $dbname $1 $2 $3 1 $5 $6
@@ -103,7 +103,7 @@ function run_all() {
 }
 
 function main() {
-    dbname="alex"
+    dbname="epli"
     loadnum=2000000
     opnum=10000000
     scansize=0
@@ -140,4 +140,5 @@ function main() {
 }
 
 # Test all dbs
-main alex 20000000 10000000 0 1 0 a
+main epli 400000000 10000000 0 1 0 r
+# main epli 2000000 10000000 0 1 0 a

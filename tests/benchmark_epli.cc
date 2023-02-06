@@ -1,4 +1,4 @@
-#include "../src/epltree.h"
+#include "../src/epli.h"
 #include "util/nvm/nvm_alloc.h"
 
 // #define REST true
@@ -7,7 +7,8 @@
 using namespace epltree;
 using namespace std;
 
-size_t LOAD_SIZE = 400000000;
+// size_t LOAD_SIZE = 400000000;
+size_t LOAD_SIZE = 200000000;
 // size_t LOAD_SIZE = 2000000;
 
 int main(int argc, char *argv[])
@@ -16,7 +17,8 @@ int main(int argc, char *argv[])
     NVM::env_init();
     NVM::data_init();
     /* init index tree */
-    EPLTree *tree = new EPLTree();
+    EPLI *epli = new EPLI();
+    epli->Init();
     /* generate workload */
     vector<key_type> keys;
     keys.resize(LOAD_SIZE);
@@ -32,7 +34,7 @@ int main(int argc, char *argv[])
     //      { return a.first < b.first; });
 
     /* Test BulkLoad */
-    tree->BulkLoad(bulk_kvs, LOAD_SIZE);
+    epli->BulkLoad(bulk_kvs, LOAD_SIZE);
 
     // /* Test Put */
     // for (auto key : keys)
@@ -40,7 +42,7 @@ int main(int argc, char *argv[])
     //     // cout << "EPL-Tree PUT " << key << "-------------------" << endl;
     //     tree->Insert(key, key + 1);
     // }
-    cout << "EPL PUT end" << endl;
+    cout << "EPLI PUT end" << endl;
 
     /* Test Get */
     size_t wrong_get = 0;
@@ -48,7 +50,7 @@ int main(int argc, char *argv[])
     {
         // cout << "EPL-Tree GET " << key << "-------------------" << endl;
         val_type value;
-        tree->Get(key, value);
+        epli->Get(key, value);
         // cout << "key: " << key << ", val: " << value << endl;
         assert(value == key + 1);
         if (value != key + 1)

@@ -9,7 +9,6 @@
 #include <pthread.h>
 
 #include "datalist.h"
-#include "../tests/db_interface.h"
 #include "alex/alex.h"
 
 namespace epltree
@@ -19,14 +18,7 @@ namespace epltree
     class EPLTree
     {
     public:
-        EPLTree() {}
-        ~EPLTree()
-        {
-            delete datalist;
-            delete index;
-        }
-
-        void Init()
+        EPLTree()
         {
             // init NVM data
             datalist = new DataList();
@@ -34,6 +26,12 @@ namespace epltree
             // init index
             index = new index_type();
             index->insert(INVALID_KEY, datalist->Head());
+        }
+
+        ~EPLTree()
+        {
+            delete datalist;
+            delete index;
         }
 
         void BulkLoad(const kv_type bulk_kvs[], size_t num_keys)

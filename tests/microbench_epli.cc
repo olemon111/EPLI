@@ -260,7 +260,7 @@ void load()
     cout << "Start loading ...." << endl;
     timer.Record("start");
 
-    if (dbName == "alex" || dbName == "lipp" || dbName == "xindex" || dbName == "pgm" || dbName == "finedex") // support bulk load
+    if (dbName == "epli" || dbName == "alex" || dbName == "lipp" || dbName == "xindex" || dbName == "pgm" || dbName == "finedex") // support bulk load
     {
         auto values = new std::pair<uint64_t, uint64_t>[LOAD_SIZE];
         for (int i = 0; i < LOAD_SIZE; i++)
@@ -348,7 +348,8 @@ void test_uniform(string rwtype)
         for (uint64_t i = 0; i < PUT_SIZE; i++)
         {
             // cout << "write: " << data_base[rand_pos[i]] << endl;
-            db->Update(data_base[rand_pos[i]], ranny.RandUint32(0, INT32_MAX));
+            db->Put(data_base[rand_pos[i]], data_base[rand_pos[i]] + 1);
+            // db->Put(data_base[rand_pos[i]], ranny.RandUint32(0, INT32_MAX));
         }
     }
 
@@ -406,7 +407,8 @@ void test_all_zipfian()
         }
         for (uint64_t i = 0; i < PUT_SIZE; i++)
         {
-            db->Put(data_base[rand_pos[i]], ranny.RandUint32(0, INT32_MAX));
+            db->Put(data_base[rand_pos[i]], data_base[rand_pos[i]] + 1);
+            // db->Put(data_base[rand_pos[i]], ranny.RandUint32(0, INT32_MAX));
         }
 
         timer.Record("stop");
@@ -527,6 +529,10 @@ void init_opts(int argc, char *argv[])
     {
         db = new AlexDB();
     }
+    else if (dbName == "epli")
+    {
+        db = new EPLIDB();
+    }
     else
     {
         assert(false);
@@ -536,13 +542,16 @@ void init_opts(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
     init_opts(argc, argv);
+    NVM::env_init();
+    NVM::data_init();
     db->Init();
     load();
-    db->Info(); // print info such as index size
     test_uniform("r");
+    // db->Info();           // print info
     if (dbName != "lipp") // LIPP provides no api for write
     {
         test_uniform("w");
     }
+    test_all_zipfian();
     return 0;
 }
