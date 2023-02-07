@@ -35,7 +35,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include "atomic_ops.h"
-#include "clht_utils.h"
+#include "utils.h"
 
 #include "clht/ssmem.h"
 
@@ -44,6 +44,8 @@ extern __thread ssmem_allocator_t *clht_alloc;
 #define true 1
 #define false 0
 
+#define MAX_BUCKET_SIZE 512 * 1024 // TODO:
+#define MAX_ACTIVE_ELIMINATION_TIME 512
 /* #define DEBUG */
 
 #define CLHT_READ_ONLY_FAIL 1
@@ -148,11 +150,19 @@ typedef volatile uint32_t clht_lock_t;
 typedef volatile uint8_t clht_lock_t;
 #endif
 
+/* 3B int value for time field in bucket */
+#pragma pack(push, 1)
+typedef struct
+{
+  uint8_t b[3];
+} UInt24_t;
+#pragma pack(pop)
+
 typedef struct ALIGNED(CACHE_LINE_SIZE) bucket_s
 {
   clht_lock_t lock;
-  // uint24_t time;
-  volatile uint32_t hops;
+  volatile UInt24_t t;    // 3B for time statistic in both active and passive elimination
+  volatile uint32_t hops; // 4B for hot statistic in passive elimination
   clht_addr_t key[ENTRIES_PER_BUCKET];
   clht_val_t val[ENTRIES_PER_BUCKET];
   volatile struct bucket_s *next;
@@ -399,10 +409,10 @@ clht_hashtable_t *clht_hashtable_create(uint64_t num_buckets);
 clht_t *clht_create(uint64_t num_buckets);
 
 /* Insert a key-value pair into a hashtable. */
-int clht_put(clht_t *hashtable, clht_addr_t key, clht_val_t val);
+int clht_put(clht_t *hashtable, clht_addr_t key, clht_val_t val, uint32_t lt);
 
 /* Retrieve a key-value pair from a hashtable. */
-clht_val_t clht_get(clht_hashtable_t *hashtable, clht_addr_t key);
+clht_val_t clht_get(clht_hashtable_t *hashtable, clht_addr_t key, uint32_t t);
 
 /* Remove a key-value pair from a hashtable. */
 clht_val_t clht_remove(clht_t *hashtable, clht_addr_t key);
@@ -425,10 +435,11 @@ void clht_print(clht_hashtable_t *hashtable);
 /* emergency_increase, grabs the lock and forces an increase by *emergency_increase times */
 size_t ht_status(clht_t *hashtable, int resize_increase, int emergency_increase, int just_print);
 #else
-size_t ht_status(clht_t *hashtable, int resize_increase, int just_print);
+size_t ht_status(clht_t *hashtable, int resize_increase, int just_print, uint32_t lt);
+size_t ht_status(clht_t *hashtable, int resize_increase, int just_print, size_t bin, uint32_t lt);
 #endif
 bucket_t *clht_bucket_create();
-int ht_resize_pes(clht_t *hashtable, int is_increase, int by);
+int ht_resize_pes(clht_t *hashtable, int is_increase, int by, uint32_t lt);
 
 const char *clht_type_desc();
 

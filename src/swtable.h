@@ -6,7 +6,7 @@
 
 class SWTable
 {
-    size_t num_buckets = 512; // TODO:
+    const static size_t num_buckets = 512; // TODO:
     size_t num_threads = 1;
 
 public:
@@ -30,19 +30,19 @@ public:
 
     void Put(key_type key, val_type val)
     {
-        clht_put(hashtable, key, val);
+        clht_put(hashtable, key, val, lt);
     }
 
     void Update(key_type key, val_type val) // FIXME:
     {
         clht_remove(hashtable, key);
-        clht_put(hashtable, key, val);
+        clht_put(hashtable, key, val, lt);
     }
 
     val_type Get(key_type key)
     {
         lt++;
-        return clht_get(hashtable->ht, key);
+        return clht_get(hashtable->ht, key, lt);
     }
 
     val_type Remove(key_type key)
@@ -57,5 +57,5 @@ public:
 
 private:
     clht_t *hashtable;
-    size_t lt;
+    uint32_t lt; // logical time
 };

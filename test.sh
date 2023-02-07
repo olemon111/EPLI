@@ -13,6 +13,5 @@ sudo rm -rf /mnt/pmem1/lbl/*
 chmod +x ./tests/run_microbench_epli.sh
 sudo ./tests/run_microbench_epli.sh
 
-# # benchmark for epl-Tree
 # sudo ./build/benchmark_epli
 # sudo gdb --args ./build/benchmark_epli

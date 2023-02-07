@@ -140,5 +140,5 @@ function main() {
 }
 
 # Test all dbs
-main epli 400000000 10000000 0 1 0 r
+main epli 400000000 10000000 0 1 0 a
 # main epli 2000000 10000000 0 1 0 a
