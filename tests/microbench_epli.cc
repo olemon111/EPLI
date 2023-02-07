@@ -546,12 +546,13 @@ int main(int argc, char *argv[])
     NVM::data_init();
     db->Init();
     load();
-    test_uniform("r");
+    // test_uniform("r");
     // db->Info();           // print info
-    if (dbName != "lipp") // LIPP provides no api for write
-    {
-        test_uniform("w");
-    }
+    // if (dbName != "lipp") // LIPP provides no api for write
+    // {
+    //     test_uniform("w");
+    // }
     test_all_zipfian();
+    db->Info();
     return 0;
 }

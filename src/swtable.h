@@ -33,12 +33,6 @@ public:
         clht_put(hashtable, key, val, lt);
     }
 
-    void Update(key_type key, val_type val) // FIXME:
-    {
-        clht_remove(hashtable, key);
-        clht_put(hashtable, key, val, lt);
-    }
-
     val_type Get(key_type key)
     {
         lt++;

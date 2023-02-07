@@ -1,4 +1,4 @@
-2023年 02月 07日 星期二 15:50:12 CST
+2023年 02月 07日 星期二 16:47:38 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              10000000
@@ -6,54 +6,32 @@ GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            3
 Reverse:               0
-read 400000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 1946 ms (205.55 M values/s)
-before newdb, dram space use: 2.98541 GB
-Map addrs:0x7efd40000000
-Current addrs:0x7efd40000000
-Map addrs:0x7edf00000000
-Current addrs:0x7edf00000000
+read 400000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 2008 ms (199.203 M values/s)
+before newdb, dram space use: 2.98534 GB
+Map addrs:0x7f9fc0000000
+Current addrs:0x7f9fc0000000
+Map addrs:0x7f8180000000
+Current addrs:0x7f8180000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
 bulk load 400000000 kvs
-[Metic-Load]: Load 400000000: cost 58.8914s, kops/s: 6792.17 .
-after load, dram space use: 6.66895 GB
+[Metic-Load]: Load 400000000: cost 59.1128s, kops/s: 6766.72 .
+after load, dram space use: 6.66897 GB
 ------------------------------
 Start Testing Uniform Workload: Read
-[STATUS-00] #bu:     512 / #elems:    2522 / full%: 164.1927% / expands:  512 / max expands:  4
-[RESIZE-00] to #bu    2048 = MB:    0.12    | took:        156734 ti = 0.000075 s
-[STATUS-00] #bu:    2048 / #elems:   10164 / full%: 165.4297% / expands: 2048 / max expands:  4
-[RESIZE-00] to #bu    8192 = MB:    0.50    | took:        686432 ti = 0.000327 s
-[STATUS-00] #bu:    8192 / #elems:   40839 / full%: 166.1743% / expands: 8192 / max expands:  4
-[RESIZE-00] to #bu   32768 = MB:    2.00    | took:       3174826 ti = 0.001512 s
-[STATUS-00] #bu:   32768 / #elems:  162861 / full%: 165.6708% / expands: 32768 / max expands:  5
-[RESIZE-00] to #bu  131072 = MB:    8.00    | took:      13839146 ti = 0.006590 s
+SWTable hit rate: 0.05
+Close SWTable with hit rate: 0.05
 wrong get: 0
-[Metic-Operate]: Operate 10000000, cost 7.33979s, kops/s: 1362.44 .
-dram space use: 6.70625 GB
+[Metic-Operate]: Operate 10000000, cost 5.65737s, kops/s: 1767.6 .
+dram space use: 6.70603 GB
 ------------------------------
 Start Testing Uniform Workload: Write
 wrong get: 0
-[Metic-Operate]: Operate 10000000, cost 8.03857s, kops/s: 1244 .
-dram space use: 6.72956 GB
+[Metic-Operate]: Operate 10000000, cost 7.71495s, kops/s: 1296.18 .
+dram space use: 6.72165 GB
 ------------------------------
 Start Testing Zipfian Workload
-Stop Resize, bucket size: 653148, trigger Passive elimination in bin: 131072
 wrong get: 0
-[Metic-Operate]: Operate 20000000 theta: 0.6, cost 15.1232s, kops/s: 1322.47 .
-dram space use: 6.76702 GB
-wrong get: 0
-[Metic-Operate]: Operate 20000000 theta: 0.7, cost 15.0394s, kops/s: 1329.84 .
-dram space use: 6.78389 GB
-wrong get: 0
-[Metic-Operate]: Operate 20000000 theta: 0.8, cost 14.8329s, kops/s: 1348.35 .
-dram space use: 6.80907 GB
-wrong get: 0
-[Metic-Operate]: Operate 20000000 theta: 0.9, cost 13.7544s, kops/s: 1454.08 .
-dram space use: 6.82821 GB
-wrong get: 0
-[Metic-Operate]: Operate 20000000 theta: 0.95, cost 12.7617s, kops/s: 1567.19 .
-dram space use: 6.84306 GB
-wrong get: 0
-[Metic-Operate]: Operate 20000000 theta: 0.99, cost 11.6681s, kops/s: 1714.08 .
-dram space use: 6.85464 GB
+[Metic-Operate]: Operate 20000000 theta: 0.6, cost 13.178s, kops/s: 1517.68 .
+dram space use: 6.75907 GB

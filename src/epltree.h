@@ -34,6 +34,7 @@ namespace epltree
             delete index;
         }
 
+        // bulk_kvs already sorted
         void BulkLoad(const kv_type bulk_kvs[], size_t num_keys)
         {
             cout << "bulk load " << num_keys << " kvs" << endl;
@@ -58,13 +59,12 @@ namespace epltree
                 key_type new_min_key = bulk_kvs[i * KVS_PER_ENTRY].first;
                 new (new_entry) Entry(new_min_key, bulk_kvs + i * KVS_PER_ENTRY, min(num_keys - i * KVS_PER_ENTRY, size_t(KVS_PER_ENTRY)));
                 cur->next = new_entry;
-                // NVM::Mem_persist(cur, sizeof(Entry));
+                NVM::Mem_persist(cur, sizeof(Entry));
                 cur = cur->next;
                 index->insert(new_min_key, new_entry);
             }
-            // NVM::Mem_persist(cur, sizeof(Entry));
-            datalist->Persist();
-            // FIXME: how to persist
+            NVM::Mem_persist(cur, sizeof(Entry));
+            // datalist->Persist();
         }
 
         int Get(key_type key, val_type &val)

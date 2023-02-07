@@ -1,4 +1,4 @@
-2023年 02月 06日 星期一 17:27:47 CST
+2023年 02月 07日 星期二 22:34:36 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              0
@@ -6,13 +6,37 @@ GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            3
 Reverse:               0
-read 400000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 1924 ms (207.9 M values/s)
-before newdb, dram space use: 2.98545 GB
-Map addrs:0x7f09c0000000
-Current addrs:0x7f09c0000000
-Map addrs:0x7eeb80000000
-Current addrs:0x7eeb80000000
-bucket size:64
+read 400000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 1988 ms (201.207 M values/s)
+before newdb, dram space use: 2.98554 GB
+Map addrs:0x7f36c0000000
+Current addrs:0x7f36c0000000
+Map addrs:0x7f1880000000
+Current addrs:0x7f1880000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
+bulk load 400000000 kvs
+[Metic-Load]: Load 400000000: cost 63.3373s, kops/s: 6315.4 .
+after load, dram space use: 6.6689 GB
+------------------------------
+Start Testing Zipfian Workload
+Close SWTable with hit rate: 0.000361664, hit_cnt: 1, tot_get:2765
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.6, cost 5.55663s, kops/s: 1799.65 .
+dram space use: 6.70605 GB
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.7, cost 5.46274s, kops/s: 1830.58 .
+dram space use: 6.70605 GB
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.8, cost 5.15783s, kops/s: 1938.8 .
+dram space use: 6.70605 GB
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.9, cost 4.44847s, kops/s: 2247.97 .
+dram space use: 6.70605 GB
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.95, cost 3.91003s, kops/s: 2557.53 .
+dram space use: 6.70605 GB
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.99, cost 3.41282s, kops/s: 2930.13 .
+dram space use: 6.70605 GB
+hit cnt: 1

@@ -34,15 +34,15 @@ namespace epltree
             return entry_head;
         }
 
-        void Persist()
-        {
-            Entry *cur = entry_head;
-            while (cur != nullptr)
-            {
-                NVM::Mem_persist(cur, sizeof(Entry));
-                cur = cur->next;
-            }
-        }
+        // void Persist()
+        // {
+        //     Entry *cur = entry_head;
+        //     while (cur != nullptr)
+        //     {
+        //         NVM::Mem_persist(cur, sizeof(Entry));
+        //         cur = cur->next;
+        //     }
+        // }
 
         void PrintKVsByMinKey(key_type min_key)
         {

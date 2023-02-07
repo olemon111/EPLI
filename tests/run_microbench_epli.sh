@@ -37,7 +37,7 @@ function test_write() {
     Loadname="ycsb-write"
     date | tee output/${dbname}-${Loadname}-${reverse}.txt
     # gdb --args \
-    ${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} \
+    numactl --cpubind=1 --membind=1 ${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} \
     --put-size ${opnum} --get-size 0 \
     --loadstype 3 --reverse ${reverse} -t $thread | tee -a output/${dbname}-${Loadname}-${reverse}.txt
     # rm -f /mnt/pmem1/lbl/*
@@ -59,7 +59,7 @@ function test_read() {
     Loadname="ycsb-read"
     date | tee output/${dbname}-${Loadname}-${reverse}.txt
     # gdb --args \
-    ${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} \
+    numactl --cpubind=1 --membind=1 ${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} \
     --put-size 0 --get-size ${opnum} \
     --loadstype 3 --reverse ${reverse} -t $thread | tee -a output/${dbname}-${Loadname}-${reverse}.txt
     # rm -f /mnt/pmem1/lbl/*
@@ -140,5 +140,5 @@ function main() {
 }
 
 # Test all dbs
-main epli 400000000 10000000 0 1 0 a
+main epli 400000000 10000000 0 1 0 r
 # main epli 2000000 10000000 0 1 0 a
