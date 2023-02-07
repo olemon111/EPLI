@@ -260,7 +260,7 @@ void load()
     cout << "Start loading ...." << endl;
     timer.Record("start");
 
-    if (dbName == "epli" || dbName == "alex" || dbName == "lipp" || dbName == "xindex" || dbName == "pgm" || dbName == "finedex") // support bulk load
+    if (dbName == "epli" || dbName == "alex" || dbName == "lipp" || dbName == "xindex" || dbName == "pgm" || dbName == "finedex" || dbName == "apex") // support bulk load
     {
         auto values = new std::pair<uint64_t, uint64_t>[LOAD_SIZE];
         for (int i = 0; i < LOAD_SIZE; i++)
@@ -533,6 +533,10 @@ void init_opts(int argc, char *argv[])
     {
         db = new EPLIDB();
     }
+    else if (dbName == "apex")
+    {
+        db = new ApexDB();
+    }
     else
     {
         assert(false);
@@ -546,12 +550,12 @@ int main(int argc, char *argv[])
     NVM::data_init();
     db->Init();
     load();
-    // test_uniform("r");
-    // db->Info();           // print info
-    // if (dbName != "lipp") // LIPP provides no api for write
-    // {
-    //     test_uniform("w");
-    // }
+    test_uniform("r");
+    db->Info();           // print info
+    if (dbName != "lipp") // LIPP provides no api for write
+    {
+        test_uniform("w");
+    }
     test_all_zipfian();
     db->Info();
     return 0;

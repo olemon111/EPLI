@@ -102,3 +102,22 @@ include_directories(src)
 add_executable(microbench_epli tests/microbench_epli.cc)
 target_link_libraries(microbench_epli epli)
 add_test(microbench_epli microbench_epli)
+
+# # for APEX
+add_definitions(-DPMEM)
+add_definitions(-DPMDK)
+
+# #################### Epoch Reclaim ####################
+include(FetchContent)
+
+FetchContent_Declare(
+  epoch_reclaimer
+  GIT_REPOSITORY git@github.com:XiangpengHao/VeryPM.git
+  GIT_TAG master
+)
+
+# GIT_REPOSITORY https://github.com/XiangpengHao/epoch-reclaimer.git
+if(NOT epoch_reclaimer_POPULATED)
+  FetchContent_Populate(epoch_reclaimer)
+  include_directories(${epoch_reclaimer_SOURCE_DIR})
+endif()

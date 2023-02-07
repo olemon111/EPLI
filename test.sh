@@ -9,7 +9,7 @@ cd ..
 sudo mkdir -p /mnt/pmem1/lbl
 sudo rm -rf /mnt/pmem1/lbl/*
 
-# # microbench
+# microbench
 chmod +x ./tests/run_microbench_epli.sh
 sudo ./tests/run_microbench_epli.sh
 

@@ -9,6 +9,7 @@
 #include "random.h"
 #include "alex/alex.h"
 #include "../src/epli.h"
+#include "apex/apex.h"
 
 // #define USE_MEM
 
@@ -224,4 +225,88 @@ namespace dbInter
   private:
     EPLI *epli_;
   };
+
+  class ApexDB : public ycsbc::KvDB
+  {
+    typedef uint64_t KEY_TYPE;
+    typedef uint64_t PAYLOAD_TYPE;
+    using Alloc = my_alloc::allocator<std::pair<KEY_TYPE, PAYLOAD_TYPE>>;
+    typedef apex::Apex<KEY_TYPE, PAYLOAD_TYPE, apex::AlexCompare, Alloc> apex_t;
+
+  public:
+    ApexDB() : apex_(nullptr) {}
+    ApexDB(apex_t *apex) : apex_(apex) {}
+    virtual ~ApexDB()
+    {
+      my_alloc::BasePMPool::ClosePool();
+      delete apex_;
+      apex_ = NULL;
+    }
+
+    void Init()
+    {
+      cout << "init APEXDB" << endl;
+      Tree<uint64_t, uint64_t> *index = nullptr;
+
+      bool recover = my_alloc::BasePMPool::Initialize(pool_name, pool_size);
+      auto index_ptr = reinterpret_cast<Tree<uint64_t, uint64_t> **>(my_alloc::BasePMPool::GetRoot(sizeof(Tree<uint64_t, uint64_t> *)));
+      if (recover)
+      {
+        cout << "recover\n";
+        index = reinterpret_cast<Tree<uint64_t, uint64_t> *>(reinterpret_cast<char *>(*index_ptr) + 48);
+        new (index) apex::Apex<uint64_t, uint64_t>(recover);
+      }
+      else
+      {
+        my_alloc::BasePMPool::ZAllocate(reinterpret_cast<void **>(index_ptr), sizeof(apex::Apex<uint64_t, uint64_t>) + 64);
+        index = reinterpret_cast<Tree<uint64_t, uint64_t> *>(reinterpret_cast<char *>(*index_ptr) + 48);
+        new (index) apex::Apex<uint64_t, uint64_t>();
+      }
+      apex_ = index;
+    }
+
+    void Bulk_load(const std::pair<uint64_t, uint64_t> data[], int size)
+    {
+      apex_->bulk_load(data, size);
+    }
+
+    void Info()
+    {
+      cout << "apex DRAM size: " << apex_->get_DRAM_size() / (1024 * 1024.0) << " MB." << endl;
+      // apex_->PrintInfo();
+    }
+
+    int Put(uint64_t key, uint64_t value)
+    {
+      apex_->insert(key, value);
+      return 1;
+    }
+    int Get(uint64_t key, uint64_t &value)
+    {
+      apex_->search(key, &value);
+      // assert(value == key);
+      return 1;
+    }
+    int Update(uint64_t key, uint64_t value)
+    {
+      apex_->update(key, value);
+      return 1;
+    }
+    int Delete(uint64_t key)
+    {
+      apex_->erase(key);
+      return 1;
+    }
+    int Scan(uint64_t start_key, int len, std::vector<std::pair<uint64_t, uint64_t>> &results)
+    {
+      return 1;
+    }
+    void PrintStatic()
+    {
+    }
+
+  private:
+    Tree<uint64_t, uint64_t> *apex_;
+  };
+
 } // namespace dbInter
