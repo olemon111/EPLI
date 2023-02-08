@@ -1,0 +1,52 @@
+2023年 02月 08日 星期三 15:44:04 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              fastfair
+Loads type:            3
+Reverse:               0
+read 400000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 21628 ms (18.4945 M values/s)
+before newdb, dram space use: 2.98687 GB
+Map addrs:0x7f7e00000000
+Current addrs:0x7f7e00000000
+[Fast-Fair]: root is 0x7f7e00000000, btree is 0x561f52324a40.
+Start loading ....
+[Metic-Load]: Load 400000000: cost 653.402s, kops/s: 612.18 .
+after load, dram space use: 11.4958 GB
+------------------------------
+Start Testing Uniform Workload: Read
+wrong get: 0
+[Metic-Operate]: Operate 10000000, cost 10.0929s, kops/s: 990.793 .
+dram space use: 11.533 GB
+NVM WRITE : 130094380736
+/mnt/pmem1/lbl/data used: 12343139584 bytes. (11771 Mib, 343kib. free 0 Mib, 0kib.)
+Tree height is 9.
+------------------------------
+Start Testing Uniform Workload: Write
+wrong get: 0
+[Metic-Operate]: Operate 10000000, cost 21.8205s, kops/s: 458.284 .
+dram space use: 11.8236 GB
+------------------------------
+Start Testing Zipfian Workload
+wrong get: 0
+[Metic-Operate]: Operate 20000000 theta: 0.6, cost 35.8505s, kops/s: 557.873 .
+dram space use: 12.1483 GB
+wrong get: 0
+[Metic-Operate]: Operate 20000000 theta: 0.7, cost 34.8418s, kops/s: 574.022 .
+dram space use: 12.4475 GB
+wrong get: 0
+[Metic-Operate]: Operate 20000000 theta: 0.8, cost 32.9582s, kops/s: 606.83 .
+dram space use: 12.7699 GB
+wrong get: 0
+[Metic-Operate]: Operate 20000000 theta: 0.9, cost 28.0078s, kops/s: 714.087 .
+dram space use: 13.1301 GB
+wrong get: 0
+[Metic-Operate]: Operate 20000000 theta: 0.95, cost 26.3005s, kops/s: 760.441 .
+dram space use: 13.5149 GB
+wrong get: 0
+[Metic-Operate]: Operate 20000000 theta: 0.99, cost 24.5806s, kops/s: 813.649 .
+dram space use: 13.9186 GB
+NVM WRITE : 154328367040
+/mnt/pmem1/lbl/data used: 14864141312 bytes. (14175 Mib, 563kib. free 0 Mib, 0kib.)
+Tree height is 9.

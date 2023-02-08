@@ -11,11 +11,13 @@
 #include "../src/epli.h"
 #include "apex/apex.h"
 #include "lbtree/lbtree_wrapper.hpp"
+#include "fast-fair/btree.h"
 
 // #define USE_MEM
 
 using namespace std;
 using namespace epltree;
+using FastFair::btree;
 
 /*
  *file_exists -- checks if file exists
@@ -183,6 +185,8 @@ namespace dbInter
 
     void Init()
     {
+      NVM::env_init();
+      NVM::data_init();
       epli_ = new EPLI();
       epli_->Init();
     }
@@ -391,6 +395,67 @@ namespace dbInter
   private:
     lbtree_wrapper *tree_;
     char *kp, *vp;
+  };
+
+  class FastFairDb : public ycsbc::KvDB
+  {
+  public:
+    FastFairDb() : tree_(nullptr) {}
+    FastFairDb(btree *tree) : tree_(tree) {}
+    virtual ~FastFairDb() {}
+    void Init()
+    {
+      NVM::data_init();
+      tree_ = new btree();
+      NVM::pmem_size = 0;
+    }
+
+    void Info()
+    {
+      std::cout << "NVM WRITE : " << NVM::pmem_size << std::endl;
+      NVM::show_stat();
+      tree_->PrintInfo();
+    }
+
+    void Close()
+    {
+    }
+    int Put(uint64_t key, uint64_t value)
+    {
+      tree_->btree_insert(key, (char *)value);
+      return 1;
+    }
+    int Get(uint64_t key, uint64_t &value)
+    {
+      value = (uint64_t)tree_->btree_search(key);
+      return 1;
+    }
+    int Update(uint64_t key, uint64_t value)
+    {
+      tree_->btree_delete(key);
+      tree_->btree_insert(key, (char *)value);
+      return 1;
+    }
+
+    int Delete(uint64_t key)
+    {
+      tree_->btree_delete(key);
+      return 1;
+    }
+
+    int Scan(uint64_t start_key, int len, std::vector<std::pair<uint64_t, uint64_t>> &results)
+    {
+      tree_->btree_search_range(start_key, UINT64_MAX, results, len);
+      return 1;
+    }
+    void PrintStatic()
+    {
+      NVM::show_stat();
+      tree_->PrintInfo();
+    }
+
+  private:
+    btree *tree_;
   };
 
 } // namespace dbInter

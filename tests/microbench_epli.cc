@@ -53,7 +53,7 @@ int load_size = 0;
 size_t init_dram_space_use;
 std::string dbName = "";
 
-// 实时获取程序占用的内存，单位：kb。
+// get physical memory used by process in real-time, unit: KB
 size_t physical_memory_used_by_process()
 {
     FILE *file = fopen("/proc/self/status", "r");
@@ -630,6 +630,10 @@ void init_opts(int argc, char *argv[])
     {
         db = new LBTreeDB();
     }
+    else if (dbName == "fastfair")
+    {
+        db = new FastFairDb();
+    }
     else
     {
         assert(false);
@@ -639,8 +643,6 @@ void init_opts(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
     init_opts(argc, argv);
-    NVM::env_init();
-    NVM::data_init();
     db->Init();
     if (!TEST_SCALABILITY)
     {

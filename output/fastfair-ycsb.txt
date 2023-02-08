@@ -1,0 +1,14 @@
+2023年 02月 08日 星期三 13:53:21 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              fastfair
+Loads type:            3
+Reverse:               0
+read 400000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 1976 ms (202.429 M values/s)
+before newdb, dram space use: 2.9871 GB
+Map addrs:0x7f0500000000
+Current addrs:0x7f0500000000
+Map addrs:0x7efec0000000
+Current addrs:0x7efec0000000
