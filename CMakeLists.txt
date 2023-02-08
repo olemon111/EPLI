@@ -78,6 +78,10 @@ set(EPLI_SRC
   src/clht_lb_res.cc
   src/measurements.cc
   src/ssmem.cc
+  src/lbtree.cc
+  src/mempool.cc
+  src/nvm-common.cc
+  src/tree.cc
 )
 
 add_library(epli SHARED ${EPLI_SRC})

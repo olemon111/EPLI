@@ -21,6 +21,7 @@
 
 // #define REST true
 #define REST false
+#define TEST_SCALABILITY false
 
 using epltree::Random;
 using epltree::Timer;
@@ -421,6 +422,88 @@ void test_all_zipfian()
     }
 }
 
+void test_load()
+{
+    cout << "Start loading ...." << endl;
+    const int PRE_LOAD_SIZE = 10000000;
+
+    if (dbName == "apex") // pre bulk load
+    {
+        auto values = new std::pair<uint64_t, uint64_t>[PRE_LOAD_SIZE];
+        for (int i = 0; i < PRE_LOAD_SIZE; i++)
+        {
+            values[i].first = data_base[i];
+            values[i].second = data_base[i] + 1;
+        }
+        sort(values, values + PRE_LOAD_SIZE,
+             [](auto const &a, auto const &b)
+             { return a.first < b.first; });
+        timer.Clear();
+        timer.Record("start");
+        db->Bulk_load(values, int(PRE_LOAD_SIZE));
+        timer.Record("stop");
+        us_times = timer.Microsecond("stop", "start");
+        cout << "[Metic-Operate]: Operate LOAD: " << PRE_LOAD_SIZE << ", "
+             << "cost " << us_times / 1000000.0 << "s, "
+             << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
+
+        // put one by one
+        timer.Clear();
+        timer.Record("start");
+        for (int i = PRE_LOAD_SIZE; i < LOAD_SIZE; i++)
+        {
+            // cout << i << " put: " << data_base[i] << endl;
+            db->Put(data_base[i], data_base[i] + 1);
+            if (i % PRE_LOAD_SIZE == 0 && i > PRE_LOAD_SIZE)
+            {
+                timer.Record("stop");
+                us_times = timer.Microsecond("stop", "start");
+                cout << "[Metic-Operate]: Operate LOAD: " << i << ", "
+                     << "cost " << us_times / 1000000.0 << "s, "
+                     << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
+                // std::cout << "put " << i << " kvs" << std::endl
+                //           << std::flush;
+                timer.Clear();
+                timer.Record("start");
+            }
+        }
+        timer.Record("stop");
+        us_times = timer.Microsecond("stop", "start");
+        cout << "[Metic-Operate]: Operate LOAD: " << LOAD_SIZE << ", "
+             << "cost " << us_times / 1000000.0 << "s, "
+             << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
+    }
+    else // put one by one
+    {
+        timer.Clear();
+        timer.Record("start");
+        for (int i = 0; i < LOAD_SIZE; i++)
+        {
+            // cout << i << " put: " << data_base[i] << endl;
+            db->Put(data_base[i], data_base[i] + 1);
+            if (i % 10000000 == 0 && i > 0)
+            {
+                timer.Record("stop");
+                us_times = timer.Microsecond("stop", "start");
+                cout << "[Metic-Operate]: Operate LOAD: " << i << ", "
+                     << "cost " << us_times / 1000000.0 << "s, "
+                     << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
+                timer.Clear();
+                timer.Record("start");
+            }
+            // std::cout << "put " << i << " kvs" << std::endl << std::flush;
+        }
+        timer.Record("stop");
+        us_times = timer.Microsecond("stop", "start");
+        cout << "[Metic-Operate]: Operate LOAD: " << LOAD_SIZE << ", "
+             << "cost " << us_times / 1000000.0 << "s, "
+             << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
+    }
+
+    std::cerr << endl;
+    cout << "dram space use: " << (physical_memory_used_by_process() - init_dram_space_use) / 1024.0 / 1024.0 << " GB" << endl;
+}
+
 void init_opts(int argc, char *argv[])
 {
     static struct option opts[] = {
@@ -517,6 +600,12 @@ void init_opts(int argc, char *argv[])
     case 4: // LLT
         data_base = load_data_from_osm<uint64_t>("/home/lbl/dataset/generate_random_osm_longlat.dat");
         break;
+    case 5: // LTD
+        data_base = load_data_from_osm<uint64_t>("/home/lbl/dataset/generate_random_osm_longtitudes.dat");
+        break;
+    case 6: // LGN
+        data_base = load_data_from_osm<uint64_t>("/home/lbl/dataset/lognormal.dat");
+        break;
     default:
         data_base = generate_uniform_random(LOAD_SIZE);
         break;
@@ -537,6 +626,10 @@ void init_opts(int argc, char *argv[])
     {
         db = new ApexDB();
     }
+    else if (dbName == "lbtree")
+    {
+        db = new LBTreeDB();
+    }
     else
     {
         assert(false);
@@ -549,13 +642,19 @@ int main(int argc, char *argv[])
     NVM::env_init();
     NVM::data_init();
     db->Init();
-    load();
-    test_uniform("r");
-    db->Info();           // print info
-    if (dbName != "lipp") // LIPP provides no api for write
+    if (!TEST_SCALABILITY)
     {
-        test_uniform("w");
+        load();
     }
+    else
+    {
+        test_load();
+        db->Info(); // print info
+        return 0;
+    }
+    test_uniform("r");
+    db->Info(); // print info
+    test_uniform("w");
     test_all_zipfian();
     db->Info();
     return 0;

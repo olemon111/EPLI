@@ -20,6 +20,8 @@ function Run() {
         else
             test_read_write $dbname $loadnum $opnum $scansize $thread $reverse 3 # YCSB
             # test_read_write $dbname $loadnum $opnum $scansize $thread $reverse 4 # LLT
+            # test_read_write $dbname $loadnum $opnum $scansize $thread $reverse 5 # LTD
+            # test_read_write $dbname $loadnum $opnum $scansize $thread $reverse 6 # LGN
         fi
     fi
 }
@@ -34,7 +36,7 @@ function test_write() {
 
     # Write
     # rm -f /mnt/pmem1/lbl/*
-    Loadname="ycsb-write"
+    Loadname="${Loadname}-write"
     date | tee output/${dbname}-${Loadname}-${reverse}.txt
     # gdb --args \
     numactl --cpubind=1 --membind=1 ${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} \
@@ -140,5 +142,6 @@ function main() {
 }
 
 # main epli 400000000 10000000 0 1 0 r
-main apex 400000000 10000000 0 1 0 a
+main lbtree 400000000 10000000 0 1 0 a
+# main apex 400000000 10000000 0 1 0 a
 # main epli 2000000 10000000 0 1 0 a

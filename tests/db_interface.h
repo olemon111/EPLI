@@ -10,6 +10,7 @@
 #include "alex/alex.h"
 #include "../src/epli.h"
 #include "apex/apex.h"
+#include "lbtree/lbtree_wrapper.hpp"
 
 // #define USE_MEM
 
@@ -307,6 +308,89 @@ namespace dbInter
 
   private:
     Tree<uint64_t, uint64_t> *apex_;
+  };
+
+  class LBTreeDB : public ycsbc::KvDB
+  {
+  public:
+    LBTreeDB() : tree_(nullptr) {}
+    LBTreeDB(lbtree_wrapper *tree) : tree_(tree) {}
+    virtual ~LBTreeDB() {}
+    void Init()
+    {
+      constexpr const auto MEMPOOL_ALIGNMENT = 4096LL;
+      size_t key_size_ = 0;
+      size_t pool_size_ = ((size_t)(40UL * 1024 * 1024 * 1024));
+      const char *pool_path_ = "/mnt/pmem1/lbl/lbtree-pool.obj";
+      kp = new char[8];
+      vp = new char[8];
+
+      initUseful();
+      worker_id = 0;
+      worker_thread_num = 1;
+      the_thread_mempools.init(worker_thread_num, 16 * 1024 * 1024 * 1024, MEMPOOL_ALIGNMENT);
+      // the_thread_mempools.init(1, 4096, MEMPOOL_ALIGNMENT);
+      the_thread_nvmpools.init(worker_thread_num, pool_path_, pool_size_);
+      char *nvm_addr = (char *)nvmpool_alloc(256);
+      nvmLogInit(worker_thread_num);
+      tree_ = new lbtree_wrapper(nvm_addr, false);
+      cout << "init lbtree wrapper" << endl;
+    }
+
+    void Info()
+    {
+      cout << "lbtree dram size: " << the_thread_mempools.tm_pools[worker_id].total_size << " MB" << endl;
+    }
+
+    void Close()
+    {
+    }
+
+    void Bulk_load(const std::pair<uint64_t, uint64_t> data[], int size)
+    {
+      // tree_->bulkload(size, );
+    }
+    int Put(uint64_t key, uint64_t value)
+    {
+      memcpy(kp, &key, sizeof(key));
+      memcpy(vp, &value, sizeof(value));
+      tree_->insert(kp, sizeof(key), vp, sizeof(value));
+      return 1;
+    }
+    int Get(uint64_t key, uint64_t &value)
+    {
+      memcpy(kp, &key, sizeof(key));
+      tree_->find(kp, sizeof(key), vp);
+      uint64_t res;
+      memcpy(&res, vp, sizeof(value));
+      value = res;
+      return 1;
+    }
+    int Update(uint64_t key, uint64_t value)
+    {
+      memcpy(kp, &key, sizeof(key));
+      memcpy(vp, &value, sizeof(value));
+      tree_->update(kp, sizeof(key), vp, sizeof(value));
+      return 1;
+    }
+    int Delete(uint64_t key)
+    {
+      // tree_->del(key);
+      return 1;
+    }
+
+    int Scan(uint64_t start_key, int len, std::vector<std::pair<uint64_t, uint64_t>> &results)
+    {
+      return 1;
+    }
+    void PrintStatic()
+    {
+      // tree_->PrintInfo();
+    }
+
+  private:
+    lbtree_wrapper *tree_;
+    char *kp, *vp;
   };
 
 } // namespace dbInter
