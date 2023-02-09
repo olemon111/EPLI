@@ -1,0 +1,14 @@
+2023年 02月 09日 星期四 18:29:19 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              0
+GET_SIZE:              0
+DB  name:              fastfair
+Loads type:            4
+Reverse:               0
+read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1934 ms (206.825 M values/s)
+before newdb, dram space use: 2.98716 GB
+Map addrs:0x7fdb80000000
+Current addrs:0x7fdb80000000
+[Fast-Fair]: root is 0x7fdb80000000, btree is 0x5601ec7228a0.
+Start loading ....

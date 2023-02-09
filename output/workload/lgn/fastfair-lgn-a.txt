@@ -1,0 +1,35 @@
+2023年 02月 09日 星期四 20:34:25 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             190000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              fastfair
+Loads type:            6
+Workload type:         a
+read 200000000 values from /home/lbl/dataset/lognormal.dat in 1029 ms (194.363 M values/s)
+before newdb, dram space use: 1.49666 GB
+Map addrs:0x7fca40000000
+Current addrs:0x7fca40000000
+[Fast-Fair]: root is 0x7fca40000000, btree is 0x55fb254af880.
+Start loading ....
+[Metic-Load]: Load 190000000: cost 558.846s, kops/s: 339.986 .
+after load, dram space use: 0.000511169 GB
+------------------------------
+Start Testing Workload: r
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 16.8735s, kops 592.646 .
+------------------------------
+Start Testing Workload: rh
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.7: cost 21.8211s, kops 458.272 .
+------------------------------
+Start Testing Workload: wh
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 28.3004s, kops 353.352 .
+------------------------------
+Start Testing Workload: w
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 33.2031s, kops 301.177 .
+NVM WRITE : 68578672448
+/mnt/pmem1/lbl/data used: 6576569856 bytes. (6271 Mib, 927kib. free 0 Mib, 0kib.)
+Tree height is 9.

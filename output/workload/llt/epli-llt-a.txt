@@ -1,0 +1,42 @@
+2023年 02月 09日 星期四 18:26:07 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              epli
+Loads type:            4
+Workload type:         a
+read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2012 ms (203.777 M values/s)
+before newdb, dram space use: 3.06144 GB
+Map addrs:0x7fe540000000
+Current addrs:0x7fe540000000
+Map addrs:0x7fdf00000000
+Current addrs:0x7fdf00000000
+[ALLOC] initializing allocator with fs size: 507 objects
+[ALLOC] initializing allocator with fs size: 507 objects
+Start loading ....
+bulk load 400000000 kvs
+[Metic-Load]: Load 400000000: cost 56.6257s, kops/s: 7063.94 .
+after load, dram space use: 6.63063 GB
+------------------------------
+Start Testing Workload: r
+[STATUS-00] #bu:     256 / #elems:    1276 / full%: 166.1458% / expands:  256 / max expands:  3
+[RESIZE-00] to #bu    1024 = MB:    0.06    | took:        106382 ti = 0.000051 s
+[STATUS-00] #bu:    1024 / #elems:    5075 / full%: 165.2018% / expands: 1024 / max expands:  4
+[RESIZE-00] to #bu    4096 = MB:    0.25    | took:        303988 ti = 0.000145 s
+Close SWTable with hit rate: 7.96794e-06, hit_cnt: 1, tot_get:125503
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 6.84648s, kops 1460.6 .
+------------------------------
+Start Testing Workload: rh
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.7: cost 7.75966s, kops 1288.72 .
+------------------------------
+Start Testing Workload: wh
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 8.51475s, kops 1174.43 .
+------------------------------
+Start Testing Workload: w
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 8.8602s, kops 1128.64 .
+hit cnt: 1, total get cnt: 125503

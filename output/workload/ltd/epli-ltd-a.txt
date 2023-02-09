@@ -1,0 +1,47 @@
+2023年 02月 09日 星期四 19:12:19 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             320000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              epli
+Loads type:            5
+Workload type:         a
+read 330000000 values from /home/lbl/dataset/generate_random_osm_longtitudes.dat in 1657 ms (199.155 M values/s)
+before newdb, dram space use: 2.46573 GB
+Map addrs:0x7f5300000000
+Current addrs:0x7f5300000000
+Map addrs:0x7f4cc0000000
+Current addrs:0x7f4cc0000000
+[ALLOC] initializing allocator with fs size: 507 objects
+[ALLOC] initializing allocator with fs size: 507 objects
+Start loading ....
+bulk load 320000000 kvs
+[Metic-Load]: Load 320000000: cost 47.3409s, kops/s: 6759.49 .
+after load, dram space use: 5.30017 GB
+------------------------------
+Start Testing Workload: r
+[STATUS-00] #bu:     256 / #elems:    1250 / full%: 162.7604% / expands:  256 / max expands:  3
+[RESIZE-00] to #bu    1024 = MB:    0.06    | took:         92838 ti = 0.000044 s
+[STATUS-00] #bu:    1024 / #elems:    5105 / full%: 166.1784% / expands: 1024 / max expands:  4
+[RESIZE-00] to #bu    4096 = MB:    0.25    | took:        318268 ti = 0.000152 s
+[STATUS-00] #bu:    4096 / #elems:   20341 / full%: 165.5355% / expands: 4096 / max expands:  4
+[RESIZE-00] to #bu   16384 = MB:    1.00    | took:       1451010 ti = 0.000691 s
+[STATUS-00] #bu:   16384 / #elems:   81532 / full%: 165.8773% / expands: 16384 / max expands:  5
+[RESIZE-00] to #bu   65536 = MB:    4.00    | took:       6490408 ti = 0.003091 s
+[STATUS-00] #bu:   65536 / #elems:  326117 / full%: 165.8717% / expands: 65536 / max expands:  5
+[RESIZE-00] to #bu  262144 = MB:   16.00    | took:      39007674 ti = 0.018575 s
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 7.78126s, kops 1285.14 .
+------------------------------
+Start Testing Workload: rh
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.7: cost 8.27081s, kops 1209.07 .
+------------------------------
+Start Testing Workload: wh
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 8.61946s, kops 1160.17 .
+------------------------------
+Start Testing Workload: w
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 8.82814s, kops 1132.74 .
+hit cnt: 672047, total get cnt: 20001559

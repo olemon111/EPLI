@@ -1,0 +1,28 @@
+2023年 02月 09日 星期四 17:04:46 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              epli
+Loads type:            3
+Workload type:         wh
+read 410000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 1988 ms (206.237 M values/s)
+before newdb, dram space use: 3.0614 GB
+Map addrs:0x7fa640000000
+Current addrs:0x7fa640000000
+Map addrs:0x7fa000000000
+Current addrs:0x7fa000000000
+[ALLOC] initializing allocator with fs size: 507 objects
+[ALLOC] initializing allocator with fs size: 507 objects
+Start loading ....
+bulk load 400000000 kvs
+[Metic-Load]: Load 400000000: cost 60.8768s, kops/s: 6570.65 .
+after load, dram space use: 6.66897 GB
+------------------------------
+Start Testing Workload: wh
+[STATUS-00] #bu:     256 / #elems:    1260 / full%: 164.0625% / expands:  256 / max expands:  4
+[RESIZE-00] to #bu    1024 = MB:    0.06    | took:        102460 ti = 0.000049 s
+Close SWTable with hit rate: 1.19177e-05, hit_cnt: 1, tot_get:83909
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 8.16409s, kops 1224.88 .
+hit cnt: 1, total get cnt: 83909

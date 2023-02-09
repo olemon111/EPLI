@@ -250,7 +250,6 @@ namespace dbInter
 
     void Init()
     {
-      cout << "init APEXDB" << endl;
       Tree<uint64_t, uint64_t> *index = nullptr;
 
       bool recover = my_alloc::BasePMPool::Initialize(pool_name, pool_size);

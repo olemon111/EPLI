@@ -107,6 +107,11 @@ add_executable(microbench_epli tests/microbench_epli.cc)
 target_link_libraries(microbench_epli epli)
 add_test(microbench_epli microbench_epli)
 
+# microbench_workload
+add_executable(microbench_workload tests/microbench_workload.cc)
+target_link_libraries(microbench_workload epli)
+add_test(microbench_workload microbench_workload)
+
 # # for APEX
 add_definitions(-DPMEM)
 add_definitions(-DPMDK)

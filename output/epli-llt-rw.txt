@@ -1,4 +1,4 @@
-2023年 02月 08日 星期三 16:01:15 CST
+2023年 02月 08日 星期三 16:15:30 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              10000000
@@ -6,52 +6,24 @@ GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            4
 Reverse:               0
-read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 20174 ms (19.8275 M values/s)
-before newdb, dram space use: 2.98712 GB
-Map addrs:0x7fdc80000000
-Current addrs:0x7fdc80000000
-Map addrs:0x7fd640000000
-Current addrs:0x7fd640000000
+read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1982 ms (201.816 M values/s)
+before newdb, dram space use: 2.98717 GB
+Map addrs:0x7f4380000000
+Current addrs:0x7f4380000000
+Map addrs:0x7f3d40000000
+Current addrs:0x7f3d40000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
 bulk load 400000000 kvs
-[Metic-Load]: Load 400000000: cost 53.7173s, kops/s: 7446.39 .
+[Metic-Load]: Load 400000000: cost 53.6789s, kops/s: 7451.71 .
 after load, dram space use: 13.4428 GB
 ------------------------------
 Start Testing Uniform Workload: Read
-[STATUS-00] #bu:     512 / #elems:    2518 / full%: 163.9323% / expands:  512 / max expands:  3
-[RESIZE-00] to #bu    2048 = MB:    0.12    | took:        315328 ti = 0.000150 s
-[STATUS-00] #bu:    2048 / #elems:   10195 / full%: 165.9342% / expands: 2048 / max expands:  3
-[RESIZE-00] to #bu    8192 = MB:    0.50    | took:        665990 ti = 0.000317 s
+[STATUS-00] #bu:     256 / #elems:    1283 / full%: 167.0573% / expands:  256 / max expands:  3
+[RESIZE-00] to #bu    1024 = MB:    0.06    | took:        109190 ti = 0.000052 s
 Close SWTable with hit rate: 4.82854e-06, hit_cnt: 1, tot_get:207102
 wrong get: 0
-[Metic-Operate]: Operate 10000000, cost 4.67363s, kops/s: 2139.66 .
-dram space use: 13.4875 GB
-hit cnt: 1
-------------------------------
-Start Testing Uniform Workload: Write
-wrong get: 0
-[Metic-Operate]: Operate 10000000, cost 8.66806s, kops/s: 1153.66 .
-dram space use: 13.4811 GB
-------------------------------
-Start Testing Zipfian Workload
-wrong get: 0
-[Metic-Operate]: Operate 20000000 theta: 0.6, cost 13.6975s, kops/s: 1460.12 .
-dram space use: 13.5185 GB
-wrong get: 0
-[Metic-Operate]: Operate 20000000 theta: 0.7, cost 13.6031s, kops/s: 1470.25 .
-dram space use: 13.5185 GB
-wrong get: 0
-[Metic-Operate]: Operate 20000000 theta: 0.8, cost 13.1413s, kops/s: 1521.92 .
-dram space use: 13.5185 GB
-wrong get: 0
-[Metic-Operate]: Operate 20000000 theta: 0.9, cost 11.7545s, kops/s: 1701.47 .
-dram space use: 13.5185 GB
-wrong get: 0
-[Metic-Operate]: Operate 20000000 theta: 0.95, cost 10.6731s, kops/s: 1873.86 .
-dram space use: 13.5185 GB
-wrong get: 0
-[Metic-Operate]: Operate 20000000 theta: 0.99, cost 9.56324s, kops/s: 2091.34 .
-dram space use: 13.5185 GB
+[Metic-Operate]: Operate 10000000, cost 4.74536s, kops/s: 2107.32 .
+dram space use: 13.4876 GB
 hit cnt: 1

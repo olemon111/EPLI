@@ -19,10 +19,8 @@
 #include "random.h"
 #include "util/zipf/utils.h"
 
-// #define REST true
-#define REST false
-#define TEST_SCALABILITY true
-// #define TEST_SCALABILITY false
+#define REST true
+// #define REST false
 
 using epltree::Random;
 using epltree::Timer;
@@ -43,7 +41,7 @@ size_t LOAD_SIZE = 2000000;
 size_t PUT_SIZE = 10000000;
 size_t GET_SIZE = 10000000;
 int Loads_type = 3;
-int Reverse = 0;
+string workload_type = "r";
 
 std::vector<uint64_t> data_base;
 KvDB *db = nullptr;
@@ -148,7 +146,7 @@ template <typename T>
 std::vector<T> load_data_from_osm(
     const std::string dataname = "/home/lbl/dataset/generate_random_ycsb.dat")
 {
-    return util::load_data<T>(dataname, LOAD_SIZE, true);
+    return util::load_data<T>(dataname, LOAD_SIZE + PUT_SIZE, true);
 }
 
 std::vector<uint64_t> generate_random_ycsb(size_t op_num)
@@ -299,225 +297,18 @@ void load()
     }
 }
 
-void test_uniform(string rwtype)
-{
-    if (REST)
-    {
-        sleep(60);
-        remove_cache();
-    }
-    cout << "------------------------------" << endl;
-    cout << "Start Testing Uniform Workload: ";
-    size_t tot;
-    if (rwtype == "r")
-    {
-        cout << "Read" << endl;
-        tot = GET_SIZE;
-    }
-    else
-    {
-        cout << "Write" << endl;
-        tot = PUT_SIZE;
-    }
-    util::FastRandom ranny(18);
-    vector<uint32_t> rand_pos;
-    std::mt19937_64 gen(std::random_device{}());
-    std::uniform_int_distribution<uint32_t> dis(0, load_pos - 1);
-    for (uint64_t i = 0; i < tot; i++)
-    {
-        rand_pos.push_back(ranny.RandUint32(0, load_pos - 1));
-    }
-    timer.Clear();
-    timer.Record("start");
-
-    int wrong_get = 0;
-    uint64_t value = 0;
-    if (rwtype == "r")
-    {
-        for (uint64_t i = 0; i < GET_SIZE; i++)
-        {
-            // cout << i << " get: " << data_base[rand_pos[i]] << endl;
-            db->Get(data_base[rand_pos[i]], value);
-            if (value != data_base[rand_pos[i]] + 1)
-            {
-                // cout << "wrong, value: " << value << ", suppose to be: " << data_base[rand_pos[i]] + 1 << endl;
-                wrong_get++;
-            }
-        }
-    }
-    else
-    {
-        for (uint64_t i = 0; i < PUT_SIZE; i++)
-        {
-            // cout << "write: " << data_base[rand_pos[i]] << endl;
-            db->Put(data_base[rand_pos[i]], data_base[rand_pos[i]] + 1);
-            // db->Put(data_base[rand_pos[i]], ranny.RandUint32(0, INT32_MAX));
-        }
-    }
-
-    timer.Record("stop");
-    cout << "wrong get: " << wrong_get << endl;
-    us_times = timer.Microsecond("stop", "start");
-    cout << "[Metic-Operate]: Operate " << tot << ", "
-         << "cost " << us_times / 1000000.0 << "s, "
-         << "kops/s: " << (double)(tot) / (double)us_times * 1000.0 << " ." << endl;
-    cout << "dram space use: " << (physical_memory_used_by_process() - init_dram_space_use) / 1024.0 / 1024.0 << " GB" << endl;
-}
-
-void test_all_zipfian()
-{
-    cout << "------------------------------" << endl;
-    cout << "Start Testing Zipfian Workload" << endl;
-    util::FastRandom ranny(18);
-    vector<uint32_t> rand_pos;
-    size_t tot = GET_SIZE + PUT_SIZE;
-    std::vector<float> thetas = {0.6, 0.7, 0.8, 0.9, 0.95, 0.99};
-    if (Reverse)
-    {
-        reverse(thetas.begin(), thetas.end());
-    }
-    float zipf_theta = 0.6;
-    for (int k = 0; k < thetas.size(); k++)
-    {
-        if (REST)
-        {
-            sleep(60);
-            remove_cache();
-        }
-        std::default_random_engine gen;
-        zipfian_int_distribution<int> dis(0, load_pos - 1, thetas[k]);
-        rand_pos.clear();
-        for (uint64_t i = 0; i < tot; i++)
-        {
-            uint32_t pos = dis(gen);
-            rand_pos.push_back(pos);
-        }
-        std::random_shuffle(rand_pos.begin(), rand_pos.end());
-
-        timer.Clear();
-        timer.Record("start");
-
-        int wrong_get = 0;
-        uint64_t value = 0;
-        for (uint64_t i = 0; i < GET_SIZE; i++)
-        {
-            db->Get(data_base[rand_pos[i]], value);
-            if (value != data_base[rand_pos[i]] + 1)
-            {
-                wrong_get++;
-            }
-        }
-        for (uint64_t i = 0; i < PUT_SIZE; i++)
-        {
-            db->Put(data_base[rand_pos[i]], data_base[rand_pos[i]] + 1);
-            // db->Put(data_base[rand_pos[i]], ranny.RandUint32(0, INT32_MAX));
-        }
-
-        timer.Record("stop");
-        cout << "wrong get: " << wrong_get << endl;
-        us_times = timer.Microsecond("stop", "start");
-        cout << "[Metic-Operate]: Operate " << tot << " theta: " << thetas[k] << ", "
-             << "cost " << us_times / 1000000.0 << "s, "
-             << "kops/s: " << (double)(tot) / (double)us_times * 1000.0 << " ." << endl;
-        cout << "dram space use: " << (physical_memory_used_by_process() - init_dram_space_use) / 1024.0 / 1024.0 << " GB" << endl;
-    }
-}
-
-void test_scalability()
-{
-    cout << "Start loading ...." << endl;
-    const int PRE_LOAD_SIZE = 10000000;
-
-    if (dbName == "apex") // pre bulk load
-    {
-        auto values = new std::pair<uint64_t, uint64_t>[PRE_LOAD_SIZE];
-        for (int i = 0; i < PRE_LOAD_SIZE; i++)
-        {
-            values[i].first = data_base[i];
-            values[i].second = data_base[i] + 1;
-        }
-        sort(values, values + PRE_LOAD_SIZE,
-             [](auto const &a, auto const &b)
-             { return a.first < b.first; });
-        timer.Clear();
-        timer.Record("start");
-        db->Bulk_load(values, int(PRE_LOAD_SIZE));
-        timer.Record("stop");
-        us_times = timer.Microsecond("stop", "start");
-        cout << "[Metic-Operate]: Operate LOAD: " << PRE_LOAD_SIZE << ", "
-             << "cost " << us_times / 1000000.0 << "s, "
-             << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
-
-        // put one by one
-        timer.Clear();
-        timer.Record("start");
-        for (int i = PRE_LOAD_SIZE; i < LOAD_SIZE; i++)
-        {
-            // cout << i << " put: " << data_base[i] << endl;
-            db->Put(data_base[i], data_base[i] + 1);
-            if (i % PRE_LOAD_SIZE == 0 && i > PRE_LOAD_SIZE)
-            {
-                timer.Record("stop");
-                us_times = timer.Microsecond("stop", "start");
-                cout << "[Metic-Operate]: Operate LOAD: " << i << ", "
-                     << "cost " << us_times / 1000000.0 << "s, "
-                     << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
-                // std::cout << "put " << i << " kvs" << std::endl
-                //           << std::flush;
-                timer.Clear();
-                timer.Record("start");
-            }
-        }
-        timer.Record("stop");
-        us_times = timer.Microsecond("stop", "start");
-        cout << "[Metic-Operate]: Operate LOAD: " << LOAD_SIZE << ", "
-             << "cost " << us_times / 1000000.0 << "s, "
-             << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
-    }
-    else // put one by one
-    {
-        timer.Clear();
-        timer.Record("start");
-        for (int i = 0; i < LOAD_SIZE; i++)
-        {
-            // cout << i << " put: " << data_base[i] << endl;
-            db->Put(data_base[i], data_base[i] + 1);
-            if (i % 10000000 == 0 && i > 0)
-            {
-                timer.Record("stop");
-                us_times = timer.Microsecond("stop", "start");
-                cout << "[Metic-Operate]: Operate LOAD: " << i << ", "
-                     << "cost " << us_times / 1000000.0 << "s, "
-                     << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
-                timer.Clear();
-                timer.Record("start");
-            }
-            // std::cout << "put " << i << " kvs" << std::endl << std::flush;
-        }
-        timer.Record("stop");
-        us_times = timer.Microsecond("stop", "start");
-        cout << "[Metic-Operate]: Operate LOAD: " << LOAD_SIZE << ", "
-             << "cost " << us_times / 1000000.0 << "s, "
-             << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
-    }
-
-    std::cerr << endl;
-    cout << "dram space use: " << (physical_memory_used_by_process() - init_dram_space_use) / 1024.0 / 1024.0 << " GB" << endl;
-}
-
 void init_opts(int argc, char *argv[])
 {
     static struct option opts[] = {
         /* NAME               HAS_ARG            FLAG  SHORTNAME*/
-        {"thread", required_argument, NULL, 't'},  // 0
-        {"load-size", required_argument, NULL, 0}, // 1
-        {"put-size", required_argument, NULL, 0},  // 2
-        {"get-size", required_argument, NULL, 0},  // 3
-        {"dbname", required_argument, NULL, 0},    // 4
-        // {"workload", required_argument, NULL, 0},  // 5
-        {"loadstype", required_argument, NULL, 0}, // 5
-        {"reverse", required_argument, NULL, 0},   // 6
-        {"help", no_argument, NULL, 'h'},          // 7
+        {"thread", required_argument, NULL, 't'},     // 0
+        {"load-size", required_argument, NULL, 0},    // 1
+        {"put-size", required_argument, NULL, 0},     // 2
+        {"get-size", required_argument, NULL, 0},     // 3
+        {"dbname", required_argument, NULL, 0},       // 4
+        {"loadstype", required_argument, NULL, 0},    // 5
+        {"workloadtype", required_argument, NULL, 0}, // 6
+        {"help", no_argument, NULL, 'h'},             // 7
         {NULL, 0, NULL, 0}};
 
     int c;
@@ -550,7 +341,7 @@ void init_opts(int argc, char *argv[])
                 Loads_type = atoi(optarg);
                 break;
             case 6:
-                Reverse = atoi(optarg);
+                workload_type = optarg;
                 break;
             case 7:
                 show_help(argv[0]);
@@ -582,7 +373,7 @@ void init_opts(int argc, char *argv[])
     cout << "GET_SIZE:              " << GET_SIZE << endl;
     cout << "DB  name:              " << dbName << endl;
     cout << "Loads type:            " << Loads_type << endl;
-    cout << "Reverse:               " << Reverse << endl;
+    cout << "Workload type:         " << workload_type << endl;
 
     switch (Loads_type)
     {
@@ -641,24 +432,92 @@ void init_opts(int argc, char *argv[])
     }
 }
 
+void test_workload(string type)
+{
+    cout << "------------------------------" << endl;
+    cout << "Start Testing Workload: " << type << endl;
+    float read_ratio = 0;
+    if (type == "r")
+    {
+        read_ratio = 1;
+    }
+    else if (type == "rh")
+    {
+        read_ratio = 0.7;
+    }
+    else if (type == "wh")
+    {
+        read_ratio = 0.3;
+    }
+
+    int wrong_get = 0;
+    uint64_t value = 0;
+
+    util::FastRandom ranny(18);
+    vector<uint64_t> rand_pos_get;
+    vector<uint64_t> rand_pos_put;
+    for (uint64_t i = 0; i < GET_SIZE; i++)
+    {
+        rand_pos_get.push_back(ranny.RandUint32(0, load_pos - 1));
+        rand_pos_put.push_back(ranny.RandUint32(0, load_pos + GET_SIZE - 1));
+    }
+
+    timer.Clear();
+    timer.Record("start");
+    for (uint64_t i = 0; i < GET_SIZE; i++)
+    {
+        if (ranny.ScaleFactor() < read_ratio) // read
+        {
+            db->Get(data_base[rand_pos_get[i]], value);
+            if (value != data_base[rand_pos_get[i]] + 1)
+            {
+                wrong_get++;
+            }
+        }
+        else // write
+        {
+            db->Put(data_base[rand_pos_put[i]], (uint64_t)data_base[rand_pos_put[i]] + 1);
+            // load_pos++;
+        }
+    }
+    std::cout << "wrong get: " << wrong_get << std::endl;
+    timer.Record("stop");
+    us_times = timer.Microsecond("stop", "start");
+
+    std::cout << "[Metic-Operate]: Operate " << GET_SIZE << " read_ratio " << read_ratio << ": "
+              << "cost " << us_times / 1000000.0 << "s, "
+              << "kops " << (double)(GET_SIZE) / (double)us_times * 1000.0 << " ." << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
     init_opts(argc, argv);
     db->Init();
-    if (!TEST_SCALABILITY)
+    load();
+    if (workload_type == "a") // all four types
     {
-        load();
+        test_workload("r"); // read-only
+        if (REST)
+        {
+            sleep(20);
+        }
+        test_workload("rh"); // read-heavy
+        if (REST)
+        {
+            sleep(20);
+        }
+        test_workload("wh"); // write-heavy
+        if (REST)
+        {
+            sleep(20);
+        }
+        test_workload("w"); // write-only
     }
     else
     {
-        test_scalability();
-        db->Info(); // print info
-        return 0;
+        test_workload(workload_type);
     }
-    test_uniform("r");
-    test_uniform("w");
-    db->Info(); // print info
-    // test_all_zipfian();
-    // db->Info();
+    db->Info();
+    delete db;
     return 0;
 }

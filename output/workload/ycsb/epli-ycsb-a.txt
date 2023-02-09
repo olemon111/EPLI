@@ -1,0 +1,74 @@
+2023年 02月 09日 星期四 17:21:28 CST
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from numactl...
+(No debugging symbols found in numactl)
+(gdb) r
+Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_workload --dbname epli --load-size 400000000 --put-size 10000000 --get-size 10000000 --loadstype 3 --workloadtype a -t 1
+process 162102 is executing new program: /home/lbl/code/EPLI/build/microbench_workload
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              epli
+Loads type:            3
+Workload type:         a
+read 410000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 2042 ms (200.784 M values/s)
+before newdb, dram space use: 3.06146 GB
+Map addrs:0x7ffe00000000
+Current addrs:0x7ffe00000000
+Map addrs:0x7ff7c0000000
+Current addrs:0x7ff7c0000000
+[ALLOC] initializing allocator with fs size: 507 objects
+[ALLOC] initializing allocator with fs size: 507 objects
+Start loading ....
+bulk load 400000000 kvs
+[Metic-Load]: Load 400000000: cost 60.2029s, kops/s: 6644.2 .
+after load, dram space use: 6.66892 GB
+------------------------------
+Start Testing Workload: r
+[STATUS-00] #bu:     256 / #elems:    1252 / full%: 163.0208% / expands:  256 / max expands:  4
+[RESIZE-00] to #bu    1024 = MB:    0.06    | took:         82646 ti = 0.000039 s
+[STATUS-00] #bu:    1024 / #elems:    5080 / full%: 165.3646% / expands: 1024 / max expands:  4
+[RESIZE-00] to #bu    4096 = MB:    0.25    | took:        294510 ti = 0.000140 s
+[STATUS-00] #bu:    4096 / #elems:   20357 / full%: 165.6657% / expands: 4096 / max expands:  4
+[RESIZE-00] to #bu   16384 = MB:    1.00    | took:       1403874 ti = 0.000669 s
+[STATUS-00] #bu:   16384 / #elems:   81676 / full%: 166.1702% / expands: 16384 / max expands:  4
+[RESIZE-00] to #bu   65536 = MB:    4.00    | took:       6135756 ti = 0.002922 s
+[STATUS-00] #bu:   65536 / #elems:  325864 / full%: 165.7430% / expands: 65536 / max expands:  5
+[RESIZE-00] to #bu  262144 = MB:   16.00    | took:      30355554 ti = 0.014455 s
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 7.21704s, kops 1385.61 .
+------------------------------
+Start Testing Workload: rh
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.7: cost 7.45348s, kops 1341.66 .
+------------------------------
+Start Testing Workload: wh
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000555555579e57 in test_workload(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) ()
+(gdb) bt
+#0  0x0000555555579e57 in test_workload(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) ()
+#1  0x000055555556c158 in main ()
+(gdb) q
+A debugging session is active.
+
+	Inferior 1 [process 162102] will be killed.
+
+Quit anyway? (y or n) y

@@ -1,0 +1,35 @@
+2023年 02月 09日 星期四 18:00:43 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              fastfair
+Loads type:            4
+Workload type:         a
+read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2038 ms (201.178 M values/s)
+before newdb, dram space use: 3.06166 GB
+Map addrs:0x7f7440000000
+Current addrs:0x7f7440000000
+[Fast-Fair]: root is 0x7f7440000000, btree is 0x55a7064c38a0.
+Start loading ....
+[Metic-Load]: Load 400000000: cost 1242.4s, kops/s: 321.958 .
+after load, dram space use: 0.000404358 GB
+------------------------------
+Start Testing Workload: r
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 18.9359s, kops 528.098 .
+------------------------------
+Start Testing Workload: rh
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.7: cost 23.9875s, kops 416.885 .
+------------------------------
+Start Testing Workload: wh
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 30.6423s, kops 326.346 .
+------------------------------
+Start Testing Workload: w
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 35.6314s, kops 280.651 .
+NVM WRITE : 136994167040
+/mnt/pmem1/lbl/data used: 13092224512 bytes. (12485 Mib, 735kib. free 0 Mib, 0kib.)
+Tree height is 9.

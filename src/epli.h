@@ -8,6 +8,8 @@ using namespace epltree;
 
 #define SAMPLE_M 20 // TODO:
 #define MIN_HIT_RATE 0.001
+#define SWTABLE_DEFAULT_OPEN true
+// #define SWTABLE_DEFAULT_OPEN false
 
 class EPLI
 {
@@ -20,7 +22,10 @@ public:
         tree = new EPLTree();
         table = new SWTable();
         table->Init();
-        table_on = true;
+        if (SWTABLE_DEFAULT_OPEN)
+        {
+            table_on = true;
+        }
         hit_cnt = 0;
         tot_get = 0;
     }
@@ -57,17 +62,20 @@ public:
             }
         }
         tot_get++;
-        /* close SWTable when hit rate is too low */
-        if (hit_cnt > 0 && hit_cnt < MIN_HIT_RATE * tot_get)
+        if (SWTABLE_DEFAULT_OPEN)
         {
-            table_on = false;
-            cout << "Close SWTable with hit rate: " << hit_cnt / (double)tot_get << ", hit_cnt: " << hit_cnt << ", tot_get:" << tot_get << endl;
+            /* close SWTable when hit rate is too low */
+            if (hit_cnt > 0 && hit_cnt < MIN_HIT_RATE * tot_get)
+            {
+                table_on = false;
+                cout << "Close SWTable with hit rate: " << hit_cnt / (double)tot_get << ", hit_cnt: " << hit_cnt << ", tot_get:" << tot_get << endl;
+            }
         }
     }
 
     void Info()
     {
-        cout << "hit cnt: " << hit_cnt << endl;
+        cout << "hit cnt: " << hit_cnt << ", total get cnt: " << tot_get << endl;
         // table->Print();
     }
 

@@ -105,7 +105,6 @@ function test_read_write() {
     "--put-size ${opnum} --get-size ${opnum} --loadstype ${loadstype} --reverse ${reverse} -t $thread"
 }
 
-
 function run_all() {
     dbs="epli apex lbtree fastfair"
     for dbname in $dbs; do
@@ -158,8 +157,11 @@ function main() {
     fi
 }
 
-main epli 400000000 10000000 0 1 0 a llt
-# main lbtree 400000000 10000000 0 1 0 a
+main apex 400000000 10000000 0 1 0 r ycsb
+# main epli 400000000 10000000 0 1 0 w ycsb
+# main epli 400000000 10000000 0 1 0 a llt
+sleep 60
+main lbtree 400000000 10000000 0 1 0 r ycsb
 # main apex 400000000 10000000 0 1 0 a
 # main epli 2000000 10000000 0 1 0 a
 # main fastfair 400000000 10000000 0 1 0 a ycsb
