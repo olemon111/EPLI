@@ -109,4 +109,6 @@ function main() {
 # # Test Scalability
 # # open scalability in microbench_epli.cc first
 # main fastfair 400000000 0 0 1 0 r llt
-main all 400000000 0 0 1 0 r llt
+# main apex 400000000 0 0 1 0 r llt
+main epli 400000000 0 0 1 0 r llt
+# main all 400000000 0 0 1 0 r llt

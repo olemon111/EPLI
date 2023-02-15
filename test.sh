@@ -18,9 +18,9 @@ sudo rm -rf /mnt/pmem1/lbl/*
 # sudo ./tests/run_microbench_epli.sh
 
 # # microbench
-chmod +x ./tests/run_microbench_workload.sh
-sudo ./tests/run_microbench_workload.sh
+# chmod +x ./tests/run_microbench_workload.sh
+# sudo ./tests/run_microbench_workload.sh
 
-# # # microbench
-# chmod +x ./tests/run_microbench_scalability.sh
-# sudo ./tests/run_microbench_scalability.sh
+# microbench
+chmod +x ./tests/run_microbench_scalability.sh
+sudo ./tests/run_microbench_scalability.sh

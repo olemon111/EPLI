@@ -70,7 +70,7 @@ namespace epltree
         int Get(key_type key, val_type &val)
         {
             Entry *entry = *(index->get_payload_last_no_greater_than(key));
-            assert(key >= entry->GetMinKey());
+            // assert(key >= entry->GetMinKey());
             // cout << "get key: " << key << ", min key: " << entry->GetMinKey() << endl;
             if (entry->Get(key, val) != STATUS_OK) // key not exist
             {
@@ -84,13 +84,22 @@ namespace epltree
         int Insert(key_type key, val_type val)
         {
             Entry *entry = *(index->get_payload_last_no_greater_than(key));
-            assert(key >= entry->GetMinKey());
+            if (entry == NULL)
+            {
+                entry = *(index->get_payload_last_no_greater_than(key - 1)); // reach max
+            }
+            // assert(key >= entry->GetMinKey());
             // cout << "min key: " << entry->GetMinKey() << endl;
             int ret = entry->MaybePut(key, val);
             if (ret == STATUS_OVERFLOW) // need to split
             {
                 splitEntry(entry);
                 return Insert(key, val); // insert again
+                // if (key >= entry->next->GetMinKey()) // FIXME: may cause trouble in lgn test
+                // {
+                //     return entry->next->MaybePut(key, val);
+                // }
+                // return entry->MaybePut(key, val);
             }
             return ret; // OK/FAIL
         }
@@ -108,6 +117,30 @@ namespace epltree
         }
 
     private:
+        // void splitEntry(Entry *entry)
+        // {
+        //     // copy kvs and sort
+        //     sort(entry->kvs, entry->kvs + KVS_PER_ENTRY, [](auto const &a, auto const &b)
+        //          { return a.first < b.first; });
+        //     // assign new entry
+        //     Entry *new_entry = (Entry *)NVM::data_alloc->alloc_aligned(sizeof(Entry));
+        //     key_type new_min_key = entry->kvs[KVS_PER_ENTRY / 2].first;
+        //     new (new_entry) Entry(new_min_key, entry->kvs + KVS_PER_ENTRY / 2, (KVS_PER_ENTRY + 1) / 2);
+        //     // mark split
+        //     entry->setPersistFlag(1);
+        //     // entry->setFlag(0);
+        //     // add new entry to link list
+        //     new_entry->next = entry->next;
+        //     NVM::Mem_persist(new_entry, sizeof(Entry));
+        //     //  update prev entry
+        //     entry->next = new_entry;
+        //     index->insert(new_min_key, new_entry);
+        //     entry->resetRightHalfKVs();
+        //     // end split
+        //     entry->setFlag(0);
+        //     NVM::Mem_persist(entry, sizeof(Entry));
+        // }
+
         void splitEntry(Entry *entry)
         {
             // cout << "split entry" << endl;
@@ -129,7 +162,7 @@ namespace epltree
             index->insert(new_min_key, new_entry);
             entry->setOrderedKVs(tmp_kvs, KVS_PER_ENTRY / 2);
             // end split
-            entry->setPersistFlag(0);
+            entry->setFlag(0);
             NVM::Mem_persist(entry, sizeof(Entry));
         }
 

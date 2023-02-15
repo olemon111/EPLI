@@ -1,0 +1,38 @@
+2023年 02月 14日 星期二 23:38:50 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              epli
+Loads type:            3
+Workload type:         rw
+read 430000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 2093 ms (205.447 M values/s)
+before newdb, dram space use: 3.21048 GB
+Map addrs:0x7f3600000000
+Current addrs:0x7f3600000000
+Map addrs:0x7f2fc0000000
+Current addrs:0x7f2fc0000000
+[ALLOC] initializing allocator with fs size: 507 objects
+[ALLOC] initializing allocator with fs size: 507 objects
+Start loading ....
+[Metic-Load]: Load 400000000: cost 324.28s, kops/s: 1233.5 .
+after load, dram space use: 1.08904 GB
+------------------------------
+Start Testing Workload: r
+[STATUS-00] #bu:     256 / #elems:    1268 / full%: 165.1042% / expands:  256 / max expands:  4
+[RESIZE-00] to #bu    1024 = MB:    0.06    | took:         81796 ti = 0.000039 s
+[STATUS-00] #bu:    1024 / #elems:    5079 / full%: 165.3320% / expands: 1024 / max expands:  4
+[RESIZE-00] to #bu    4096 = MB:    0.25    | took:        319514 ti = 0.000152 s
+[STATUS-00] #bu:    4096 / #elems:   20318 / full%: 165.3483% / expands: 4096 / max expands:  4
+[RESIZE-00] to #bu   16384 = MB:    1.00    | took:       1427042 ti = 0.000680 s
+[STATUS-00] #bu:   16384 / #elems:   81695 / full%: 166.2089% / expands: 16384 / max expands:  5
+[RESIZE-00] to #bu   65536 = MB:    4.00    | took:       6160396 ti = 0.002934 s
+[STATUS-00] #bu:   65536 / #elems:  326600 / full%: 166.1174% / expands: 65536 / max expands:  5
+[RESIZE-00] to #bu  262144 = MB:   16.00    | took:      44406360 ti = 0.021146 s
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 7.45588s, kops 1341.22 .
+------------------------------
+Start Testing Workload: w
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 8.50556s, kops 1175.7 .
+hit cnt: 6210, total get cnt: 10000000

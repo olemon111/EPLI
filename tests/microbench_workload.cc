@@ -48,7 +48,6 @@ KvDB *db = nullptr;
 Timer timer;
 uint64_t us_times;
 uint64_t load_pos = 0;
-int load_size = 0;
 size_t init_dram_space_use;
 std::string dbName = "";
 
@@ -260,13 +259,14 @@ void load()
     cout << "Start loading ...." << endl;
     timer.Record("start");
 
-    if (dbName == "epli" || dbName == "alex" || dbName == "lipp" || dbName == "xindex" || dbName == "pgm" || dbName == "finedex" || dbName == "apex") // support bulk load
+    if (dbName == "alex" || dbName == "lipp" || dbName == "xindex" || dbName == "pgm" || dbName == "finedex" || dbName == "apex") // support bulk load
+    // if (dbName == "epli" || dbName == "alex" || dbName == "lipp" || dbName == "xindex" || dbName == "pgm" || dbName == "finedex" || dbName == "apex") // support bulk load
     {
         auto values = new std::pair<uint64_t, uint64_t>[LOAD_SIZE];
         for (int i = 0; i < LOAD_SIZE; i++)
         {
             values[i].first = data_base[i];
-            values[i].second = data_base[i] + 1;
+            values[i].second = data_base[i];
         }
         sort(values, values + LOAD_SIZE,
              [](auto const &a, auto const &b)
@@ -276,10 +276,39 @@ void load()
     }
     else // put one by one
     {
-        for (int i = 0; i < LOAD_SIZE; i++)
+        if (dbName == "epli" && Loads_type == 6)
         {
-            // cout << i << " put: " << data_base[i] << endl;
-            db->Put(data_base[i], data_base[i] + 1);
+            size_t load_size = 1000000;
+            auto values = new std::pair<uint64_t, uint64_t>[load_size];
+            for (int i = 0; i < load_size; i++)
+            {
+                values[i].first = data_base[i];
+                values[i].second = data_base[i];
+            }
+            sort(values, values + load_size,
+                 [](auto const &a, auto const &b)
+                 { return a.first < b.first; });
+
+            timer.Clear();
+            timer.Record("start");
+
+            db->Bulk_load(values, int(load_size));
+
+            for (int i = load_size; i < LOAD_SIZE; i++)
+            {
+                // if (i > 900000)
+                // {
+                //     cout << i << " put: " << data_base[i] << endl;
+                // }
+                db->Put(data_base[i], data_base[i]);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < LOAD_SIZE; i++)
+            {
+                db->Put(data_base[i], data_base[i]);
+            }
         }
     }
     // std::cerr << endl;
@@ -455,35 +484,36 @@ void test_workload(string type)
 
     util::FastRandom ranny(18);
     vector<uint64_t> rand_pos_get;
-    vector<uint64_t> rand_pos_put;
     for (uint64_t i = 0; i < GET_SIZE; i++)
     {
         rand_pos_get.push_back(ranny.RandUint32(0, load_pos - 1));
-        rand_pos_put.push_back(ranny.RandUint32(0, load_pos + GET_SIZE - 1));
     }
 
     timer.Clear();
     timer.Record("start");
-    for (uint64_t i = 0; i < GET_SIZE; i++)
+    // Peform GET
+    for (uint64_t i = 0; i < GET_SIZE * read_ratio; i++)
     {
-        if (ranny.ScaleFactor() < read_ratio) // read
+        db->Get(data_base[rand_pos_get[i]], value);
+        if (value != data_base[rand_pos_get[i]])
         {
-            db->Get(data_base[rand_pos_get[i]], value);
-            if (value != data_base[rand_pos_get[i]] + 1)
-            {
-                wrong_get++;
-            }
-        }
-        else // write
-        {
-            db->Put(data_base[rand_pos_put[i]], (uint64_t)data_base[rand_pos_put[i]] + 1);
-            // load_pos++;
+            wrong_get++;
         }
     }
-    std::cout << "wrong get: " << wrong_get << std::endl;
+    // Peform PUT
+    for (uint64_t i = 0; i < GET_SIZE * (1 - read_ratio); i++)
+    {
+        // cout << "put " << data_base[load_pos] << ", pos " << load_pos << endl;
+        if (data_base[load_pos] == 0)
+        {
+            cout << "pos " << load_pos << endl;
+        }
+        db->Put(data_base[load_pos], data_base[load_pos]);
+        load_pos++;
+    }
     timer.Record("stop");
     us_times = timer.Microsecond("stop", "start");
-
+    std::cout << "wrong get: " << wrong_get << std::endl;
     std::cout << "[Metic-Operate]: Operate " << GET_SIZE << " read_ratio " << read_ratio << ": "
               << "cost " << us_times / 1000000.0 << "s, "
               << "kops " << (double)(GET_SIZE) / (double)us_times * 1000.0 << " ." << std::endl;
@@ -494,24 +524,23 @@ int main(int argc, char *argv[])
     init_opts(argc, argv);
     db->Init();
     load();
-    if (workload_type == "a") // all four types
+    if (workload_type == "rw")
     {
         test_workload("r"); // read-only
         if (REST)
         {
-            sleep(20);
+            sleep(10);
         }
+        test_workload("w"); // write-only
+    }
+    else if (workload_type == "rhwh")
+    {
         test_workload("rh"); // read-heavy
         if (REST)
         {
-            sleep(20);
+            sleep(10);
         }
         test_workload("wh"); // write-heavy
-        if (REST)
-        {
-            sleep(20);
-        }
-        test_workload("w"); // write-only
     }
     else
     {

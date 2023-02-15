@@ -77,3 +77,6 @@ result/*
 # *.spec
 *.bak
 *.old
+
+# perf data
+perf.*

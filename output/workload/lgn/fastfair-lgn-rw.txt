@@ -1,0 +1,14 @@
+2023年 02月 15日 星期三 11:24:25 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             190000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              fastfair
+Loads type:            6
+Workload type:         rw
+read 200000000 values from /home/lbl/dataset/lognormal.dat in 1002 ms (199.601 M values/s)
+before newdb, dram space use: 1.49714 GB
+Map addrs:0x7f8580000000
+Current addrs:0x7f8580000000
+[Fast-Fair]: root is 0x7f8580000000, btree is 0x55c7df9cf880.
+Start loading ....

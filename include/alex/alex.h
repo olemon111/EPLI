@@ -507,27 +507,27 @@ namespace alex
         T key, std::vector<TraversalNode> *traversal_path = nullptr) const
     {
       if (traversal_path)
-      
+
         traversal_path->push_back({superroot_, 0});
-      }
-      AlexNode<T, P> *cur = root_node_;
-
-      while (!cur->is_leaf_)
-      {
-        auto node = static_cast<model_node_type *>(cur);
-        int bucketID = node->model_.predict(key);
-        bucketID =
-            std::min<int>(std::max<int>(bucketID, 0), node->num_children_ - 1);
-        if (traversal_path)
-        {
-          traversal_path->push_back({node, bucketID});
-        }
-        cur = node->children_[bucketID];
-      }
-
-      stats_.num_node_lookups += cur->level_;
-      return static_cast<data_node_type *>(cur);
     }
+    AlexNode<T, P> *cur = root_node_;
+
+    while (!cur->is_leaf_)
+    {
+      auto node = static_cast<model_node_type *>(cur);
+      int bucketID = node->model_.predict(key);
+      bucketID =
+          std::min<int>(std::max<int>(bucketID, 0), node->num_children_ - 1);
+      if (traversal_path)
+      {
+        traversal_path->push_back({node, bucketID});
+      }
+      cur = node->children_[bucketID];
+    }
+
+    stats_.num_node_lookups += cur->level_;
+    return static_cast<data_node_type *>(cur);
+  }
 #endif
 
   private:
@@ -2934,8 +2934,8 @@ namespace alex
                               cur_leaf_->payload_slots_[cur_idx_]);
       }
 #else
-      // If data node stores key-payload pairs contiguously, return reference to V
-      V &operator*() const { return cur_leaf_->data_slots_[cur_idx_]; }
+    // If data node stores key-payload pairs contiguously, return reference to V
+    V &operator*() const { return cur_leaf_->data_slots_[cur_idx_]; }
 #endif
 
       const T &key() const
@@ -3077,8 +3077,8 @@ namespace alex
                               cur_leaf_->payload_slots_[cur_idx_]);
       }
 #else
-      // If data node stores key-payload pairs contiguously, return reference to V
-      const V &operator*() const { return cur_leaf_->data_slots_[cur_idx_]; }
+    // If data node stores key-payload pairs contiguously, return reference to V
+    const V &operator*() const { return cur_leaf_->data_slots_[cur_idx_]; }
 #endif
 
       const T &key() const
@@ -3208,8 +3208,8 @@ namespace alex
                               cur_leaf_->payload_slots_[cur_idx_]);
       }
 #else
-      // If data node stores key-payload pairs contiguously, return reference to V
-      V &operator*() const { return cur_leaf_->data_slots_[cur_idx_]; }
+    // If data node stores key-payload pairs contiguously, return reference to V
+    V &operator*() const { return cur_leaf_->data_slots_[cur_idx_]; }
 #endif
 
       const T &key() const
@@ -3356,8 +3356,8 @@ namespace alex
                               cur_leaf_->payload_slots_[cur_idx_]);
       }
 #else
-      // If data node stores key-payload pairs contiguously, return reference to V
-      const V &operator*() const { return cur_leaf_->data_slots_[cur_idx_]; }
+    // If data node stores key-payload pairs contiguously, return reference to V
+    const V &operator*() const { return cur_leaf_->data_slots_[cur_idx_]; }
 #endif
 
       const T &key() const

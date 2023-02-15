@@ -1,0 +1,23 @@
+2023年 02月 15日 星期三 15:02:36 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             170000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              lbtree
+Loads type:            6
+Workload type:         rw
+read 180000000 values from /home/lbl/dataset/lognormal.dat in 952 ms (189.076 M values/s)
+before newdb, dram space use: 1.34808 GB
+init lbtree wrapper
+Start loading ....
+[Metic-Load]: Load 170000000: cost 288.175s, kops/s: 589.92 .
+after load, dram space use: 0.838936 GB
+------------------------------
+Start Testing Workload: r
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 9.10572s, kops 1098.21 .
+------------------------------
+Start Testing Workload: w
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 17.6938s, kops 565.17 .
+lbtree dram size: 860.413 MB

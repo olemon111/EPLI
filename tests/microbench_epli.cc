@@ -19,8 +19,8 @@
 #include "random.h"
 #include "util/zipf/utils.h"
 
-// #define REST true
-#define REST false
+#define REST true
+// #define REST false
 #define TEST_SCALABILITY true
 // #define TEST_SCALABILITY false
 
@@ -148,7 +148,7 @@ template <typename T>
 std::vector<T> load_data_from_osm(
     const std::string dataname = "/home/lbl/dataset/generate_random_ycsb.dat")
 {
-    return util::load_data<T>(dataname, LOAD_SIZE, true);
+    return util::load_data<T>(dataname, LOAD_SIZE + PUT_SIZE, true);
 }
 
 std::vector<uint64_t> generate_random_ycsb(size_t op_num)
@@ -425,7 +425,7 @@ void test_all_zipfian()
 
 void test_scalability()
 {
-    cout << "Start loading ...." << endl;
+    cout << "Start Testing Scalability ...." << endl;
     const int PRE_LOAD_SIZE = 10000000;
 
     if (dbName == "apex") // pre bulk load

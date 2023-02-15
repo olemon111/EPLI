@@ -59,7 +59,7 @@ function run_all() {
     for dbname in $dbs; do
         echo "Run: " $dbname
         Run $dbname $1 $2 $3 $4 $5 $6
-        sleep 100
+        sleep 60
     done
 }
 
@@ -102,8 +102,21 @@ function main() {
     fi
 }
 
-main all 400000000 10000000 0 1 a ycsb
-# main epli 400000000 10000000 0 1 a llt
-# sleep 40
-# main all 320000000 10000000 0 1 a ltd # remain 10million for insert
-# main all 190000000 10000000 0 1 a lgn
+# # YCSB
+# main all 400000000 10000000 0 1 rw ycsb
+# main all 400000000 10000000 0 1 rhwh ycsb
+# # LLT
+# main all 400000000 10000000 0 1 rw llt
+# main all 400000000 10000000 0 1 rhwh llt
+# # LTD
+# main all 320000000 10000000 0 1 rw ltd
+# main all 320000000 10000000 0 1 rhwh ltd
+# # LGN
+# main all 170000000 10000000 0 1 rw lgn
+# main all 170000000 10000000 0 1 rhwh lgn
+# # remain 10million for insert
+
+main epli 400000000 10000000 0 1 rw llt
+# main epli 400000000 10000000 0 1 rhwh llt
+sleep 30
+main apex 400000000 10000000 0 1 rw llt

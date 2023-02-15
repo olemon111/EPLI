@@ -1,0 +1,23 @@
+2023年 02月 15日 星期三 02:35:01 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              lbtree
+Loads type:            4
+Workload type:         rhwh
+read 430000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2608 ms (164.877 M values/s)
+before newdb, dram space use: 3.21069 GB
+init lbtree wrapper
+Start loading ....
+[Metic-Load]: Load 400000000: cost 883.754s, kops/s: 452.615 .
+after load, dram space use: 1.91195 GB
+------------------------------
+Start Testing Workload: rh
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.7: cost 12.5449s, kops 797.138 .
+------------------------------
+Start Testing Workload: wh
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 16.2491s, kops 615.42 .
+lbtree dram size: 1958.92 MB

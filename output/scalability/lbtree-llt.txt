@@ -1,4 +1,4 @@
-2023年 02月 09日 星期四 21:18:32 CST
+2023年 02月 14日 星期二 12:52:01 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              0
@@ -6,7 +6,7 @@ GET_SIZE:              0
 DB  name:              lbtree
 Loads type:            4
 Reverse:               0
-read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1990 ms (201.005 M values/s)
-before newdb, dram space use: 2.987 GB
+read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1968 ms (203.252 M values/s)
+before newdb, dram space use: 2.98711 GB
 init lbtree wrapper
-Start loading ....
+Start Testing Scalability ....

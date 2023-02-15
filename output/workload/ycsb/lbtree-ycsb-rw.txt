@@ -1,0 +1,23 @@
+2023年 02月 15日 星期三 00:03:20 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              lbtree
+Loads type:            3
+Workload type:         rw
+read 430000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 3324 ms (129.362 M values/s)
+before newdb, dram space use: 3.21074 GB
+init lbtree wrapper
+Start loading ....
+[Metic-Load]: Load 400000000: cost 926.629s, kops/s: 431.672 .
+after load, dram space use: 1.90128 GB
+------------------------------
+Start Testing Workload: r
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 10.2551s, kops 975.125 .
+------------------------------
+Start Testing Workload: w
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 19.1608s, kops 521.898 .
+lbtree dram size: 1948.47 MB

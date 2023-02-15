@@ -1,5 +1,6 @@
 #pragma once
 #include "util/nvm/nvm_alloc.h"
+#include "pmem.h"
 
 typedef uint64_t key_type;
 typedef uint64_t val_type;
@@ -9,7 +10,7 @@ using namespace std;
 
 namespace epltree
 {
-    // each Entry occupies less than 256B of NVM
+    // each Entry occupies 256B of NVM
     static const key_type INVALID_KEY = 0;
     static const int KVS_PER_ENTRY = 14;
 
@@ -18,7 +19,7 @@ namespace epltree
     const static int STATUS_FAIL = -1;
     const static int STATUS_OVERFLOW = 1;
 
-    kv_type tmp_kvs[KVS_PER_ENTRY]; // 16B (cache line size)
+    kv_type tmp_kvs[KVS_PER_ENTRY];
 
     struct Entry
     {
@@ -32,14 +33,12 @@ namespace epltree
         /* constructor */
         Entry(key_type init_min_key)
         {
-            // cout << "init entry" << endl;
             memset(this, 0, sizeof(Entry));
             min_key = init_min_key;
         }
 
         Entry(key_type init_min_key, const kv_type init_kvs[], size_t size)
         {
-            // cout << "init entry , min_key: " << init_min_key << ", size: " << size << endl;
             memset(this, 0, sizeof(Entry));
             min_key = init_min_key;
             for (size_t i = 0; i < size; i++)
@@ -71,10 +70,26 @@ namespace epltree
             min_key = new_kvs[0].first;
         }
 
+        void resetRightHalfKVs()
+        {
+            memset(kvs + KVS_PER_ENTRY / 2, 0, KVS_PER_ENTRY * sizeof(kv_type) / 2);
+            // for (int i = KVS_PER_ENTRY / 2; i < KVS_PER_ENTRY; i++)
+            // {
+            //     kvs[i].first = INVALID_KEY;
+            // }
+        }
+
         void setPersistFlag(int v)
         {
             flag = v;
-            NVM::Mem_persist(&flag, sizeof(flag));
+            // NVM::Mem_persist(&flag, sizeof(flag));
+            clflush((char *)&flag);
+            fence();
+        }
+
+        void setFlag(int v)
+        {
+            flag = v;
         }
 
         const key_type GetMinKey()
@@ -96,22 +111,21 @@ namespace epltree
             return STATUS_FAIL;
         }
 
-        // insert or update if there's empty place
+        // insert if there's empty place
         status MaybePut(key_type key, val_type val)
         {
             // cout << "maybe put " << key << ", " << val << endl;
             int empty_pos = -1;
             for (int i = 0; i < KVS_PER_ENTRY; i++)
             {
-                if (key == kvs[i].first) // update value
+                if (key == kvs[i].first) // key already exists
                 {
-                    setVal(i, val);
-                    NVM::Mem_persist(&kvs[i], sizeof(kvs[i]));
-                    return STATUS_OK;
+                    return STATUS_FAIL;
                 }
                 if (kvs[i].first == INVALID_KEY && empty_pos == -1) // first empty postion
                 {
                     empty_pos = i;
+                    break;
                 }
             }
             // no place for a new key
@@ -122,7 +136,9 @@ namespace epltree
             // write value before key
             setVal(empty_pos, val);
             setKey(empty_pos, key);
-            NVM::Mem_persist(&kvs[empty_pos], sizeof(kv_type));
+            // NVM::Mem_persist(&kvs[empty_pos], sizeof(kv_type));
+            clflush((char *)&kvs[empty_pos]);
+            fence();
             return STATUS_OK;
         }
 
