@@ -1,4 +1,4 @@
-2023年 02月 15日 星期三 16:38:03 CST
+2023年 02月 15日 星期三 23:58:44 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              10000000
@@ -6,20 +6,20 @@ GET_SIZE:              10000000
 DB  name:              apex
 Loads type:            4
 Workload type:         rw
-read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1976 ms (207.49 M values/s)
-before newdb, dram space use: 3.06169 GB
+read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1994 ms (205.617 M values/s)
+before newdb, dram space use: 3.06168 GB
 creating a new pool
-pool opened at: 0x7f5140000000
+pool opened at: 0x7f2400000000
 Intial allocator: 1
 Start loading ....
-[Metic-Load]: Load 400000000: cost 122.943s, kops/s: 3253.54 .
-after load, dram space use: 6.97766 GB
+[Metic-Load]: Load 400000000: cost 361.483s, kops/s: 1106.55 .
+after load, dram space use: 5.25603 GB
 ------------------------------
 Start Testing Workload: r
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 1: cost 7.11367s, kops 1405.74 .
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 7.82017s, kops 1278.74 .
 ------------------------------
 Start Testing Workload: w
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 0: cost 7.35056s, kops 1360.44 .
-apex DRAM size: 1114.18 MB.
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 15.9562s, kops 626.716 .
+apex DRAM size: 1792.01 MB.

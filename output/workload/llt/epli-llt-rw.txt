@@ -1,4 +1,4 @@
-2023年 02月 15日 星期三 16:30:14 CST
+2023年 02月 20日 星期一 21:50:05 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              10000000
@@ -6,33 +6,33 @@ GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            4
 Workload type:         rw
-read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2051 ms (199.902 M values/s)
-before newdb, dram space use: 3.06144 GB
-Map addrs:0x7f6d00000000
-Current addrs:0x7f6d00000000
-Map addrs:0x7f66c0000000
-Current addrs:0x7f66c0000000
+read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2018 ms (203.171 M values/s)
+before newdb, dram space use: 3.06168 GB
+Map addrs:0x7f3bc0000000
+Current addrs:0x7f3bc0000000
+Map addrs:0x7f3580000000
+Current addrs:0x7f3580000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
-[Metic-Load]: Load 400000000: cost 361.866s, kops/s: 1105.38 .
-after load, dram space use: 0.925888 GB
+[Metic-Load]: Load 400000000: cost 361.705s, kops/s: 1105.87 .
+after load, dram space use: 2.10094 GB
 ------------------------------
 Start Testing Workload: r
 [STATUS-00] #bu:     256 / #elems:    1267 / full%: 164.9740% / expands:  256 / max expands:  4
-[RESIZE-00] to #bu    1024 = MB:    0.06    | took:        136964 ti = 0.000065 s
+[RESIZE-00] to #bu    1024 = MB:    0.06    | took:         75880 ti = 0.000036 s
 [STATUS-00] #bu:    1024 / #elems:    5096 / full%: 165.8854% / expands: 1024 / max expands:  5
-[RESIZE-00] to #bu    4096 = MB:    0.25    | took:       4781830 ti = 0.002277 s
+[RESIZE-00] to #bu    4096 = MB:    0.25    | took:        321306 ti = 0.000153 s
 [STATUS-00] #bu:    4096 / #elems:   20374 / full%: 165.8040% / expands: 4096 / max expands:  5
-[RESIZE-00] to #bu   16384 = MB:    1.00    | took:      20248082 ti = 0.009642 s
+[RESIZE-00] to #bu   16384 = MB:    1.00    | took:       1328298 ti = 0.000633 s
 [STATUS-00] #bu:   16384 / #elems:   81379 / full%: 165.5660% / expands: 16384 / max expands:  5
-[RESIZE-00] to #bu   65536 = MB:    4.00    | took:       6171412 ti = 0.002939 s
+[RESIZE-00] to #bu   65536 = MB:    4.00    | took:       7583626 ti = 0.003611 s
 [STATUS-00] #bu:   65536 / #elems:  326060 / full%: 165.8427% / expands: 65536 / max expands:  5
-[RESIZE-00] to #bu  262144 = MB:   16.00    | took:      43432754 ti = 0.020682 s
+[RESIZE-00] to #bu  262144 = MB:   16.00    | took:      39935474 ti = 0.019017 s
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 1: cost 15.1158s, kops 661.557 .
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 8.26582s, kops 1209.8 .
 ------------------------------
 Start Testing Workload: w
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 0: cost 9.33341s, kops 1071.42 .
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 9.4636s, kops 1056.68 .
 hit cnt: 6210, total get cnt: 10000000

@@ -1,4 +1,4 @@
-2023年 02月 15日 星期三 11:46:13 CST
+2023年 02月 15日 星期三 23:46:02 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             170000000
 PUT_SIZE:              10000000
@@ -6,20 +6,20 @@ GET_SIZE:              10000000
 DB  name:              apex
 Loads type:            6
 Workload type:         rw
-read 180000000 values from /home/lbl/dataset/lognormal.dat in 901 ms (199.778 M values/s)
-before newdb, dram space use: 1.34809 GB
+read 180000000 values from /home/lbl/dataset/lognormal.dat in 915 ms (196.721 M values/s)
+before newdb, dram space use: 1.34811 GB
 creating a new pool
-pool opened at: 0x7f2280000000
+pool opened at: 0x7f2b80000000
 Intial allocator: 1
 Start loading ....
-[Metic-Load]: Load 170000000: cost 47.7935s, kops/s: 3556.97 .
-after load, dram space use: 2.96641 GB
+[Metic-Load]: Load 170000000: cost 112.905s, kops/s: 1505.69 .
+after load, dram space use: 3.21518 GB
 ------------------------------
 Start Testing Workload: r
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 1: cost 5.79808s, kops 1724.71 .
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 5.82107s, kops 1717.9 .
 ------------------------------
 Start Testing Workload: w
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 0: cost 5.51148s, kops 1814.4 .
-apex DRAM size: 392.914 MB.
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 5.26357s, kops 1899.85 .
+apex DRAM size: 439.365 MB.

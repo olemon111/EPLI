@@ -19,8 +19,8 @@
 #include "random.h"
 #include "util/zipf/utils.h"
 
-#define REST true
-// #define REST false
+// #define REST true
+#define REST false
 
 using epltree::Random;
 using epltree::Timer;
@@ -259,7 +259,7 @@ void load()
     cout << "Start loading ...." << endl;
     timer.Record("start");
 
-    if (dbName == "alex" || dbName == "lipp" || dbName == "xindex" || dbName == "pgm" || dbName == "finedex" || dbName == "apex") // support bulk load
+    if (dbName == "alex" || dbName == "lipp" || dbName == "xindex" || dbName == "pgm" || dbName == "finedex") // support bulk load
     // if (dbName == "epli" || dbName == "alex" || dbName == "lipp" || dbName == "xindex" || dbName == "pgm" || dbName == "finedex" || dbName == "apex") // support bulk load
     {
         auto values = new std::pair<uint64_t, uint64_t>[LOAD_SIZE];
@@ -303,10 +303,34 @@ void load()
                 db->Put(data_base[i], data_base[i]);
             }
         }
+        else if (dbName == "apex")
+        {
+            size_t load_size = 10000000;
+            auto values = new std::pair<uint64_t, uint64_t>[load_size];
+            for (int i = 0; i < load_size; i++)
+            {
+                values[i].first = data_base[i];
+                values[i].second = data_base[i];
+            }
+            sort(values, values + load_size,
+                 [](auto const &a, auto const &b)
+                 { return a.first < b.first; });
+
+            timer.Clear();
+            timer.Record("start");
+
+            db->Bulk_load(values, int(load_size));
+
+            for (int i = load_size; i < LOAD_SIZE; i++)
+            {
+                db->Put(data_base[i], data_base[i]);
+            }
+        }
         else
         {
             for (int i = 0; i < LOAD_SIZE; i++)
             {
+                // cout << i << " put: " << data_base[i] << endl;
                 db->Put(data_base[i], data_base[i]);
             }
         }
@@ -504,10 +528,6 @@ void test_workload(string type)
     for (uint64_t i = 0; i < GET_SIZE * (1 - read_ratio); i++)
     {
         // cout << "put " << data_base[load_pos] << ", pos " << load_pos << endl;
-        if (data_base[load_pos] == 0)
-        {
-            cout << "pos " << load_pos << endl;
-        }
         db->Put(data_base[load_pos], data_base[load_pos]);
         load_pos++;
     }

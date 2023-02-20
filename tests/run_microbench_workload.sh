@@ -117,6 +117,27 @@ function main() {
 # # remain 10million for insert
 
 main epli 400000000 10000000 0 1 rw llt
+# main epli 400000000 10000000 0 1 rw ycsb
 # main epli 400000000 10000000 0 1 rhwh llt
-sleep 30
-main apex 400000000 10000000 0 1 rw llt
+# sleep 30
+# main apex 400000000 10000000 0 1 rw llt
+
+
+# main apex 400000000 10000000 0 1 rw ycsb
+# sleep 30
+# main apex 400000000 10000000 0 1 rhwh ycsb
+# sleep 30
+# LLT
+# main apex 400000000 10000000 0 1 rw llt
+# sleep 30
+# main apex 400000000 10000000 0 1 rhwh llt
+# sleep 30
+# # LTD
+# main apex 320000000 10000000 0 1 rw ltd
+# sleep 20
+# main apex 320000000 10000000 0 1 rhwh ltd
+# # LGN
+# sleep 30
+# main apex 170000000 10000000 0 1 rw lgn
+# sleep 30
+# main apex 170000000 10000000 0 1 rhwh lgn

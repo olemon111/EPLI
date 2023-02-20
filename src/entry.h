@@ -1,6 +1,12 @@
 #pragma once
 #include "util/nvm/nvm_alloc.h"
 #include "pmem.h"
+#include "clevel.h"
+
+#define USE_BITMAP
+
+#define likely(x) __builtin_expect((x), 1)
+#define unlikely(x) __builtin_expect((x), 0)
 
 typedef uint64_t key_type;
 typedef uint64_t val_type;
@@ -142,6 +148,20 @@ namespace epltree
             return STATUS_OK;
         }
 
+        // insert if there's empty place
+        status PutAtPos(key_type key, val_type val, int pos)
+        {
+            // cout << "put " << key << " at pos " << pos << endl;
+            assert(pos >= 0 && pos < KVS_PER_ENTRY);
+            // write value before key
+            setVal(pos, val);
+            setKey(pos, key);
+            // NVM::Mem_persist(&kvs[empty_pos], sizeof(kv_type));
+            clflush((char *)&kvs[pos]);
+            fence();
+            return STATUS_OK;
+        }
+
         void PrintKVs()
         {
             cout << "------------------------" << endl;
@@ -153,4 +173,84 @@ namespace epltree
             cout << "------------------------" << endl;
         }
     };
+
+#ifdef USE_BITMAP
+
+    inline int ffs_short(uint16_t x)
+    {
+        if (x == 0)
+        {
+            return 0;
+        }
+        int num = 1;
+        if ((x & 0x00FF) == 0)
+        {
+            num += 8;
+            x >>= 8;
+        }
+        if ((x & 0x000F) == 0)
+        {
+            num += 4;
+            x >>= 4;
+        }
+        if ((x & 0x0003) == 0)
+        {
+            num += 2;
+            x >>= 2;
+        }
+        if ((x & 0x0001) == 0)
+        {
+            num += 1;
+        }
+        return num;
+    }
+
+    struct MetaData
+    {
+        uint16_t bitmap;
+        Entry *entry;
+
+        /* constructor */
+        MetaData()
+        {
+            // memset(this, 0, sizeof(MetaData));
+            bitmap = 0x0000;
+        }
+
+        MetaData(Entry *entry)
+        {
+            // memset(this, 0, sizeof(MetaData));
+            bitmap = 0x0000;
+            this->entry = entry;
+        }
+
+        inline void set_bitmap(int pos) // pos = 0..15
+        {
+            bitmap |= 1 << pos;
+        }
+
+        inline int find_first_zero() // -1 if not found
+        {
+            return ffs_short(~bitmap) - 1;
+        }
+
+        inline void reset_half_bitmap()
+        {
+            bitmap = 0x007F;
+        }
+
+        inline void reset_n_bitmap(size_t n)
+        {
+            if (likely(n == KVS_PER_ENTRY))
+            {
+                bitmap = 0x3FFF;
+                return;
+            }
+            while (n--)
+            {
+                bitmap |= 1 << n;
+            }
+        }
+    };
+#endif
 }
