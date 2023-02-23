@@ -1,0 +1,32 @@
+2023年 02月 23日 星期四 00:01:53 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              epli
+Loads type:            4
+Workload type:         wh
+read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2049 ms (200.098 M values/s)
+before newdb, dram space use: 3.06166 GB
+Map addrs:0x7f7740000000
+Current addrs:0x7f7740000000
+Map addrs:0x7f7100000000
+Current addrs:0x7f7100000000
+[ALLOC] initializing allocator with fs size: 507 objects
+[ALLOC] initializing allocator with fs size: 507 objects
+Start loading ....
+[Metic-Load]: Load 400000000: cost 285.928s, kops/s: 1398.95 .
+after load, dram space use: 2.10094 GB
+------------------------------
+Start Testing Workload: wh
+[STATUS-00] #bu:     256 / #elems:    1267 / full%: 164.9740% / expands:  256 / max expands:  4
+[RESIZE-00] to #bu    1024 = MB:    0.06    | took:         77084 ti = 0.000037 s
+[STATUS-00] #bu:    1024 / #elems:    5096 / full%: 165.8854% / expands: 1024 / max expands:  5
+[RESIZE-00] to #bu    4096 = MB:    0.25    | took:        331724 ti = 0.000158 s
+[STATUS-00] #bu:    4096 / #elems:   20374 / full%: 165.8040% / expands: 4096 / max expands:  5
+[RESIZE-00] to #bu   16384 = MB:    1.00    | took:       1363484 ti = 0.000649 s
+[STATUS-00] #bu:   16384 / #elems:   81379 / full%: 165.5660% / expands: 16384 / max expands:  5
+[RESIZE-00] to #bu   65536 = MB:    4.00    | took:       7611074 ti = 0.003624 s
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 7.66659s, kops 1304.36 .
+hit cnt: 567, total get cnt: 3000000

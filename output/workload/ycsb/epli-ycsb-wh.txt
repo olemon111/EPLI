@@ -1,4 +1,4 @@
-2023年 02月 09日 星期四 17:04:46 CST
+2023年 02月 22日 星期三 23:10:56 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              10000000
@@ -6,23 +6,23 @@ GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            3
 Workload type:         wh
-read 410000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 1988 ms (206.237 M values/s)
-before newdb, dram space use: 3.0614 GB
-Map addrs:0x7fa640000000
-Current addrs:0x7fa640000000
-Map addrs:0x7fa000000000
-Current addrs:0x7fa000000000
+read 410000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 2080 ms (197.115 M values/s)
+before newdb, dram space use: 3.06176 GB
+Map addrs:0x7f0ec0000000
+Current addrs:0x7f0ec0000000
+Map addrs:0x7f0880000000
+Current addrs:0x7f0880000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
-bulk load 400000000 kvs
-[Metic-Load]: Load 400000000: cost 60.8768s, kops/s: 6570.65 .
-after load, dram space use: 6.66897 GB
+[Metic-Load]: Load 400000000: cost 281.067s, kops/s: 1423.15 .
+after load, dram space use: 2.20247 GB
 ------------------------------
 Start Testing Workload: wh
-[STATUS-00] #bu:     256 / #elems:    1260 / full%: 164.0625% / expands:  256 / max expands:  4
-[RESIZE-00] to #bu    1024 = MB:    0.06    | took:        102460 ti = 0.000049 s
-Close SWTable with hit rate: 1.19177e-05, hit_cnt: 1, tot_get:83909
+[STATUS-00] #bu:     256 / #elems:    1268 / full%: 165.1042% / expands:  256 / max expands:  4
+[RESIZE-00] to #bu    1024 = MB:    0.06    | took:         73326 ti = 0.000035 s
+[STATUS-00] #bu:    1024 / #elems:    5079 / full%: 165.3320% / expands: 1024 / max expands:  4
+[RESIZE-00] to #bu    4096 = MB:    0.25    | took:        295332 ti = 0.000141 s
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 8.16409s, kops 1224.88 .
-hit cnt: 1, total get cnt: 83909
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 6.27504s, kops 1593.62 .
+hit cnt: 1, total get cnt: 207102

@@ -1,4 +1,4 @@
-2023年 02月 09日 星期四 17:15:11 CST
+2023年 02月 22日 星期三 21:36:53 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              10000000
@@ -6,25 +6,23 @@ GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            3
 Workload type:         r
-read 410000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 2042 ms (200.784 M values/s)
-before newdb, dram space use: 3.06163 GB
-Map addrs:0x7fdec0000000
-Current addrs:0x7fdec0000000
-Map addrs:0x7fd880000000
-Current addrs:0x7fd880000000
+read 410000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 2031 ms (201.871 M values/s)
+before newdb, dram space use: 3.06168 GB
+Map addrs:0x7f0140000000
+Current addrs:0x7f0140000000
+Map addrs:0x7efb00000000
+Current addrs:0x7efb00000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
-bulk load 400000000 kvs
-[Metic-Load]: Load 400000000: cost 58.0906s, kops/s: 6885.8 .
-after load, dram space use: 6.66899 GB
+[Metic-Load]: Load 400000000: cost 340.594s, kops/s: 1174.42 .
+after load, dram space use: 1.08908 GB
 ------------------------------
 Start Testing Workload: r
-[STATUS-00] #bu:     256 / #elems:    1252 / full%: 163.0208% / expands:  256 / max expands:  4
-[RESIZE-00] to #bu    1024 = MB:    0.06    | took:         79540 ti = 0.000038 s
-[STATUS-00] #bu:    1024 / #elems:    5080 / full%: 165.3646% / expands: 1024 / max expands:  4
-[RESIZE-00] to #bu    4096 = MB:    0.25    | took:        300074 ti = 0.000143 s
-Close SWTable with hit rate: 7.96794e-06, hit_cnt: 1, tot_get:125503
+[STATUS-00] #bu:     256 / #elems:    1268 / full%: 165.1042% / expands:  256 / max expands:  4
+[RESIZE-00] to #bu    1024 = MB:    0.06    | took:         81870 ti = 0.000039 s
+[STATUS-00] #bu:    1024 / #elems:    5079 / full%: 165.3320% / expands: 1024 / max expands:  4
+[RESIZE-00] to #bu    4096 = MB:    0.25    | took:        301034 ti = 0.000143 s
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 1: cost 6.10806s, kops 1637.18 .
-hit cnt: 1, total get cnt: 125503
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 4.85842s, kops 2058.28 .
+hit cnt: 1, total get cnt: 207102

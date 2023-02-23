@@ -1,9 +1,8 @@
 #pragma once
 #include "util/nvm/nvm_alloc.h"
 #include "pmem.h"
-#include "clevel.h"
 
-#define USE_BITMAP
+#define USE_BITMAP // open to accelerate write
 
 #define likely(x) __builtin_expect((x), 1)
 #define unlikely(x) __builtin_expect((x), 0)
@@ -26,6 +25,10 @@ namespace epltree
     const static int STATUS_OVERFLOW = 1;
 
     kv_type tmp_kvs[KVS_PER_ENTRY];
+
+#ifdef USE_BITMAP
+    uint64_t base_addr;
+#endif
 
     struct Entry
     {
@@ -88,7 +91,6 @@ namespace epltree
         void setPersistFlag(int v)
         {
             flag = v;
-            // NVM::Mem_persist(&flag, sizeof(flag));
             clflush((char *)&flag);
             fence();
         }
@@ -118,17 +120,14 @@ namespace epltree
         }
 
         // insert if there's empty place
+        // please make sure there's no duplicate key
         status MaybePut(key_type key, val_type val)
         {
             // cout << "maybe put " << key << ", " << val << endl;
             int empty_pos = -1;
             for (int i = 0; i < KVS_PER_ENTRY; i++)
             {
-                if (key == kvs[i].first) // key already exists
-                {
-                    return STATUS_FAIL;
-                }
-                if (kvs[i].first == INVALID_KEY && empty_pos == -1) // first empty postion
+                if (kvs[i].first == INVALID_KEY) // first empty postion
                 {
                     empty_pos = i;
                     break;
@@ -148,11 +147,12 @@ namespace epltree
             return STATUS_OK;
         }
 
+#ifdef USE_BITMAP
         // insert if there's empty place
         status PutAtPos(key_type key, val_type val, int pos)
         {
             // cout << "put " << key << " at pos " << pos << endl;
-            assert(pos >= 0 && pos < KVS_PER_ENTRY);
+            // assert(pos >= 0 && pos < KVS_PER_ENTRY);
             // write value before key
             setVal(pos, val);
             setKey(pos, key);
@@ -161,6 +161,7 @@ namespace epltree
             fence();
             return STATUS_OK;
         }
+#endif
 
         void PrintKVs()
         {
@@ -176,12 +177,12 @@ namespace epltree
 
 #ifdef USE_BITMAP
 
-    inline int ffs_short(uint16_t x)
+    inline int ffs_short(uint16_t x) // x must be non-zero
     {
-        if (x == 0)
-        {
-            return 0;
-        }
+        // if (x == 0)
+        // {
+        //     return 0;
+        // }
         int num = 1;
         if ((x & 0x00FF) == 0)
         {
@@ -205,11 +206,33 @@ namespace epltree
         return num;
     }
 
+    class __attribute__((packed)) EntryPointer
+    {
+
+#define READ_SIX_BYTE(addr) ((*(uint64_t *)addr) & 0x0000FFFFFFFFFFFFUL)
+        uint8_t pointer_[6]; // uint48_t, LSB == 1 means NULL
+    public:
+        EntryPointer() { pointer_[0] = 1; }
+
+        ALWAYS_INLINE bool HasSetup() const { return !(pointer_[0] & 1); };
+
+        void Setup(Entry *entry)
+        {
+            uint64_t pointer = (uint64_t)(entry)-base_addr;
+            memcpy(pointer_, &pointer, sizeof(pointer_));
+        }
+
+        ALWAYS_INLINE Entry *pointer() const
+        {
+            return (Entry *)(READ_SIX_BYTE(pointer_) + base_addr);
+        }
+    };
+
     struct MetaData
     {
-        uint16_t bitmap;
-        Entry *entry;
-
+        uint16_t bitmap;           // 2B bitmap
+        EntryPointer entryPointer; // 6B pointer
+        // Entry *entry;
         /* constructor */
         MetaData()
         {
@@ -219,9 +242,9 @@ namespace epltree
 
         MetaData(Entry *entry)
         {
-            // memset(this, 0, sizeof(MetaData));
             bitmap = 0x0000;
-            this->entry = entry;
+            this->entryPointer.Setup(entry);
+            // this->entry = entry;
         }
 
         inline void set_bitmap(int pos) // pos = 0..15

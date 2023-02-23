@@ -185,8 +185,11 @@ namespace NVM
             // free(p);
         }
 
-    private:
+    public: // used as base address in 6B pointer
         void *pmem_addr_;
+
+    private:
+        // void *pmem_addr_;
         void *current_addr;
         size_t mapped_len_;
         size_t used_;
@@ -376,7 +379,7 @@ namespace NVM
         }
 
         template <typename _Up, typename... _Args>
-        void construct(_Up *__p, _Args &&...__args) noexcept(noexcept(::new ((void *)__p)
+        void construct(_Up *__p, _Args &&...__args) noexcept(noexcept(::new((void *)__p)
                                                                           _Up(std::forward<_Args>(__args)...)))
         {
             ::new ((void *)__p) _Up(std::forward<_Args>(__args)...);

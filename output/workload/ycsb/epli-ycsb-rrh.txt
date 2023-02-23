@@ -1,0 +1,17 @@
+2023年 02月 22日 星期三 23:23:24 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              epli
+Loads type:            3
+Workload type:         rrh
+read 410000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 2034 ms (201.573 M values/s)
+before newdb, dram space use: 3.06168 GB
+Map addrs:0x7f8fc0000000
+Current addrs:0x7f8fc0000000
+Map addrs:0x7f8980000000
+Current addrs:0x7f8980000000
+[ALLOC] initializing allocator with fs size: 507 objects
+[ALLOC] initializing allocator with fs size: 507 objects
+Start loading ....

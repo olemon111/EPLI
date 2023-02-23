@@ -30,6 +30,7 @@ namespace epltree
             // init index
             index = new index_type();
 #ifdef USE_BITMAP
+            base_addr = uint64_t(NVM::data_alloc->pmem_addr_); // record base address
             index->insert(INVALID_KEY, new MetaData(datalist->Head()));
 #else
             index->insert(INVALID_KEY, datalist->Head());
@@ -90,7 +91,7 @@ namespace epltree
         int Get(key_type key, val_type &val)
         {
 #ifdef USE_BITMAP
-            Entry *entry = (*(index->get_payload_last_no_greater_than(key)))->entry;
+            Entry *entry = (*(index->get_payload_last_no_greater_than(key)))->entryPointer.pointer();
 #else
             Entry *entry = *(index->get_payload_last_no_greater_than(key));
 #endif
@@ -109,7 +110,7 @@ namespace epltree
         {
 #ifdef USE_BITMAP
             MetaData *data = *(index->get_payload_last_no_greater_than(key));
-            Entry *entry = data->entry;
+            Entry *entry = data->entryPointer.pointer();
 #else
             Entry *entry = *(index->get_payload_last_no_greater_than(key));
 #endif
@@ -117,7 +118,7 @@ namespace epltree
             {
 #ifdef USE_BITMAP
                 data = *(index->get_payload_last_no_greater_than(key - 1));
-                entry = data->entry; // reach max
+                entry = data->entryPointer.pointer(); // reach max
 #else
                 entry = *(index->get_payload_last_no_greater_than(key - 1)); // reach max
 #endif
@@ -127,9 +128,15 @@ namespace epltree
             int ret = 0;
 #ifdef USE_BITMAP
             int pos = data->find_first_zero();
-            if (pos == -1 || pos >= KVS_PER_ENTRY)
+            if (pos >= KVS_PER_ENTRY) // overflow
             {
-                ret = STATUS_OVERFLOW;
+                splitEntry(data);
+                // return Insert(key, val);
+                if (key >= entry->next->GetMinKey()) // FIXME: may cause trouble in lgn test
+                {
+                    return entry->next->MaybePut(key, val);
+                }
+                return entry->MaybePut(key, val);
             }
             else
             {
@@ -196,7 +203,7 @@ namespace epltree
 #ifdef USE_BITMAP
         void splitEntry(MetaData *data)
         {
-            Entry *entry = data->entry;
+            Entry *entry = data->entryPointer.pointer();
             // copy kvs and sort
             memcpy(tmp_kvs, entry->kvs, sizeof(entry->kvs));
             sort(tmp_kvs, tmp_kvs + KVS_PER_ENTRY, [](auto const &a, auto const &b)
@@ -206,7 +213,8 @@ namespace epltree
             key_type new_min_key = tmp_kvs[KVS_PER_ENTRY / 2].first;
             new (new_entry) Entry(new_min_key, tmp_kvs + KVS_PER_ENTRY / 2, (KVS_PER_ENTRY + 1) / 2);
             // mark split
-            entry->setPersistFlag(1);
+            entry->setFlag(1);
+            // entry->setPersistFlag(1);
             // add new entry to link list
             new_entry->next = entry->next;
             NVM::Mem_persist(new_entry, sizeof(Entry));
@@ -234,6 +242,7 @@ namespace epltree
             key_type new_min_key = tmp_kvs[KVS_PER_ENTRY / 2].first;
             new (new_entry) Entry(new_min_key, tmp_kvs + KVS_PER_ENTRY / 2, (KVS_PER_ENTRY + 1) / 2);
             // mark split
+            entry->setFlag(1);
             entry->setPersistFlag(1);
             // add new entry to link list
             new_entry->next = entry->next;

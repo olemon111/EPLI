@@ -1,0 +1,27 @@
+2023年 02月 23日 星期四 00:28:35 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             170000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              epli
+Loads type:            6
+Workload type:         wh
+read 180000000 values from /home/lbl/dataset/lognormal.dat in 899 ms (200.222 M values/s)
+before newdb, dram space use: 1.34814 GB
+Map addrs:0x7efc80000000
+Current addrs:0x7efc80000000
+Map addrs:0x7ef640000000
+Current addrs:0x7ef640000000
+[ALLOC] initializing allocator with fs size: 507 objects
+[ALLOC] initializing allocator with fs size: 507 objects
+Start loading ....
+bulk load 1000000 kvs
+[Metic-Load]: Load 170000000: cost 118.779s, kops/s: 1431.23 .
+after load, dram space use: 0.924908 GB
+------------------------------
+Start Testing Workload: wh
+[STATUS-00] #bu:     256 / #elems:    1268 / full%: 165.1042% / expands:  256 / max expands:  4
+[RESIZE-00] to #bu    1024 = MB:    0.06    | took:         83802 ti = 0.000040 s
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 6.48506s, kops 1542.01 .
+hit cnt: 1, total get cnt: 87236

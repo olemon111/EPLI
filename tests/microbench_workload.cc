@@ -19,8 +19,7 @@
 #include "random.h"
 #include "util/zipf/utils.h"
 
-// #define REST true
-#define REST false
+#define REST // sleep between tests
 
 using epltree::Random;
 using epltree::Timer;
@@ -259,8 +258,8 @@ void load()
     cout << "Start loading ...." << endl;
     timer.Record("start");
 
-    if (dbName == "alex" || dbName == "lipp" || dbName == "xindex" || dbName == "pgm" || dbName == "finedex") // support bulk load
-    // if (dbName == "epli" || dbName == "alex" || dbName == "lipp" || dbName == "xindex" || dbName == "pgm" || dbName == "finedex" || dbName == "apex") // support bulk load
+    if (dbName == "alex")
+    // if (dbName == "epli" || dbName == "alex" || dbName == "apex") // support bulk load
     {
         auto values = new std::pair<uint64_t, uint64_t>[LOAD_SIZE];
         for (int i = 0; i < LOAD_SIZE; i++)
@@ -276,7 +275,30 @@ void load()
     }
     else // put one by one
     {
-        if (dbName == "epli" && Loads_type == 6)
+        if (dbName == "epli" && Loads_type == 5 && workload_type[0] == 'w') // LTD write
+        {
+            size_t load_size = 100000;
+            auto values = new std::pair<uint64_t, uint64_t>[load_size];
+            for (int i = 0; i < load_size; i++)
+            {
+                values[i].first = data_base[i];
+                values[i].second = data_base[i];
+            }
+            sort(values, values + load_size,
+                 [](auto const &a, auto const &b)
+                 { return a.first < b.first; });
+
+            timer.Clear();
+            timer.Record("start");
+
+            db->Bulk_load(values, int(load_size));
+
+            for (int i = load_size; i < LOAD_SIZE; i++)
+            {
+                db->Put(data_base[i], data_base[i]);
+            }
+        }
+        else if (dbName == "epli" && Loads_type == 6) // LGN
         {
             size_t load_size = 1000000;
             auto values = new std::pair<uint64_t, uint64_t>[load_size];
@@ -344,10 +366,9 @@ void load()
          << "kops/s: " << (double)(LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
     cout << "after load, dram space use: " << (physical_memory_used_by_process() - init_dram_space_use) / 1024.0 / 1024.0 << " GB" << endl;
     load_pos = LOAD_SIZE;
-    if (REST)
-    {
-        sleep(40);
-    }
+#ifdef REST
+    sleep(40);
+#endif
 }
 
 void init_opts(int argc, char *argv[])
@@ -547,20 +568,26 @@ int main(int argc, char *argv[])
     if (workload_type == "rw")
     {
         test_workload("r"); // read-only
-        if (REST)
-        {
-            sleep(10);
-        }
+#ifdef REST
+        sleep(20);
+#endif
         test_workload("w"); // write-only
     }
     else if (workload_type == "rhwh")
     {
         test_workload("rh"); // read-heavy
-        if (REST)
-        {
-            sleep(10);
-        }
+#ifdef REST
+        sleep(20);
+#endif
         test_workload("wh"); // write-heavy
+    }
+    else if (workload_type == "rrh")
+    {
+        test_workload("r"); // read-only
+#ifdef REST
+        sleep(20);
+#endif
+        test_workload("rh"); // read-heavy
     }
     else
     {

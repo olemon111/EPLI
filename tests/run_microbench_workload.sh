@@ -55,7 +55,8 @@ function test_read_write() {
 }
 
 function run_all() {
-    dbs="epli apex lbtree fastfair"
+    dbs="epli apex"
+    # dbs="epli apex lbtree fastfair"
     for dbname in $dbs; do
         echo "Run: " $dbname
         Run $dbname $1 $2 $3 $4 $5 $6
@@ -116,28 +117,41 @@ function main() {
 # main all 170000000 10000000 0 1 rhwh lgn
 # # remain 10million for insert
 
-main epli 400000000 10000000 0 1 rw llt
-# main epli 400000000 10000000 0 1 rw ycsb
-# main epli 400000000 10000000 0 1 rhwh llt
-# sleep 30
-# main apex 400000000 10000000 0 1 rw llt
+# main epli 400000000 10000000 0 1 rrh ycsb
+# main epli 400000000 10000000 0 1 wh ycsb
+# main epli 400000000 10000000 0 1 w ycsb
 
+# main epli 400000000 10000000 0 1 rrh llt
+# main epli 400000000 10000000 0 1 wh llt
+# main epli 400000000 10000000 0 1 w llt
 
-# main apex 400000000 10000000 0 1 rw ycsb
-# sleep 30
-# main apex 400000000 10000000 0 1 rhwh ycsb
-# sleep 30
-# LLT
-# main apex 400000000 10000000 0 1 rw llt
-# sleep 30
-# main apex 400000000 10000000 0 1 rhwh llt
-# sleep 30
 # # LTD
-# main apex 320000000 10000000 0 1 rw ltd
-# sleep 20
-# main apex 320000000 10000000 0 1 rhwh ltd
+# main epli 320000000 10000000 0 1 rrh ltd
+# main epli 320000000 10000000 0 1 wh ltd
+# sleep 30
+# main epli 320000000 10000000 0 1 w ltd
+
 # # LGN
-# sleep 30
+# main epli 170000000 10000000 0 1 rrh lgn
+# main epli 170000000 10000000 0 1 wh lgn
+# main epli 170000000 10000000 0 1 w lgn
+
+# # # APEX
+
+# # # LTD
+# # main apex 320000000 10000000 0 1 rw ltd
+# main apex 320000000 10000000 0 1 rhwh ltd
+
+# # # LGN
 # main apex 170000000 10000000 0 1 rw lgn
-# sleep 30
 # main apex 170000000 10000000 0 1 rhwh lgn
+
+# # # LLT
+# main apex 400000000 10000000 0 1 rw llt
+# sleep 20
+# main apex 400000000 10000000 0 1 rhwh llt
+
+# # # YCSB
+# sleep 20
+# main apex 400000000 10000000 0 1 rw ycsb
+# main apex 400000000 10000000 0 1 rhwh ycsb
