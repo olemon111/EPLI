@@ -1,0 +1,56 @@
+2023年 03月 01日 星期三 15:36:48 CST
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from numactl...
+(No debugging symbols found in numactl)
+(gdb) r
+Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_epli --dbname apex --load-size 10000000 --put-size 0 --get-size 1000000 --loadstype 4 --reverse 0 -t 1
+process 209629 is executing new program: /home/lbl/code/EPLI/build/microbench_epli
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+THREAD NUMBER:         1
+LOAD_SIZE:             10000000
+PUT_SIZE:              0
+GET_SIZE:              1000000
+DB  name:              apex
+Loads type:            4
+Reverse:               0
+read 10000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 67 ms (149.254 M values/s)
+before newdb, dram space use: 0.0813065 GB
+------------------------------
+Start Testing Recovery
+opening an existing pool, and trying to map to same address
+pool opened at: 0x7ff5c0000000
+recover
+Intial allocator: 1
+The root node addr = 0x7ffdc0411450
+[Metic-Recovery]: Recovery: cost 0.044631s, kops/s: 224060 .
+after recovery, dram space use: 0.0447998 GB
+------------------------------
+------------------------------
+Start Testing Uniform Workload: Read
+
+Program received signal SIGFPE, Arithmetic exception.
+0x000055555557d4a5 in test_uniform(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) ()
+(gdb) bt
+#0  0x000055555557d4a5 in test_uniform(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) ()
+#1  0x000055555556d3fd in main ()
+(gdb) q
+A debugging session is active.
+
+	Inferior 1 [process 209629] will be killed.
+
+Quit anyway? (y or n) t[Ky

@@ -19,10 +19,9 @@
 #include "random.h"
 #include "util/zipf/utils.h"
 
-#define REST true
-// #define REST false
-#define TEST_SCALABILITY true
-// #define TEST_SCALABILITY false
+// #define REST
+// #define TEST_SCALABILITY
+#define TEST_RECOVERY
 
 using epltree::Random;
 using epltree::Timer;
@@ -263,12 +262,13 @@ void load()
     timer.Record("start");
 
     if (dbName == "epli" || dbName == "alex" || dbName == "apex") // support bulk load
+    // if (dbName == "alex")
     {
         auto values = new std::pair<uint64_t, uint64_t>[LOAD_SIZE];
         for (int i = 0; i < LOAD_SIZE; i++)
         {
             values[i].first = data_base[i];
-            values[i].second = data_base[i] + 1;
+            values[i].second = data_base[i];
         }
         sort(values, values + LOAD_SIZE,
              [](auto const &a, auto const &b)
@@ -276,12 +276,35 @@ void load()
 
         db->Bulk_load(values, int(LOAD_SIZE));
     }
+    else if (dbName == "apex") // apex needs pre-bulkload then put one by one
+    {
+        size_t load_size = 10000000;
+        auto values = new std::pair<uint64_t, uint64_t>[load_size];
+        for (int i = 0; i < load_size; i++)
+        {
+            values[i].first = data_base[i];
+            values[i].second = data_base[i];
+        }
+        sort(values, values + load_size,
+             [](auto const &a, auto const &b)
+             { return a.first < b.first; });
+
+        timer.Clear();
+        timer.Record("start");
+
+        db->Bulk_load(values, int(load_size));
+
+        for (int i = load_size; i < LOAD_SIZE; i++)
+        {
+            db->Put(data_base[i], data_base[i]);
+        }
+    }
     else // put one by one
     {
         for (int i = 0; i < LOAD_SIZE; i++)
         {
             // cout << i << " put: " << data_base[i] << endl;
-            db->Put(data_base[i], data_base[i] + 1);
+            db->Put(data_base[i], data_base[i]);
         }
     }
     // std::cerr << endl;
@@ -293,19 +316,35 @@ void load()
          << "kops/s: " << (double)(LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
     cout << "after load, dram space use: " << (physical_memory_used_by_process() - init_dram_space_use) / 1024.0 / 1024.0 << " GB" << endl;
     load_pos = LOAD_SIZE;
-    if (REST)
-    {
-        sleep(40);
-    }
+#ifdef REST
+    sleep(40);
+#endif
 }
+
+#ifdef TEST_RECOVERY
+void test_recovery()
+{
+    cout << "------------------------------" << endl;
+    cout << "Start Testing Recovery" << endl;
+    timer.Clear();
+    timer.Record("start");
+    db->Recover();
+    timer.Record("stop");
+    us_times = timer.Microsecond("stop", "start");
+    cout << "[Metic-Recovery]: Recovery: "
+         << "cost " << us_times / 1000000.0 << "s, "
+         << "kops/s: " << (double)(LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
+    cout << "after recovery, dram space use: " << (physical_memory_used_by_process() - init_dram_space_use) / 1024.0 / 1024.0 << " GB" << endl;
+    cout << "------------------------------" << endl;
+}
+#endif
 
 void test_uniform(string rwtype)
 {
-    if (REST)
-    {
-        sleep(60);
-        remove_cache();
-    }
+#ifdef REST
+    sleep(40);
+    remove_cache();
+#endif
     cout << "------------------------------" << endl;
     cout << "Start Testing Uniform Workload: ";
     size_t tot;
@@ -336,11 +375,11 @@ void test_uniform(string rwtype)
     {
         for (uint64_t i = 0; i < GET_SIZE; i++)
         {
-            // cout << i << " get: " << data_base[rand_pos[i]] << endl;
+            cout << i << " get: " << data_base[rand_pos[i]] << endl;
             db->Get(data_base[rand_pos[i]], value);
-            if (value != data_base[rand_pos[i]] + 1)
+            if (value != data_base[rand_pos[i]])
             {
-                // cout << "wrong, value: " << value << ", suppose to be: " << data_base[rand_pos[i]] + 1 << endl;
+                cout << "wrong, value: " << value << ", suppose to be: " << data_base[rand_pos[i]] << endl;
                 wrong_get++;
             }
         }
@@ -350,7 +389,7 @@ void test_uniform(string rwtype)
         for (uint64_t i = 0; i < PUT_SIZE; i++)
         {
             // cout << "write: " << data_base[rand_pos[i]] << endl;
-            db->Put(data_base[rand_pos[i]], data_base[rand_pos[i]] + 1);
+            db->Put(data_base[rand_pos[i]], data_base[rand_pos[i]]);
             // db->Put(data_base[rand_pos[i]], ranny.RandUint32(0, INT32_MAX));
         }
     }
@@ -362,6 +401,8 @@ void test_uniform(string rwtype)
          << "cost " << us_times / 1000000.0 << "s, "
          << "kops/s: " << (double)(tot) / (double)us_times * 1000.0 << " ." << endl;
     cout << "dram space use: " << (physical_memory_used_by_process() - init_dram_space_use) / 1024.0 / 1024.0 << " GB" << endl;
+    db->Info();
+    db->Reset();
 }
 
 void test_all_zipfian()
@@ -370,20 +411,19 @@ void test_all_zipfian()
     cout << "Start Testing Zipfian Workload" << endl;
     util::FastRandom ranny(18);
     vector<uint32_t> rand_pos;
-    size_t tot = GET_SIZE + PUT_SIZE;
-    std::vector<float> thetas = {0.6, 0.7, 0.8, 0.9, 0.95, 0.99};
+    size_t tot = GET_SIZE;
+    std::vector<float> thetas = {0.6, 0.7, 0.8, 0.9, 0.99};
     if (Reverse)
     {
         reverse(thetas.begin(), thetas.end());
     }
-    float zipf_theta = 0.6;
     for (int k = 0; k < thetas.size(); k++)
     {
-        if (REST)
-        {
-            sleep(60);
-            remove_cache();
-        }
+        cout << "--------------" << endl;
+#ifdef REST
+        sleep(60);
+        remove_cache();
+#endif
         std::default_random_engine gen;
         zipfian_int_distribution<int> dis(0, load_pos - 1, thetas[k]);
         rand_pos.clear();
@@ -402,16 +442,16 @@ void test_all_zipfian()
         for (uint64_t i = 0; i < GET_SIZE; i++)
         {
             db->Get(data_base[rand_pos[i]], value);
-            if (value != data_base[rand_pos[i]] + 1)
+            if (value != data_base[rand_pos[i]])
             {
                 wrong_get++;
             }
         }
-        for (uint64_t i = 0; i < PUT_SIZE; i++)
-        {
-            db->Put(data_base[rand_pos[i]], data_base[rand_pos[i]] + 1);
-            // db->Put(data_base[rand_pos[i]], ranny.RandUint32(0, INT32_MAX));
-        }
+        // for (uint64_t i = 0; i < PUT_SIZE; i++)
+        // {
+        //     db->Put(data_base[rand_pos[i]], data_base[rand_pos[i]]);
+        //     // db->Put(data_base[rand_pos[i]], ranny.RandUint32(0, INT32_MAX));
+        // }
 
         timer.Record("stop");
         cout << "wrong get: " << wrong_get << endl;
@@ -420,6 +460,8 @@ void test_all_zipfian()
              << "cost " << us_times / 1000000.0 << "s, "
              << "kops/s: " << (double)(tot) / (double)us_times * 1000.0 << " ." << endl;
         cout << "dram space use: " << (physical_memory_used_by_process() - init_dram_space_use) / 1024.0 / 1024.0 << " GB" << endl;
+        db->Info();
+        db->Reset();
     }
 }
 
@@ -428,13 +470,13 @@ void test_scalability()
     cout << "Start Testing Scalability ...." << endl;
     const int PRE_LOAD_SIZE = 10000000;
 
-    if (dbName == "apex") // pre bulk load
+    if (dbName == "apex" || (dbName == "epli" && (Loads_type == 5 || Loads_type == 6))) // pre bulk load
     {
         auto values = new std::pair<uint64_t, uint64_t>[PRE_LOAD_SIZE];
         for (int i = 0; i < PRE_LOAD_SIZE; i++)
         {
             values[i].first = data_base[i];
-            values[i].second = data_base[i] + 1;
+            values[i].second = data_base[i];
         }
         sort(values, values + PRE_LOAD_SIZE,
              [](auto const &a, auto const &b)
@@ -454,7 +496,7 @@ void test_scalability()
         for (int i = PRE_LOAD_SIZE; i < LOAD_SIZE; i++)
         {
             // cout << i << " put: " << data_base[i] << endl;
-            db->Put(data_base[i], data_base[i] + 1);
+            db->Put(data_base[i], data_base[i]);
             if (i % PRE_LOAD_SIZE == 0 && i > PRE_LOAD_SIZE)
             {
                 timer.Record("stop");
@@ -481,7 +523,7 @@ void test_scalability()
         for (int i = 0; i < LOAD_SIZE; i++)
         {
             // cout << i << " put: " << data_base[i] << endl;
-            db->Put(data_base[i], data_base[i] + 1);
+            db->Put(data_base[i], data_base[i]);
             if (i % 10000000 == 0 && i > 0)
             {
                 timer.Record("stop");
@@ -644,21 +686,21 @@ void init_opts(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
     init_opts(argc, argv);
+#ifdef TEST_RECOVERY // before init db
+    test_recovery();
+    test_uniform("r"); // test correctness
+    return 0;
+#endif
     db->Init();
-    if (!TEST_SCALABILITY)
-    {
-        load();
-    }
-    else
-    {
-        test_scalability();
-        db->Info(); // print info
-        return 0;
-    }
-    test_uniform("r");
-    test_uniform("w");
+#ifdef TEST_SCALABILITY
+    test_scalability();
     db->Info(); // print info
+    return 0;
+#else
+    load();
+#endif
+    test_uniform("r");
+    // db->Info(); // print info
     // test_all_zipfian();
-    // db->Info();
     return 0;
 }

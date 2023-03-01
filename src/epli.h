@@ -7,8 +7,9 @@ using namespace std;
 using namespace epltree;
 
 #define SAMPLE_M 20 // TODO:
-#define MIN_HIT_RATE 0.001
-// #define SWTABLE_DEFAULT_OPEN
+#define MIN_HIT_RATE 0.01
+// #define MIN_HIT_RATE 0.001
+#define SWTABLE_DEFAULT_OPEN
 
 class EPLI
 {
@@ -26,6 +27,11 @@ public:
 #endif
         hit_cnt = 0;
         tot_get = 0;
+    }
+
+    void Recover()
+    {
+        tree->Recover();
     }
 
     void BulkLoad(const kv_type bulk_kvs[], size_t num_keys)
@@ -67,15 +73,25 @@ public:
         if (hit_cnt > 0 && hit_cnt < MIN_HIT_RATE * tot_get)
         {
             table_on = false;
-            // cout << "Close SWTable with hit rate: " << hit_cnt / (double)tot_get << ", hit_cnt: " << hit_cnt << ", tot_get:" << tot_get << endl;
+            cout << "Close SWTable with hit rate: " << hit_cnt / (double)tot_get << ", hit_cnt: " << hit_cnt << ", tot_get:" << tot_get << endl;
         }
 #endif
+    }
+
+    void Reset() // open swtable
+    {
+        table_on = true;
+        tot_get = 0;
+        hit_cnt = 0;
     }
 
     void Info()
     {
         cout << "hit cnt: " << hit_cnt << ", total get cnt: " << tot_get << endl;
         // table->Print();
+        double index_sz = tree->get_size();
+        double table_sz = table->get_size();
+        cout << "EPLI total dram size: " << (index_sz + table_sz) / 1024.0 / 1024.0 << " MB, alex size: " << index_sz / 1024.0 / 1024.0 << ", table size: " << table_sz / 1024.0 / 1024.0 << endl;
     }
 
 private:

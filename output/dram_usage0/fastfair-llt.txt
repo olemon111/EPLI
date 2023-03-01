@@ -1,0 +1,44 @@
+2023年 02月 25日 星期六 00:23:51 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              0
+GET_SIZE:              10000000
+DB  name:              fastfair
+Loads type:            4
+Reverse:               0
+read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1981 ms (201.918 M values/s)
+before newdb, dram space use: 2.98714 GB
+Map addrs:0x7f1440000000
+Current addrs:0x7f1440000000
+[Fast-Fair]: root is 0x7f1440000000, btree is 0x55830d50a8a0.
+Start loading ....
+[Metic-Load]: Load 400000000: cost 1234.85s, kops/s: 323.925 .
+after load, dram space use: 0.000419617 GB
+------------------------------
+Start Testing Uniform Workload: Read
+wrong get: 0
+[Metic-Operate]: Operate 10000000, cost 18.6042s, kops/s: 537.513 .
+dram space use: 0.0375595 GB
+fast&fair tree size is 0.000000 MB.
+------------------------------
+Start Testing Zipfian Workload
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.6, cost 18.4651s, kops/s: 541.563 .
+dram space use: 0.0378036 GB
+fast&fair tree size is 0.000000 MB.
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.7, cost 18.2735s, kops/s: 547.24 .
+dram space use: 0.0380173 GB
+fast&fair tree size is 0.000000 MB.
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.8, cost 17.5655s, kops/s: 569.297 .
+dram space use: 0.0380173 GB
+fast&fair tree size is 0.000000 MB.
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.9, cost 15.6288s, kops/s: 639.844 .
+dram space use: 0.0380173 GB
+fast&fair tree size is 0.000000 MB.
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.99, cost 12.1137s, kops/s: 825.509 .
+dram space use: 0.0380173 GB
+fast&fair tree size is 0.000000 MB.

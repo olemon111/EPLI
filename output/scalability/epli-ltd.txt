@@ -1,0 +1,53 @@
+2023年 02月 23日 星期四 17:13:13 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             330000000
+PUT_SIZE:              0
+GET_SIZE:              0
+DB  name:              epli
+Loads type:            5
+Reverse:               0
+read 330000000 values from /home/lbl/dataset/generate_random_osm_longtitudes.dat in 1607 ms (205.352 M values/s)
+before newdb, dram space use: 2.46575 GB
+Map addrs:0x7f2500000000
+Current addrs:0x7f2500000000
+Map addrs:0x7f1ec0000000
+Current addrs:0x7f1ec0000000
+[ALLOC] initializing allocator with fs size: 507 objects
+[ALLOC] initializing allocator with fs size: 507 objects
+Start Testing Scalability ....
+bulk load 10000000 kvs
+[Metic-Operate]: Operate LOAD: 10000000, cost 0.397658s, kops/s: 25147.2 .
+[Metic-Operate]: Operate LOAD: 20000000, cost 8.51798s, kops/s: 1173.99 .
+[Metic-Operate]: Operate LOAD: 30000000, cost 8.26893s, kops/s: 1209.35 .
+[Metic-Operate]: Operate LOAD: 40000000, cost 8.70237s, kops/s: 1149.11 .
+[Metic-Operate]: Operate LOAD: 50000000, cost 8.70559s, kops/s: 1148.69 .
+[Metic-Operate]: Operate LOAD: 60000000, cost 8.68773s, kops/s: 1151.05 .
+[Metic-Operate]: Operate LOAD: 70000000, cost 8.63705s, kops/s: 1157.8 .
+[Metic-Operate]: Operate LOAD: 80000000, cost 8.71475s, kops/s: 1147.48 .
+[Metic-Operate]: Operate LOAD: 90000000, cost 8.62987s, kops/s: 1158.77 .
+[Metic-Operate]: Operate LOAD: 100000000, cost 8.73154s, kops/s: 1145.27 .
+[Metic-Operate]: Operate LOAD: 110000000, cost 8.64996s, kops/s: 1156.07 .
+[Metic-Operate]: Operate LOAD: 120000000, cost 8.64871s, kops/s: 1156.24 .
+[Metic-Operate]: Operate LOAD: 130000000, cost 8.73044s, kops/s: 1145.42 .
+[Metic-Operate]: Operate LOAD: 140000000, cost 8.69582s, kops/s: 1149.98 .
+[Metic-Operate]: Operate LOAD: 150000000, cost 8.67347s, kops/s: 1152.94 .
+[Metic-Operate]: Operate LOAD: 160000000, cost 8.67442s, kops/s: 1152.82 .
+[Metic-Operate]: Operate LOAD: 170000000, cost 8.72893s, kops/s: 1145.62 .
+[Metic-Operate]: Operate LOAD: 180000000, cost 8.7623s, kops/s: 1141.25 .
+[Metic-Operate]: Operate LOAD: 190000000, cost 8.71772s, kops/s: 1147.09 .
+[Metic-Operate]: Operate LOAD: 200000000, cost 8.7291s, kops/s: 1145.59 .
+[Metic-Operate]: Operate LOAD: 210000000, cost 8.75323s, kops/s: 1142.44 .
+[Metic-Operate]: Operate LOAD: 220000000, cost 8.77997s, kops/s: 1138.96 .
+[Metic-Operate]: Operate LOAD: 230000000, cost 8.83138s, kops/s: 1132.33 .
+[Metic-Operate]: Operate LOAD: 240000000, cost 8.94996s, kops/s: 1117.32 .
+[Metic-Operate]: Operate LOAD: 250000000, cost 8.94067s, kops/s: 1118.48 .
+[Metic-Operate]: Operate LOAD: 260000000, cost 8.92647s, kops/s: 1120.26 .
+[Metic-Operate]: Operate LOAD: 270000000, cost 8.93888s, kops/s: 1118.71 .
+[Metic-Operate]: Operate LOAD: 280000000, cost 8.97061s, kops/s: 1114.75 .
+[Metic-Operate]: Operate LOAD: 290000000, cost 8.9896s, kops/s: 1112.4 .
+[Metic-Operate]: Operate LOAD: 300000000, cost 9.00642s, kops/s: 1110.32 .
+[Metic-Operate]: Operate LOAD: 310000000, cost 8.97683s, kops/s: 1113.98 .
+[Metic-Operate]: Operate LOAD: 320000000, cost 8.95955s, kops/s: 1116.13 .
+[Metic-Operate]: Operate LOAD: 330000000, cost 8.93161s, kops/s: 1119.62 .
+dram space use: 1.76428 GB
+hit cnt: 0, total get cnt: 0

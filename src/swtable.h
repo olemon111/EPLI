@@ -49,6 +49,11 @@ public:
         clht_print(hashtable->ht);
     }
 
+    double get_size()
+    {
+        return (double)clht_size_mem(hashtable->ht);
+    }
+
 private:
     clht_t *hashtable;
     uint32_t lt; // logical time

@@ -43,6 +43,12 @@ namespace epltree
             delete index;
         }
 
+        void Recover()
+        {
+            cout << "recover" << endl;
+            // TODO:
+        }
+
         // bulk_kvs already sorted
         void BulkLoad(const kv_type bulk_kvs[], size_t num_keys)
         {
@@ -174,6 +180,11 @@ namespace epltree
 
         int Scan(key_type start_key, int size, std::vector<kv_type> &results)
         {
+        }
+
+        double get_size()
+        {
+            return index->data_size() + index->model_size();
         }
 
     private:

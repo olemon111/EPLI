@@ -183,6 +183,12 @@ namespace dbInter
       delete epli_;
     }
 
+    void Recover()
+    {
+      Init();
+      epli_->Recover();
+    }
+
     void Init()
     {
       NVM::env_init();
@@ -199,6 +205,11 @@ namespace dbInter
     void Info()
     {
       epli_->Info();
+    }
+
+    void Reset()
+    {
+      epli_->Reset();
     }
 
     int Put(uint64_t key, uint64_t value)
@@ -246,6 +257,11 @@ namespace dbInter
       my_alloc::BasePMPool::ClosePool();
       delete apex_;
       apex_ = NULL;
+    }
+
+    void Recover()
+    {
+      Init();
     }
 
     void Init()
@@ -319,6 +335,28 @@ namespace dbInter
     LBTreeDB() : tree_(nullptr) {}
     LBTreeDB(lbtree_wrapper *tree) : tree_(tree) {}
     virtual ~LBTreeDB() {}
+
+    void Recover()
+    {
+      constexpr const auto MEMPOOL_ALIGNMENT = 4096LL;
+      size_t key_size_ = 0;
+      size_t pool_size_ = ((size_t)(40UL * 1024 * 1024 * 1024));
+      const char *pool_path_ = "/mnt/pmem1/lbl/lbtree-pool.obj";
+      kp = new char[8];
+      vp = new char[8];
+
+      initUseful();
+      worker_id = 0;
+      worker_thread_num = 1;
+      the_thread_mempools.init(worker_thread_num, 16 * 1024 * 1024 * 1024, MEMPOOL_ALIGNMENT);
+      // the_thread_mempools.init(1, 4096, MEMPOOL_ALIGNMENT);
+      the_thread_nvmpools.init(worker_thread_num, pool_path_, pool_size_);
+      char *nvm_addr = (char *)nvmpool_alloc(256);
+      nvmLogInit(worker_thread_num);
+      tree_ = new lbtree_wrapper(nvm_addr, true); // TODO: recover
+      cout << "init lbtree wrapper" << endl;
+    }
+
     void Init()
     {
       constexpr const auto MEMPOOL_ALIGNMENT = 4096LL;
@@ -411,8 +449,8 @@ namespace dbInter
 
     void Info()
     {
-      std::cout << "NVM WRITE : " << NVM::pmem_size << std::endl;
-      NVM::show_stat();
+      // std::cout << "NVM WRITE : " << NVM::pmem_size << std::endl;
+      // NVM::show_stat();
       tree_->PrintInfo();
     }
 

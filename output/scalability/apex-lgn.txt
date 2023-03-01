@@ -1,0 +1,34 @@
+2023年 02月 23日 星期四 17:31:53 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             180000000
+PUT_SIZE:              0
+GET_SIZE:              0
+DB  name:              apex
+Loads type:            6
+Reverse:               0
+read 180000000 values from /home/lbl/dataset/lognormal.dat in 908 ms (198.238 M values/s)
+before newdb, dram space use: 1.34812 GB
+creating a new pool
+pool opened at: 0x7f58c0000000
+Intial allocator: 1
+Start Testing Scalability ....
+[Metic-Operate]: Operate LOAD: 10000000, cost 2.82256s, kops/s: 3542.89 .
+[Metic-Operate]: Operate LOAD: 20000000, cost 6.89059s, kops/s: 1451.25 .
+[Metic-Operate]: Operate LOAD: 30000000, cost 7.37766s, kops/s: 1355.44 .
+[Metic-Operate]: Operate LOAD: 40000000, cost 5.48174s, kops/s: 1824.24 .
+[Metic-Operate]: Operate LOAD: 50000000, cost 9.02182s, kops/s: 1108.42 .
+[Metic-Operate]: Operate LOAD: 60000000, cost 5.41075s, kops/s: 1848.17 .
+[Metic-Operate]: Operate LOAD: 70000000, cost 5.8216s, kops/s: 1717.74 .
+[Metic-Operate]: Operate LOAD: 80000000, cost 12.732s, kops/s: 785.422 .
+[Metic-Operate]: Operate LOAD: 90000000, cost 5.47738s, kops/s: 1825.69 .
+[Metic-Operate]: Operate LOAD: 100000000, cost 5.49676s, kops/s: 1819.25 .
+[Metic-Operate]: Operate LOAD: 110000000, cost 5.63667s, kops/s: 1774.1 .
+[Metic-Operate]: Operate LOAD: 120000000, cost 5.96512s, kops/s: 1676.41 .
+[Metic-Operate]: Operate LOAD: 130000000, cost 6.43455s, kops/s: 1554.11 .
+[Metic-Operate]: Operate LOAD: 140000000, cost 17.6061s, kops/s: 567.984 .
+[Metic-Operate]: Operate LOAD: 150000000, cost 6.23499s, kops/s: 1603.85 .
+[Metic-Operate]: Operate LOAD: 160000000, cost 5.94459s, kops/s: 1682.2 .
+[Metic-Operate]: Operate LOAD: 170000000, cost 5.9546s, kops/s: 1679.37 .
+[Metic-Operate]: Operate LOAD: 180000000, cost 5.95811s, kops/s: 1678.38 .
+dram space use: 3.2142 GB
+apex DRAM size: 439.365 MB.

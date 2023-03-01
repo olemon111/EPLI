@@ -16,22 +16,22 @@ function Run() {
 
     # microbench_epli
     if [ $dataset == "ycsb" ]; then
-        test_scalability $dbname $loadnum $opnum $scansize $thread $reverse 3 # YCSB
+        test_dram_usage $dbname $loadnum $opnum $scansize $thread $reverse 3 # YCSB
     else
         if [ $dataset == "llt" ]; then
-            test_scalability $dbname $loadnum $opnum $scansize $thread $reverse 4 # LLT
+            test_dram_usage $dbname $loadnum $opnum $scansize $thread $reverse 4 # LLT
         else
             if [ $dataset == "ltd" ]; then
-                test_scalability $dbname $loadnum $opnum $scansize $thread $reverse 5 # LTD
+                test_dram_usage $dbname $loadnum $opnum $scansize $thread $reverse 5 # LTD
             else
-                test_scalability $dbname $loadnum $opnum $scansize $thread $reverse 6 # LGN
+                test_dram_usage $dbname $loadnum $opnum $scansize $thread $reverse 6 # LGN
             fi
         fi
     fi
 }
 
 
-function test_scalability() {
+function test_dram_usage() {
     dbname=$1
     loadnum=$2 
     opnum=$3
@@ -43,15 +43,15 @@ function test_scalability() {
     # Read and Write
     rm -f /mnt/pmem1/lbl/*
     Loadname="${Loadname}"
-    date | tee output/scalability/${dbname}-${Loadname}.txt
+    date | tee output/dram_usage/${dbname}-${Loadname}.txt
     # gdb --args \
     numactl --cpubind=1 --membind=1 ${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} \
-    --put-size ${opnum} --get-size ${opnum} \
-    --loadstype ${loadstype} --reverse ${reverse} -t $thread | tee -a output/scalability/${dbname}-${Loadname}.txt
+    --put-size 0 --get-size ${opnum} \
+    --loadstype ${loadstype} --reverse ${reverse} -t $thread | tee -a output/dram_usage/${dbname}-${Loadname}.txt
     # rm -f /mnt/pmem1/lbl/*
 
     echo numactl --cpubind=1 --membind=1 "${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} "\
-    "--put-size ${opnum} --get-size ${opnum} --loadstype ${loadstype} --reverse ${reverse} -t $thread"
+    "--put-size 0 --get-size ${opnum} --loadstype ${loadstype} --reverse ${reverse} -t $thread"
 }
 
 function run_all() {
@@ -106,11 +106,7 @@ function main() {
     fi
 }
 
-# # Test Scalability
-# # open scalability in microbench_epli.cc first
-# main fastfair 400000000 0 0 1 0 r llt
-main epli 400000000 0 0 1 0 r ycsb
-# main apex 400000000 0 0 1 0 r llt
-# main apex 400000000 0 0 1 0 r ycsb
-# main all 400000000 0 0 1 0 r ycsb
-# main epli 330000000 0 0 1 0 r ltd
+# # Test dram_usage
+main epli 400000000 10000000 0 1 0 r llt
+# main apex 400000000 10000000 0 1 0 r llt
+# main all 400000000 10000000 0 1 0 r llt

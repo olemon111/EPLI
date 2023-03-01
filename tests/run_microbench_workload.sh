@@ -121,7 +121,7 @@ function main() {
 # main epli 400000000 10000000 0 1 wh ycsb
 # main epli 400000000 10000000 0 1 w ycsb
 
-# main epli 400000000 10000000 0 1 rrh llt
+main epli 400000000 10000000 0 1 rrh llt
 # main epli 400000000 10000000 0 1 wh llt
 # main epli 400000000 10000000 0 1 w llt
 
@@ -153,5 +153,5 @@ function main() {
 
 # # # YCSB
 # sleep 20
-# main apex 400000000 10000000 0 1 rw ycsb
+# main apex 390000000 10000000 0 1 w ycsb
 # main apex 400000000 10000000 0 1 rhwh ycsb

@@ -642,8 +642,8 @@ int ht_resize_pes(clht_t *h, int is_increase, int by, uint32_t lt)
 
   ticks e = getticks() - s;
   double mba = (ht_new->num_buckets * 64) / (1024.0 * 1024);
-  printf("[RESIZE-%02d] to #bu %7zu = MB: %7.2f    | took: %13llu ti = %8.6f s\n",
-         clht_gc_get_id(), ht_new->num_buckets, mba, (unsigned long long)e, e / 2.1e9);
+  // printf("[RESIZE-%02d] to #bu %7zu = MB: %7.2f    | took: %13llu ti = %8.6f s\n",
+  //  clht_gc_get_id(), ht_new->num_buckets, mba, (unsigned long long)e, e / 2.1e9);
 
 #if CLHT_DO_GC == 1
   clht_gc_collect(h);
@@ -737,15 +737,15 @@ ht_status(clht_t *h, int resize_increase, int just_print, uint32_t lt)
 
   if (just_print)
   {
-    printf("[STATUS-%02d] #bu: %7zu / #elems: %7zu / full%%: %8.4f%% / expands: %4d / max expands: %2d\n",
-           99, hashtable->num_buckets, size, full_ratio, expands, expands_max);
+    // printf("[STATUS-%02d] #bu: %7zu / #elems: %7zu / full%%: %8.4f%% / expands: %4d / max expands: %2d\n",
+    //  99, hashtable->num_buckets, size, full_ratio, expands, expands_max);
   }
   else
   {
     if (full_ratio > 0 && full_ratio < CLHT_PERC_FULL_HALVE)
     {
-      printf("[STATUS-%02d] #bu: %7zu / #elems: %7zu / full%%: %8.4f%% / expands: %4d / max expands: %2d\n",
-             clht_gc_get_id(), hashtable->num_buckets, size, full_ratio, expands, expands_max);
+      // printf("[STATUS-%02d] #bu: %7zu / #elems: %7zu / full%%: %8.4f%% / expands: %4d / max expands: %2d\n",
+      //  clht_gc_get_id(), hashtable->num_buckets, size, full_ratio, expands, expands_max);
       ht_resize_pes(h, 0, 33, lt);
     }
     else if ((full_ratio > 0 && full_ratio > CLHT_PERC_FULL_DOUBLE) || expands_max > CLHT_MAX_EXPANSIONS ||
@@ -761,8 +761,8 @@ ht_status(clht_t *h, int resize_increase, int just_print, uint32_t lt)
         int inc_by = (full_ratio / CLHT_OCCUP_AFTER_RES);
         int inc_by_pow2 = pow2roundup(inc_by);
 
-        printf("[STATUS-%02d] #bu: %7zu / #elems: %7zu / full%%: %8.4f%% / expands: %4d / max expands: %2d\n",
-               clht_gc_get_id(), hashtable->num_buckets, size, full_ratio, expands, expands_max);
+        // printf("[STATUS-%02d] #bu: %7zu / #elems: %7zu / full%%: %8.4f%% / expands: %4d / max expands: %2d\n",
+        //  clht_gc_get_id(), hashtable->num_buckets, size, full_ratio, expands, expands_max);
         if (inc_by_pow2 == 1)
         {
           inc_by_pow2 = 2;
@@ -830,16 +830,16 @@ ht_status(clht_t *h, int resize_increase, int just_print, size_t put_bin, uint32
 
   if (just_print)
   {
-    printf("[STATUS-%02d] #bu: %7zu / #elems: %7zu / full%%: %8.4f%% / expands: %4d / max expands: %2d\n",
-           99, hashtable->num_buckets, size, full_ratio, expands, expands_max);
+    // printf("[STATUS-%02d] #bu: %7zu / #elems: %7zu / full%%: %8.4f%% / expands: %4d / max expands: %2d\n",
+    //  99, hashtable->num_buckets, size, full_ratio, expands, expands_max);
   }
   else
   {
     if (full_ratio > 0 && full_ratio < CLHT_PERC_FULL_HALVE)
     {
-      printf("[STATUS-%02d] #bu: %7zu / #elems: %7zu / full%%: %8.4f%% / expands: %4d / max expands: %2d\n",
-             clht_gc_get_id(), hashtable->num_buckets, size, full_ratio, expands, expands_max);
-      ht_resize_pes(h, 0, 33, lt);
+      // printf("[STATUS-%02d] #bu: %7zu / #elems: %7zu / full%%: %8.4f%% / expands: %4d / max expands: %2d\n",
+      //  clht_gc_get_id(), hashtable->num_buckets, size, full_ratio, expands, expands_max);
+      //  ht_resize_pes(h, 0, 33, lt);
     }
     else if ((full_ratio > 0 && full_ratio > CLHT_PERC_FULL_DOUBLE) || expands_max > CLHT_MAX_EXPANSIONS ||
              resize_increase)
@@ -888,8 +888,8 @@ ht_status(clht_t *h, int resize_increase, int just_print, size_t put_bin, uint32
         int inc_by = (full_ratio / CLHT_OCCUP_AFTER_RES);
         int inc_by_pow2 = pow2roundup(inc_by);
 
-        printf("[STATUS-%02d] #bu: %7zu / #elems: %7zu / full%%: %8.4f%% / expands: %4d / max expands: %2d\n",
-               clht_gc_get_id(), hashtable->num_buckets, size, full_ratio, expands, expands_max);
+        // printf("[STATUS-%02d] #bu: %7zu / #elems: %7zu / full%%: %8.4f%% / expands: %4d / max expands: %2d\n",
+        //  clht_gc_get_id(), hashtable->num_buckets, size, full_ratio, expands, expands_max);
         if (inc_by_pow2 == 1)
         {
           inc_by_pow2 = 2;

@@ -1,0 +1,8 @@
+2023年 03月 01日 星期三 12:19:25 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              0
+GET_SIZE:              10000000
+DB  name:              apex
+Loads type:            4
+Reverse:               0

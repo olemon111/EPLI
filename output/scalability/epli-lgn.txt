@@ -1,0 +1,38 @@
+2023年 02月 23日 星期四 17:28:33 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             180000000
+PUT_SIZE:              0
+GET_SIZE:              0
+DB  name:              epli
+Loads type:            6
+Reverse:               0
+read 180000000 values from /home/lbl/dataset/lognormal.dat in 919 ms (195.865 M values/s)
+before newdb, dram space use: 1.34813 GB
+Map addrs:0x7fb280000000
+Current addrs:0x7fb280000000
+Map addrs:0x7fac40000000
+Current addrs:0x7fac40000000
+[ALLOC] initializing allocator with fs size: 507 objects
+[ALLOC] initializing allocator with fs size: 507 objects
+Start Testing Scalability ....
+bulk load 10000000 kvs
+[Metic-Operate]: Operate LOAD: 10000000, cost 0.447263s, kops/s: 22358.2 .
+[Metic-Operate]: Operate LOAD: 20000000, cost 8.43708s, kops/s: 1185.24 .
+[Metic-Operate]: Operate LOAD: 30000000, cost 7.74346s, kops/s: 1291.41 .
+[Metic-Operate]: Operate LOAD: 40000000, cost 7.73939s, kops/s: 1292.09 .
+[Metic-Operate]: Operate LOAD: 50000000, cost 7.89569s, kops/s: 1266.51 .
+[Metic-Operate]: Operate LOAD: 60000000, cost 8.01009s, kops/s: 1248.43 .
+[Metic-Operate]: Operate LOAD: 70000000, cost 7.9631s, kops/s: 1255.79 .
+[Metic-Operate]: Operate LOAD: 80000000, cost 8.10488s, kops/s: 1233.82 .
+[Metic-Operate]: Operate LOAD: 90000000, cost 8.0536s, kops/s: 1241.68 .
+[Metic-Operate]: Operate LOAD: 100000000, cost 8.18349s, kops/s: 1221.97 .
+[Metic-Operate]: Operate LOAD: 110000000, cost 8.13341s, kops/s: 1229.5 .
+[Metic-Operate]: Operate LOAD: 120000000, cost 8.14013s, kops/s: 1228.48 .
+[Metic-Operate]: Operate LOAD: 130000000, cost 8.19832s, kops/s: 1219.76 .
+[Metic-Operate]: Operate LOAD: 140000000, cost 8.23343s, kops/s: 1214.56 .
+[Metic-Operate]: Operate LOAD: 150000000, cost 8.12431s, kops/s: 1230.87 .
+[Metic-Operate]: Operate LOAD: 160000000, cost 8.22326s, kops/s: 1216.06 .
+[Metic-Operate]: Operate LOAD: 170000000, cost 8.28611s, kops/s: 1206.84 .
+[Metic-Operate]: Operate LOAD: 180000000, cost 8.35489s, kops/s: 1196.9 .
+dram space use: 1.0961 GB
+hit cnt: 0, total get cnt: 0

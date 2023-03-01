@@ -16,22 +16,22 @@ function Run() {
 
     # microbench_epli
     if [ $dataset == "ycsb" ]; then
-        test_scalability $dbname $loadnum $opnum $scansize $thread $reverse 3 # YCSB
+        test_recovery $dbname $loadnum $opnum $scansize $thread $reverse 3 # YCSB
     else
         if [ $dataset == "llt" ]; then
-            test_scalability $dbname $loadnum $opnum $scansize $thread $reverse 4 # LLT
+            test_recovery $dbname $loadnum $opnum $scansize $thread $reverse 4 # LLT
         else
             if [ $dataset == "ltd" ]; then
-                test_scalability $dbname $loadnum $opnum $scansize $thread $reverse 5 # LTD
+                test_recovery $dbname $loadnum $opnum $scansize $thread $reverse 5 # LTD
             else
-                test_scalability $dbname $loadnum $opnum $scansize $thread $reverse 6 # LGN
+                test_recovery $dbname $loadnum $opnum $scansize $thread $reverse 6 # LGN
             fi
         fi
     fi
 }
 
 
-function test_scalability() {
+function test_recovery() {
     dbname=$1
     loadnum=$2 
     opnum=$3
@@ -41,21 +41,21 @@ function test_scalability() {
     loadstype=$7
 
     # Read and Write
-    rm -f /mnt/pmem1/lbl/*
+    # rm -f /mnt/pmem1/lbl/*
     Loadname="${Loadname}"
-    date | tee output/scalability/${dbname}-${Loadname}.txt
-    # gdb --args \
+    date | tee output/recovery/${dbname}-${Loadname}.txt
+    gdb --args \
     numactl --cpubind=1 --membind=1 ${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} \
-    --put-size ${opnum} --get-size ${opnum} \
-    --loadstype ${loadstype} --reverse ${reverse} -t $thread | tee -a output/scalability/${dbname}-${Loadname}.txt
+    --put-size 0 --get-size ${opnum} \
+    --loadstype ${loadstype} --reverse ${reverse} -t $thread | tee -a output/recovery/${dbname}-${Loadname}.txt
     # rm -f /mnt/pmem1/lbl/*
 
     echo numactl --cpubind=1 --membind=1 "${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} "\
-    "--put-size ${opnum} --get-size ${opnum} --loadstype ${loadstype} --reverse ${reverse} -t $thread"
+    "--put-size 0 --get-size ${opnum} --loadstype ${loadstype} --reverse ${reverse} -t $thread"
 }
 
 function run_all() {
-    dbs="epli apex lbtree fastfair"
+    dbs="epli apex lbtree"
     for dbname in $dbs; do
         echo "Run: " $dbname
         Run $dbname $1 $2 $3 $4 $5 $6 $7
@@ -106,11 +106,11 @@ function main() {
     fi
 }
 
-# # Test Scalability
-# # open scalability in microbench_epli.cc first
-# main fastfair 400000000 0 0 1 0 r llt
-main epli 400000000 0 0 1 0 r ycsb
-# main apex 400000000 0 0 1 0 r llt
-# main apex 400000000 0 0 1 0 r ycsb
-# main all 400000000 0 0 1 0 r ycsb
-# main epli 330000000 0 0 1 0 r ltd
+# # Test recovery
+# main epli 1000000 0 0 1 0 r llt
+main apex 10000000 1000000 0 1 0 r llt
+# main apex 1000000 1000000 0 1 0 r llt
+
+# main all 1000000 0 0 1 0 r llt
+# main all 10000000 0 0 1 0 r llt
+# main all 100000000 0 0 1 0 r llt

@@ -1,0 +1,36 @@
+2023年 02月 23日 星期四 18:06:51 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             180000000
+PUT_SIZE:              0
+GET_SIZE:              0
+DB  name:              fastfair
+Loads type:            6
+Reverse:               0
+read 180000000 values from /home/lbl/dataset/lognormal.dat in 943 ms (190.88 M values/s)
+before newdb, dram space use: 1.34817 GB
+Map addrs:0x7fcc00000000
+Current addrs:0x7fcc00000000
+[Fast-Fair]: root is 0x7fcc00000000, btree is 0x55c5b9db8880.
+Start Testing Scalability ....
+[Metic-Operate]: Operate LOAD: 10000000, cost 22.3665s, kops/s: 447.097 .
+[Metic-Operate]: Operate LOAD: 20000000, cost 25.8101s, kops/s: 387.445 .
+[Metic-Operate]: Operate LOAD: 30000000, cost 26.8377s, kops/s: 372.61 .
+[Metic-Operate]: Operate LOAD: 40000000, cost 27.6382s, kops/s: 361.818 .
+[Metic-Operate]: Operate LOAD: 50000000, cost 28.2591s, kops/s: 353.869 .
+[Metic-Operate]: Operate LOAD: 60000000, cost 28.7647s, kops/s: 347.649 .
+[Metic-Operate]: Operate LOAD: 70000000, cost 29.1766s, kops/s: 342.74 .
+[Metic-Operate]: Operate LOAD: 80000000, cost 29.5111s, kops/s: 338.855 .
+[Metic-Operate]: Operate LOAD: 90000000, cost 29.7975s, kops/s: 335.599 .
+[Metic-Operate]: Operate LOAD: 100000000, cost 30.0026s, kops/s: 333.304 .
+[Metic-Operate]: Operate LOAD: 110000000, cost 30.2079s, kops/s: 331.039 .
+[Metic-Operate]: Operate LOAD: 120000000, cost 30.4084s, kops/s: 328.857 .
+[Metic-Operate]: Operate LOAD: 130000000, cost 30.5742s, kops/s: 327.073 .
+[Metic-Operate]: Operate LOAD: 140000000, cost 30.751s, kops/s: 325.192 .
+[Metic-Operate]: Operate LOAD: 150000000, cost 30.8738s, kops/s: 323.899 .
+[Metic-Operate]: Operate LOAD: 160000000, cost 31.0291s, kops/s: 322.279 .
+[Metic-Operate]: Operate LOAD: 170000000, cost 31.1883s, kops/s: 320.633 .
+[Metic-Operate]: Operate LOAD: 180000000, cost 31.2996s, kops/s: 319.492 .
+dram space use: 0.000358582 GB
+NVM WRITE : 58702673216
+/mnt/pmem1/lbl/data used: 5598292224 bytes. (5338 Mib, 970kib. free 0 Mib, 0kib.)
+Tree height is 9.

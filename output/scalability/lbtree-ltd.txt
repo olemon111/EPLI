@@ -1,0 +1,47 @@
+2023年 02月 23日 星期四 17:18:27 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             330000000
+PUT_SIZE:              0
+GET_SIZE:              0
+DB  name:              lbtree
+Loads type:            5
+Reverse:               0
+read 330000000 values from /home/lbl/dataset/generate_random_osm_longtitudes.dat in 1632 ms (202.206 M values/s)
+before newdb, dram space use: 2.46561 GB
+init lbtree wrapper
+Start Testing Scalability ....
+[Metic-Operate]: Operate LOAD: 10000000, cost 14.2465s, kops/s: 701.926 .
+[Metic-Operate]: Operate LOAD: 20000000, cost 15.753s, kops/s: 634.802 .
+[Metic-Operate]: Operate LOAD: 30000000, cost 16.1381s, kops/s: 619.651 .
+[Metic-Operate]: Operate LOAD: 40000000, cost 16.5932s, kops/s: 602.658 .
+[Metic-Operate]: Operate LOAD: 50000000, cost 16.8055s, kops/s: 595.044 .
+[Metic-Operate]: Operate LOAD: 60000000, cost 16.962s, kops/s: 589.551 .
+[Metic-Operate]: Operate LOAD: 70000000, cost 17.0149s, kops/s: 587.719 .
+[Metic-Operate]: Operate LOAD: 80000000, cost 17.1385s, kops/s: 583.481 .
+[Metic-Operate]: Operate LOAD: 90000000, cost 17.2084s, kops/s: 581.112 .
+[Metic-Operate]: Operate LOAD: 100000000, cost 17.2925s, kops/s: 578.287 .
+[Metic-Operate]: Operate LOAD: 110000000, cost 17.3535s, kops/s: 576.252 .
+[Metic-Operate]: Operate LOAD: 120000000, cost 17.3863s, kops/s: 575.165 .
+[Metic-Operate]: Operate LOAD: 130000000, cost 17.44s, kops/s: 573.395 .
+[Metic-Operate]: Operate LOAD: 140000000, cost 17.4709s, kops/s: 572.381 .
+[Metic-Operate]: Operate LOAD: 150000000, cost 17.5001s, kops/s: 571.426 .
+[Metic-Operate]: Operate LOAD: 160000000, cost 17.5591s, kops/s: 569.504 .
+[Metic-Operate]: Operate LOAD: 170000000, cost 17.5889s, kops/s: 568.542 .
+[Metic-Operate]: Operate LOAD: 180000000, cost 17.6275s, kops/s: 567.297 .
+[Metic-Operate]: Operate LOAD: 190000000, cost 17.6522s, kops/s: 566.502 .
+[Metic-Operate]: Operate LOAD: 200000000, cost 17.707s, kops/s: 564.748 .
+[Metic-Operate]: Operate LOAD: 210000000, cost 17.7693s, kops/s: 562.767 .
+[Metic-Operate]: Operate LOAD: 220000000, cost 17.8276s, kops/s: 560.928 .
+[Metic-Operate]: Operate LOAD: 230000000, cost 17.8655s, kops/s: 559.737 .
+[Metic-Operate]: Operate LOAD: 240000000, cost 17.9004s, kops/s: 558.646 .
+[Metic-Operate]: Operate LOAD: 250000000, cost 17.9307s, kops/s: 557.702 .
+[Metic-Operate]: Operate LOAD: 260000000, cost 17.9705s, kops/s: 556.468 .
+[Metic-Operate]: Operate LOAD: 270000000, cost 17.9993s, kops/s: 555.576 .
+[Metic-Operate]: Operate LOAD: 280000000, cost 18.0237s, kops/s: 554.826 .
+[Metic-Operate]: Operate LOAD: 290000000, cost 18.0457s, kops/s: 554.147 .
+[Metic-Operate]: Operate LOAD: 300000000, cost 18.0901s, kops/s: 552.787 .
+[Metic-Operate]: Operate LOAD: 310000000, cost 18.1147s, kops/s: 552.037 .
+[Metic-Operate]: Operate LOAD: 320000000, cost 18.1687s, kops/s: 550.397 .
+[Metic-Operate]: Operate LOAD: 330000000, cost 18.2033s, kops/s: 549.351 .
+dram space use: 1.58517 GB
+lbtree dram size: 1576.77 MB

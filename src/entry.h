@@ -2,7 +2,7 @@
 #include "util/nvm/nvm_alloc.h"
 #include "pmem.h"
 
-#define USE_BITMAP // open to accelerate write
+// #define USE_BITMAP // open to accelerate write
 
 #define likely(x) __builtin_expect((x), 1)
 #define unlikely(x) __builtin_expect((x), 0)

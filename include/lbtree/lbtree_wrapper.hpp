@@ -98,7 +98,7 @@ lbtree_wrapper::lbtree_wrapper(void *nvm_addr, bool recover)
     }
     num_bulkloaded = 1;
     delbulk = true;
-    lbt = initTree(nvm_addr, false);
+    lbt = initTree(nvm_addr, recover);
     the_treep = lbt;
     simpleKeyInput input(num_bulkloaded, 0, 1);
     auto worker_num = worker_thread_num;

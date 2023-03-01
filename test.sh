@@ -7,7 +7,7 @@ make -j16
 cd ..
 
 sudo mkdir -p /mnt/pmem1/lbl
-sudo rm -rf /mnt/pmem1/lbl/*
+# sudo rm -rf /mnt/pmem1/lbl/*
 
 # # benchmark
 # sudo ./build/benchmark_epli
@@ -17,10 +17,18 @@ sudo rm -rf /mnt/pmem1/lbl/*
 # chmod +x ./tests/run_microbench_epli.sh
 # sudo ./tests/run_microbench_epli.sh
 
-# microbench
-chmod +x ./tests/run_microbench_workload.sh
-sudo ./tests/run_microbench_workload.sh
+# # microbench workload
+# chmod +x ./tests/run_microbench_workload.sh
+# sudo ./tests/run_microbench_workload.sh
 
-# # microbench
+# # microbench scalability
 # chmod +x ./tests/run_microbench_scalability.sh
 # sudo ./tests/run_microbench_scalability.sh
+
+# # # microbench dram usage
+# chmod +x ./tests/run_microbench_dram_usage.sh
+# sudo ./tests/run_microbench_dram_usage.sh
+
+# # microbench recovery
+chmod +x ./tests/run_microbench_recovery.sh
+sudo ./tests/run_microbench_recovery.sh
