@@ -1,0 +1,37 @@
+2023年 03月 02日 星期四 21:19:49 CST
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from numactl...
+(No debugging symbols found in numactl)
+(gdb) r
+Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_epli --dbname lbtree --load-size 1000000 --put-size 0 --get-size 0 --loadstype 4 --reverse 0 -t 1
+process 278300 is executing new program: /home/lbl/code/EPLI/build/microbench_epli
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+THREAD NUMBER:         1
+LOAD_SIZE:             1000000
+PUT_SIZE:              0
+GET_SIZE:              0
+DB  name:              lbtree
+Loads type:            4
+Reverse:               0
+read 1000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 10 ms (100 M values/s)
+before newdb, dram space use: 0.0143127 GB
+------------------------------
+Start Testing Recovery
+PMDK pool creation failed
+[Inferior 1 (process 278300) exited with code 01]
+(gdb) q

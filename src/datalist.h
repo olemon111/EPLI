@@ -22,9 +22,13 @@ namespace epltree
             }
         }
 
-        void Init()
+        void Init(bool recover = false)
         {
             entry_head = (Entry *)NVM::data_alloc->alloc_aligned(sizeof(Entry));
+            if (recover)
+            {
+                return;
+            }
             new (entry_head) Entry(INVALID_KEY);
             NVM::Mem_persist(entry_head, sizeof(Entry));
         }

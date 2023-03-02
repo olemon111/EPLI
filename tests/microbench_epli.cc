@@ -324,6 +324,10 @@ void load()
 #ifdef TEST_RECOVERY
 void test_recovery()
 {
+    if (dbName == "epli")
+    {
+        db->Init(true);
+    }
     cout << "------------------------------" << endl;
     cout << "Start Testing Recovery" << endl;
     timer.Clear();
@@ -332,10 +336,11 @@ void test_recovery()
     timer.Record("stop");
     us_times = timer.Microsecond("stop", "start");
     cout << "[Metic-Recovery]: Recovery: "
-         << "cost " << us_times / 1000000.0 << "s, "
+         << "cost " << us_times / 1000.0 << " ms, "
          << "kops/s: " << (double)(LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
     cout << "after recovery, dram space use: " << (physical_memory_used_by_process() - init_dram_space_use) / 1024.0 / 1024.0 << " GB" << endl;
     cout << "------------------------------" << endl;
+    load_pos = LOAD_SIZE;
 }
 #endif
 
@@ -364,7 +369,9 @@ void test_uniform(string rwtype)
     std::uniform_int_distribution<uint32_t> dis(0, load_pos - 1);
     for (uint64_t i = 0; i < tot; i++)
     {
+        // uint32_t pos = dis(gen);
         rand_pos.push_back(ranny.RandUint32(0, load_pos - 1));
+        // rand_pos.push_back(pos);
     }
     timer.Clear();
     timer.Record("start");
@@ -375,11 +382,11 @@ void test_uniform(string rwtype)
     {
         for (uint64_t i = 0; i < GET_SIZE; i++)
         {
-            cout << i << " get: " << data_base[rand_pos[i]] << endl;
+            // cout << i << " get: " << data_base[rand_pos[i]] << endl;
             db->Get(data_base[rand_pos[i]], value);
             if (value != data_base[rand_pos[i]])
             {
-                cout << "wrong, value: " << value << ", suppose to be: " << data_base[rand_pos[i]] << endl;
+                // cout << "wrong, value: " << value << ", suppose to be: " << data_base[rand_pos[i]] << endl;
                 wrong_get++;
             }
         }
@@ -699,7 +706,7 @@ int main(int argc, char *argv[])
 #else
     load();
 #endif
-    test_uniform("r");
+    // test_uniform("r");
     // db->Info(); // print info
     // test_all_zipfian();
     return 0;

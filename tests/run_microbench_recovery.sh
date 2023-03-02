@@ -107,9 +107,17 @@ function main() {
 }
 
 # # Test recovery
-# main epli 1000000 0 0 1 0 r llt
-main apex 10000000 1000000 0 1 0 r llt
-# main apex 1000000 1000000 0 1 0 r llt
+# main epli 1000000 10000000 0 1 0 r llt
+# main epli 10000000 10000000 0 1 0 r llt
+# main epli 100000000 10000000 0 1 0 r llt
+
+# main apex 1000000 10000000 0 1 0 r llt
+# main apex 10000000 10000000 0 1 0 r llt
+# main apex 100000000 10000000 0 1 0 r llt
+
+main lbtree 1000000 0 0 1 0 r llt
+# main lbtree 10000000 0 0 1 0 r llt
+# main lbtree 100000000 0 0 1 0 r llt
 
 # main all 1000000 0 0 1 0 r llt
 # main all 10000000 0 0 1 0 r llt

@@ -24,7 +24,7 @@
 #include <future>
 #include <mutex>
 
-#include "nvm_alloc.h"
+#include "../util/nvm/nvm_alloc.h"
 
 #define PAGESIZE 256
 #define CACHE_LINE_SIZE 64

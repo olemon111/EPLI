@@ -22,18 +22,21 @@ namespace epltree
     class EPLTree
     {
     public:
-        EPLTree()
+        EPLTree(bool recover = false)
         {
             // init NVM data
             datalist = new DataList();
-            datalist->Init();
+            datalist->Init(recover);
             // init index
             index = new index_type();
 #ifdef USE_BITMAP
             base_addr = uint64_t(NVM::data_alloc->pmem_addr_); // record base address
             index->insert(INVALID_KEY, new MetaData(datalist->Head()));
 #else
-            index->insert(INVALID_KEY, datalist->Head());
+            if (!recover)
+            {
+                index->insert(INVALID_KEY, datalist->Head());
+            }
 #endif
         }
 
@@ -45,8 +48,24 @@ namespace epltree
 
         void Recover()
         {
-            cout << "recover" << endl;
-            // TODO:
+            size_t LOAD_SIZE = 100000000;
+#ifdef USE_BITMAP
+            auto index_kvs = new pair<key_type, MetaData *>[LOAD_SIZE / KVS_PER_ENTRY + 1];
+            size_t index_kvs_size = 0;
+#else
+            auto index_kvs = new pair<key_type, Entry *>[LOAD_SIZE / KVS_PER_ENTRY + 1];
+            size_t index_kvs_size = 0;
+#endif
+            // load head entry
+            Entry *cur = datalist->Head();
+            while (cur != NULL)
+            {
+                index_kvs[index_kvs_size].first = cur->GetMinKey();
+                index_kvs[index_kvs_size++].second = cur;
+                cur = cur->next;
+            }
+            index->bulk_load(index_kvs, index_kvs_size); // min-key already in order
+            delete index_kvs;
         }
 
         // bulk_kvs already sorted
@@ -57,16 +76,27 @@ namespace epltree
             {
                 return;
             }
+#ifdef USE_BITMAP
+            auto index_kvs = new pair<key_type, MetaData *>[num_keys / KVS_PER_ENTRY + 1];
+            size_t index_kvs_size = 0;
+#else
+            auto index_kvs = new pair<key_type, Entry *>[num_keys / KVS_PER_ENTRY + 1];
+            size_t index_kvs_size = 0;
+#endif
             // load head entry
             datalist->Head()->setOrderedKVs(bulk_kvs, min(num_keys, size_t(KVS_PER_ENTRY)));
             NVM::Mem_persist(datalist->Head(), sizeof(Entry));
-            index->erase(INVALID_KEY);
+            // index->erase(INVALID_KEY);
 #ifdef USE_BITMAP
             MetaData *data = new MetaData(datalist->Head());
             data->reset_n_bitmap(min(num_keys, size_t(KVS_PER_ENTRY)));
-            index->insert(datalist->Head()->GetMinKey(), data);
+            // index->insert(datalist->Head()->GetMinKey(), data);
+            index_kvs[index_kvs_size].first = datalist->Head()->GetMinKey();
+            index_kvs[index_kvs_size++].second = data;
 #else
-            index->insert(datalist->Head()->GetMinKey(), datalist->Head());
+            // index->insert(datalist->Head()->GetMinKey(), datalist->Head());
+            index_kvs[index_kvs_size].first = datalist->Head()->GetMinKey();
+            index_kvs[index_kvs_size++].second = datalist->Head();
 #endif
             if (num_keys <= KVS_PER_ENTRY)
             {
@@ -85,14 +115,64 @@ namespace epltree
 #ifdef USE_BITMAP
                 MetaData *data = new MetaData(new_entry);
                 data->reset_n_bitmap(min(num_keys - i * KVS_PER_ENTRY, size_t(KVS_PER_ENTRY)));
-                index->insert(new_min_key, data);
+                // index->insert(new_min_key, data);
+                index_kvs[index_kvs_size].first = new_min_key;
+                index_kvs[index_kvs_size++].second = data;
 #else
-                index->insert(new_min_key, new_entry);
+                // index->insert(new_min_key, new_entry);
+                index_kvs[index_kvs_size].first = new_min_key;
+                index_kvs[index_kvs_size++].second = new_entry;
 #endif
             }
+            index->bulk_load(index_kvs, index_kvs_size);
             NVM::Mem_persist(cur, sizeof(Entry));
             // datalist->Persist();
         }
+
+        //         // bulk_kvs already sorted
+        //         void BulkLoad(const kv_type bulk_kvs[], size_t num_keys)
+        //         {
+        //             cout << "bulk load " << num_keys << " kvs" << endl;
+        //             if (!num_keys)
+        //             {
+        //                 return;
+        //             }
+        //             // load head entry
+        //             datalist->Head()->setOrderedKVs(bulk_kvs, min(num_keys, size_t(KVS_PER_ENTRY)));
+        //             NVM::Mem_persist(datalist->Head(), sizeof(Entry));
+        //             index->erase(INVALID_KEY);
+        // #ifdef USE_BITMAP
+        //             MetaData *data = new MetaData(datalist->Head());
+        //             data->reset_n_bitmap(min(num_keys, size_t(KVS_PER_ENTRY)));
+        //             index->insert(datalist->Head()->GetMinKey(), data);
+        // #else
+        //             index->insert(datalist->Head()->GetMinKey(), datalist->Head());
+        // #endif
+        //             if (num_keys <= KVS_PER_ENTRY)
+        //             {
+        //                 return;
+        //             }
+        //             Entry *cur = datalist->Head();
+        //             for (size_t i = 1; KVS_PER_ENTRY * i < num_keys; i++)
+        //             {
+
+        //                 Entry *new_entry = (Entry *)NVM::data_alloc->alloc_aligned(sizeof(Entry));
+        //                 key_type new_min_key = bulk_kvs[i * KVS_PER_ENTRY].first;
+        //                 new (new_entry) Entry(new_min_key, bulk_kvs + i * KVS_PER_ENTRY, min(num_keys - i * KVS_PER_ENTRY, size_t(KVS_PER_ENTRY)));
+        //                 cur->next = new_entry;
+        //                 NVM::Mem_persist(cur, sizeof(Entry));
+        //                 cur = cur->next;
+        // #ifdef USE_BITMAP
+        //                 MetaData *data = new MetaData(new_entry);
+        //                 data->reset_n_bitmap(min(num_keys - i * KVS_PER_ENTRY, size_t(KVS_PER_ENTRY)));
+        //                 index->insert(new_min_key, data);
+        // #else
+        //                 index->insert(new_min_key, new_entry);
+        // #endif
+        //             }
+        //             NVM::Mem_persist(cur, sizeof(Entry));
+        //             // datalist->Persist();
+        //         }
 
         int Get(key_type key, val_type &val)
         {

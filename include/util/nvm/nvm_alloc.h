@@ -24,11 +24,11 @@ namespace NVM
     static void *PmemMapFile(const std::string &file_name, const size_t file_size, size_t *len)
     {
         int is_pmem;
-        std::filesystem::remove(file_name);
-        void *pmem_addr_ = pmem_map_file(file_name.c_str(), file_size,
-                                         PMEM_FILE_CREATE | PMEM_FILE_EXCL, 0666, len, &is_pmem);
-        // void *pmem_addr_ = pmem_map_file(file_name.c_str(), file_size, // used for recovery test
-        //                                  PMEM_FILE_CREATE, 0666, len, &is_pmem);
+        // std::filesystem::remove(file_name);
+        // void *pmem_addr_ = pmem_map_file(file_name.c_str(), file_size,
+        //                                  PMEM_FILE_CREATE | PMEM_FILE_EXCL, 0666, len, &is_pmem);
+        void *pmem_addr_ = pmem_map_file(file_name.c_str(), file_size, // used for recovery test
+                                         PMEM_FILE_CREATE, 0666, len, &is_pmem);
 #ifdef SERVER
         assert(is_pmem == 1);
 #endif

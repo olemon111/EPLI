@@ -564,7 +564,7 @@ int main(int argc, char *argv[])
 {
     init_opts(argc, argv);
     db->Init();
-    load(); 
+    load();
     if (workload_type == "rw")
     {
         test_workload("r"); // read-only

@@ -9,7 +9,7 @@ using namespace epltree;
 #define SAMPLE_M 20 // TODO:
 #define MIN_HIT_RATE 0.01
 // #define MIN_HIT_RATE 0.001
-#define SWTABLE_DEFAULT_OPEN
+// #define SWTABLE_DEFAULT_OPEN
 
 class EPLI
 {
@@ -17,9 +17,9 @@ public:
     EPLI() {}
     ~EPLI() {}
 
-    void Init()
+    void Init(bool recover = false)
     {
-        tree = new EPLTree();
+        tree = new EPLTree(recover);
         table = new SWTable();
         table->Init();
 #ifdef SWTABLE_DEFAULT_OPEN

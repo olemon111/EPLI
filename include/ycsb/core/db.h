@@ -107,6 +107,7 @@ namespace ycsbc
     /// Called once per DB client (thread); there is a single DB instance globally.
     ///
     virtual void Init() {}
+    virtual void Init(bool recover) {}
     ///
     /// Clears any state for accessing this DB.
     /// Called once per DB client (thread); there is a single DB instance globally.

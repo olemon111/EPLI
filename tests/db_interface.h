@@ -180,12 +180,12 @@ namespace dbInter
     EPLIDB() : epli_(nullptr) {}
     virtual ~EPLIDB()
     {
+      NVM::env_exit();
       delete epli_;
     }
 
     void Recover()
     {
-      Init();
       epli_->Recover();
     }
 
@@ -195,6 +195,14 @@ namespace dbInter
       NVM::data_init();
       epli_ = new EPLI();
       epli_->Init();
+    }
+
+    void Init(bool recover)
+    {
+      NVM::env_init();
+      NVM::data_init();
+      epli_ = new EPLI();
+      epli_->Init(recover);
     }
 
     void Bulk_load(const std::pair<uint64_t, uint64_t> data[], int size)
