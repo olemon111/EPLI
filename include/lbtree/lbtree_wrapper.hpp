@@ -96,14 +96,13 @@ lbtree_wrapper::lbtree_wrapper(void *nvm_addr, bool recover)
     {
         delbulk = true;
     }
+    num_bulkloaded = 1;
     // num_bulkloaded = 1000000;
-    // num_bulkloaded = 10000000;
-    num_bulkloaded = 100000000;
-    // delbulk = true;
+    delbulk = true;
     lbt = initTree(nvm_addr, recover);
     the_treep = lbt;
-    // // lbt->print();
-    // // simpleKeyInput input(num_bulkloaded, 0, 1);
+    // bufferedKeyInput input("/home/lbl/dataset/generate_random_osm_longlat.dat", 0, num_bulkloaded);
+    // inMemKeyInput input(num_bulkloaded, 0, 1);
     simpleKeyInput input(num_bulkloaded, 0, 1);
     auto worker_num = worker_thread_num;
     worker_thread_num = 1;

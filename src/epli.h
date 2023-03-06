@@ -29,9 +29,9 @@ public:
         tot_get = 0;
     }
 
-    void Recover()
+    void Recover(size_t load_size)
     {
-        tree->Recover();
+        tree->Recover(load_size);
     }
 
     void BulkLoad(const kv_type bulk_kvs[], size_t num_keys)

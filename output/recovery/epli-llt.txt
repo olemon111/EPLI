@@ -1,4 +1,4 @@
-2023年 03月 06日 星期一 00:38:14 CST
+2023年 03月 07日 星期二 00:23:03 CST
 GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
 Copyright (C) 2020 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -17,36 +17,36 @@ Type "apropos word" to search for commands related to "word"...
 Reading symbols from numactl...
 (No debugging symbols found in numactl)
 (gdb) r
-Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_epli --dbname epli --load-size 1000000 --put-size 0 --get-size 10000000 --loadstype 4 --reverse 0 -t 1
-process 201390 is executing new program: /home/lbl/code/EPLI/build/microbench_epli
+Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_epli --dbname epli --load-size 150000 --put-size 0 --get-size 10000000 --loadstype 4 --reverse 0 -t 1
+process 616508 is executing new program: /home/lbl/code/EPLI/build/microbench_epli
 [Thread debugging using libthread_db enabled]
 Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
 THREAD NUMBER:         1
-LOAD_SIZE:             1000000
+LOAD_SIZE:             150000
 PUT_SIZE:              0
 GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            4
 Reverse:               0
-read 1000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 8 ms (125 M values/s)
-before newdb, dram space use: 0.0143204 GB
+read 150000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1 ms (150 M values/s)
+before newdb, dram space use: 0.00775528 GB
+------------------------------
+Start Testing Recovery
 Map addrs:0x7ffec0000000
 Current addrs:0x7ffec0000000
 Map addrs:0x7ff880000000
 Current addrs:0x7ff880000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
-------------------------------
-Start Testing Recovery
-[Metic-Recovery]: Recovery: cost 127.024 ms, kops/s: 7872.53 .
-after recovery, dram space use: 0.00315475 GB
+[Metic-Recovery]: Recovery: cost 17.041 ms, kops/s: 8802.3 .
+after recovery, dram space use: 0.00183105 GB
 ------------------------------
 ------------------------------
 Start Testing Uniform Workload: Read
 wrong get: 0
-[Metic-Operate]: Operate 10000000, cost 2.62435s, kops/s: 3810.47 .
-dram space use: 0.0796089 GB
-hit cnt: 2.13196e+06, total get cnt: 10000000
-EPLI total dram size: 19.4234 MB, alex size: 2.34334, table size: 17.0801
-[Inferior 1 (process 201390) exited normally]
+[Metic-Operate]: Operate 10000000, cost 0.638644s, kops/s: 15658.2 .
+dram space use: 0.0495033 GB
+hit cnt: 7.10762e+06, total get cnt: 10000000
+EPLI total dram size: 5.28355 MB, alex size: 0.522491, table size: 4.76105
+[Inferior 1 (process 616508) exited normally]
 (gdb) q

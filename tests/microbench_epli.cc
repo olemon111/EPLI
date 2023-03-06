@@ -21,7 +21,7 @@
 
 // #define REST
 // #define TEST_SCALABILITY
-#define TEST_RECOVERY
+// #define TEST_RECOVERY
 
 using epltree::Random;
 using epltree::Timer;
@@ -324,15 +324,17 @@ void load()
 #ifdef TEST_RECOVERY
 void test_recovery()
 {
-    if (dbName == "epli")
-    {
-        db->Init(true);
-    }
+    // KvDB *new_db = new LBTreeDB();
     cout << "------------------------------" << endl;
     cout << "Start Testing Recovery" << endl;
     timer.Clear();
     timer.Record("start");
-    db->Recover();
+    if (dbName == "epli")
+    {
+        db->Init(true);
+    }
+    db->Recover(LOAD_SIZE);
+    // new_db->Recover();
     timer.Record("stop");
     us_times = timer.Microsecond("stop", "start");
     cout << "[Metic-Recovery]: Recovery: "
@@ -424,9 +426,9 @@ void test_uniform(string rwtype)
     std::uniform_int_distribution<uint32_t> dis(0, load_pos - 1);
     for (uint64_t i = 0; i < tot; i++)
     {
-        // uint32_t pos = dis(gen);
-        rand_pos.push_back(ranny.RandUint32(0, load_pos - 1));
-        // rand_pos.push_back(pos);
+        uint32_t pos = dis(gen);
+        // rand_pos.push_back(ranny.RandUint32(0, load_pos - 1));
+        rand_pos.push_back(pos);
     }
     timer.Clear();
     timer.Record("start");
@@ -749,9 +751,15 @@ int main(int argc, char *argv[])
 {
     init_opts(argc, argv);
 #ifdef TEST_RECOVERY // before init db
+    if (dbName == "lbtree")
+    {
+        db->Init();
+        // load();
+    }
+    // test_uniform("r");
     test_recovery();
-    // test_uniform("r"); // test correctness
-    test_uniform_warm_up(); // test
+    test_uniform("r"); // test correctness
+    // test_uniform_warm_up(); // test when APEX's throughput back to normal
     return 0;
 #endif
     db->Init();
@@ -762,7 +770,7 @@ int main(int argc, char *argv[])
 #else
     load();
 #endif
-    test_uniform("r");
+    // test_uniform("r");
     // db->Info(); // print info
     // test_all_zipfian();
     return 0;

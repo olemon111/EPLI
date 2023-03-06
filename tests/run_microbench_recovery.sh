@@ -55,7 +55,8 @@ function test_recovery() {
 }
 
 function run_all() {
-    dbs="epli apex lbtree"
+    dbs="epli apex"
+    # dbs="epli apex lbtree"
     for dbname in $dbs; do
         echo "Run: " $dbname
         Run $dbname $1 $2 $3 $4 $5 $6 $7
@@ -107,34 +108,15 @@ function main() {
 }
 
 # # Test recovery
-# main epli 1000000 10000000 0 1 0 r llt
-# main epli 10000000 10000000 0 1 0 r llt
-# main epli 100000000 10000000 0 1 0 r llt
 
 # main epli 1000000 10000000 0 1 0 r ycsb
 # main epli 10000000 10000000 0 1 0 r ycsb
 # main epli 100000000 10000000 0 1 0 r ycsb
 
-# main apex 1000000 10000000 0 1 0 r llt
-main apex 10000000 10000000 0 1 0 r llt
-# main apex 100000000 10000000 0 1 0 r llt
+# main epli 50000 10000000 0 1 0 r llt
+# main epli 100000 10000000 0 1 0 r llt
+main epli 150000 10000000 0 1 0 r llt
 
-# main apex 1000000 400000000 0 1 0 r ycsb
-# main apex 100000000 100000000 0 1 0 r ycsb
-# main apex 100000000 10000000 0 1 0 r ycsb
-
-# main apex 1000000 10000000 0 1 0 r ycsb
-# main apex 10000000 10000000 0 1 0 r ycsb
-# main apex 100000000 10000000 0 1 0 r ycsb
-
-# main lbtree 1000000 10000000 0 1 0 r llt
-# main lbtree 10000000 10000000 0 1 0 r llt
-# main lbtree 100000000 10000000 0 1 0 r llt
-
-# main lbtree 1000000 10000000 0 1 0 r ycsb
-# main lbtree 10000000 10000000 0 1 0 r ycsb
-# main lbtree 100000000 10000000 0 1 0 r ycsb
-
-# main all 1000000 0 0 1 0 r llt
-# main all 10000000 0 0 1 0 r llt
-# main all 100000000 0 0 1 0 r llt
+# main apex 50000 10000000 0 1 0 r llt
+# main apex 100000 10000000 0 1 0 r llt
+# main apex 150000 10000000 0 1 0 r llt

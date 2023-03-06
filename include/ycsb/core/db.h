@@ -116,7 +116,7 @@ namespace ycsbc
     virtual void Close() {}
     virtual void Info() {}
     virtual void Reset() {}
-    virtual void Recover() {}
+    virtual void Recover(size_t load_size) {}
     virtual void Begin_trans() {}
     virtual int Put(uint64_t key, uint64_t value) = 0;
     virtual int Get(uint64_t key, uint64_t &value) = 0;

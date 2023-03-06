@@ -46,14 +46,13 @@ namespace epltree
             delete index;
         }
 
-        void Recover()
+        void Recover(size_t load_size)
         {
-            size_t LOAD_SIZE = 100000000;
 #ifdef USE_BITMAP
-            auto index_kvs = new pair<key_type, MetaData *>[LOAD_SIZE / KVS_PER_ENTRY + 1];
+            auto index_kvs = new pair<key_type, MetaData *>[load_size / KVS_PER_ENTRY + 1];
             size_t index_kvs_size = 0;
 #else
-            auto index_kvs = new pair<key_type, Entry *>[LOAD_SIZE / KVS_PER_ENTRY + 1];
+            auto index_kvs = new pair<key_type, Entry *>[load_size / KVS_PER_ENTRY + 1];
             size_t index_kvs_size = 0;
 #endif
             // load head entry
@@ -86,7 +85,7 @@ namespace epltree
             // load head entry
             datalist->Head()->setOrderedKVs(bulk_kvs, min(num_keys, size_t(KVS_PER_ENTRY)));
             NVM::Mem_persist(datalist->Head(), sizeof(Entry));
-            // index->erase(INVALID_KEY);
+            index->erase(INVALID_KEY);
 #ifdef USE_BITMAP
             MetaData *data = new MetaData(datalist->Head());
             data->reset_n_bitmap(min(num_keys, size_t(KVS_PER_ENTRY)));

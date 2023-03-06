@@ -1,4 +1,4 @@
-2023年 03月 05日 星期日 23:37:48 CST
+2023年 03月 06日 星期一 21:33:38 CST
 GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
 Copyright (C) 2020 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -17,36 +17,37 @@ Type "apropos word" to search for commands related to "word"...
 Reading symbols from numactl...
 (No debugging symbols found in numactl)
 (gdb) r
-Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_epli --dbname lbtree --load-size 10000000 --put-size 0 --get-size 10000000 --loadstype 4 --reverse 0 -t 1
-process 177816 is executing new program: /home/lbl/code/EPLI/build/microbench_epli
+Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_epli --dbname lbtree --load-size 1000000 --put-size 0 --get-size 10000000 --loadstype 4 --reverse 0 -t 1
+process 535532 is executing new program: /home/lbl/code/EPLI/build/microbench_epli
 [Thread debugging using libthread_db enabled]
 Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
 THREAD NUMBER:         1
-LOAD_SIZE:             10000000
+LOAD_SIZE:             1000000
 PUT_SIZE:              0
 GET_SIZE:              10000000
 DB  name:              lbtree
 Loads type:            4
 Reverse:               0
-read 10000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 68 ms (147.059 M values/s)
-before newdb, dram space use: 0.081234 GB
+read 1000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 9 ms (111.111 M values/s)
+before newdb, dram space use: 0.0142975 GB
+Total NVM pool size: 42949672960 
+Using actual NVM
+NVM mapping address: 0x7ff5c0000000, size: 42949672960
+nvm addr : 0x7ff5c0000000
+1000000 keys bulkloaded (deleted? 0), root is 5, bfill 1.000000. lbt->check() start: 0, end: 999999
+init lbtree wrapper
 ------------------------------
 Start Testing Recovery
 Total NVM pool size: 42949672960 
 Using actual NVM
-NVM mapping address: 0x7ff5c0000000, size: 42949672960
+NVM mapping address: 0x7feb80000000, size: 42949672960
 recover nvmpool
-nvm addr : 0x7ff5c0000000
-100000000 keys bulkloaded (deleted? 0), root is 6, bfill 1.000000. lbt->check() start: 0, end: 99999999
+nvm addr : 0x7feb80000000
+1000000 keys bulkloaded (deleted? 0), root is 5, bfill 1.000000. lbt->check() start: 0, end: 999999
 recover lbtree wrapper
-[Metic-Recovery]: Recovery: cost 4302.14 ms, kops/s: 2324.42 .
-after recovery, dram space use: 0.113819 GB
+[Metic-Recovery]: Recovery: cost 2262.11 ms, kops/s: 442.065 .
+after recovery, dram space use: 0.00231552 GB
 ------------------------------
-------------------------------
-Start Testing Uniform Workload: Read
-wrong get: 10000000
-[Metic-Operate]: Operate 10000000, cost 1.1175s, kops/s: 8948.56 .
-dram space use: 0.151047 GB
-lbtree dram size: 116.258 MB
-[Inferior 1 (process 177816) exited normally]
+[Inferior 1 (process 535532) exited normally]
+(gdb) 1
 (gdb) q

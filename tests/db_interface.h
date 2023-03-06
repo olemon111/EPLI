@@ -184,9 +184,9 @@ namespace dbInter
       delete epli_;
     }
 
-    void Recover()
+    void Recover(size_t load_size)
     {
-      epli_->Recover();
+      epli_->Recover(load_size);
     }
 
     void Init()
@@ -267,7 +267,7 @@ namespace dbInter
       apex_ = NULL;
     }
 
-    void Recover()
+    void Recover(size_t load_size)
     {
       Init();
     }
@@ -344,7 +344,7 @@ namespace dbInter
     LBTreeDB(lbtree_wrapper *tree) : tree_(tree) {}
     virtual ~LBTreeDB() {}
 
-    void Recover()
+    void Recover(size_t load_size)
     {
       constexpr const auto MEMPOOL_ALIGNMENT = 4096LL;
       size_t key_size_ = 0;
@@ -386,7 +386,7 @@ namespace dbInter
       // cout << "nvm addr : " << (int *)nvm_addr << endl;
       nvmLogInit(worker_thread_num);
       tree_ = new lbtree_wrapper(nvm_addr, false);
-      cout << "init lbtree wrapper" << endl;
+      // cout << "init lbtree wrapper" << endl;
     }
 
     void Info()
