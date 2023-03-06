@@ -1,4 +1,4 @@
-2023年 03月 02日 星期四 20:50:35 CST
+2023年 03月 06日 星期一 12:17:00 CST
 GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
 Copyright (C) 2020 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -17,34 +17,219 @@ Type "apropos word" to search for commands related to "word"...
 Reading symbols from numactl...
 (No debugging symbols found in numactl)
 (gdb) r
-Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_epli --dbname apex --load-size 100000000 --put-size 0 --get-size 10000000 --loadstype 4 --reverse 0 -t 1
-process 270750 is executing new program: /home/lbl/code/EPLI/build/microbench_epli
+Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_epli --dbname apex --load-size 10000000 --put-size 0 --get-size 10000000 --loadstype 4 --reverse 0 -t 1
+process 310879 is executing new program: /home/lbl/code/EPLI/build/microbench_epli
 [Thread debugging using libthread_db enabled]
 Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
 THREAD NUMBER:         1
-LOAD_SIZE:             100000000
+LOAD_SIZE:             10000000
 PUT_SIZE:              0
 GET_SIZE:              10000000
 DB  name:              apex
 Loads type:            4
 Reverse:               0
-read 100000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 571 ms (175.131 M values/s)
-before newdb, dram space use: 0.751747 GB
+read 10000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 70 ms (142.857 M values/s)
+before newdb, dram space use: 0.0812607 GB
 ------------------------------
 Start Testing Recovery
 opening an existing pool, and trying to map to same address
 pool opened at: 0x7ff5c0000000
 recover
 Intial allocator: 1
-The root node addr = 0x7ff5c0404450
-[Metic-Recovery]: Recovery: cost 34.213 ms, kops/s: 2.92287e+06 .
-after recovery, dram space use: 0.0448494 GB
+The root node addr = 0x7ffdc0411450
+[Metic-Recovery]: Recovery: cost 48.821 ms, kops/s: 204830 .
+after recovery, dram space use: 0.044754 GB
 ------------------------------
 ------------------------------
-Start Testing Uniform Workload: Read
-wrong get: 0
-[Metic-Operate]: Operate 10000000, cost 7.33803s, kops/s: 1362.76 .
-dram space use: 0.327362 GB
-apex DRAM size: 238.882 MB.
-[Inferior 1 (process 270750) exited normally]
+[New Thread 0x7ffff024c700 (LWP 310884)]
+Start Testing Uniform Workload Warm up: 
+209 kops: 20.9
+430 kops: 22.1
+674 kops: 24.4
+939 kops: 26.4
+1223 kops: 28.4
+1544 kops: 31.9
+1914 kops: 36.8
+2314 kops: 40
+2766 kops: 45
+3216 kops: 44.9
+3786 kops: 56.8
+4412 kops: 62.5
+5135 kops: 72.4
+5970 kops: 83.3
+6938 kops: 96.8
+8161 kops: 122.1
+9515 kops: 134.6
+11290 kops: 176.6
+13655 kops: 236.5
+16807 kops: 314.1
+20874 kops: 406.8
+26415 kops: 551.2
+34681 kops: 826.7
+46084 kops: 1137.8
+60741 kops: 1462
+78275 kops: 1751
+97365 kops: 1902.6
+117723 kops: 2028.8
+138539 kops: 2074.5
+159626 kops: 2102.4
+181175 kops: 2147.4
+202947 kops: 2169.4
+224754 kops: 2173.6
+246610 kops: 2178.3
+268663 kops: 2196.9
+290582 kops: 2183.3
+312346 kops: 2168.9
+334258 kops: 2183.3
+356349 kops: 2200.9
+378097 kops: 2163.6
+400124 kops: 2195
+422229 kops: 2203.1
+444372 kops: 2207.4
+466125 kops: 2165.4
+487437 kops: 2123.3
+509194 kops: 2167.8
+531108 kops: 2183.8
+552985 kops: 2180.8
+574549 kops: 2148.2
+596250 kops: 2161.1
+618000 kops: 2166.6
+639861 kops: 2178.3
+661630 kops: 2168.5
+683282 kops: 2157.9
+705328 kops: 2195.8
+727522 kops: 2212.5
+749509 kops: 2190.1
+771689 kops: 2208.8
+793804 kops: 2202.2
+815888 kops: 2200.6
+837912 kops: 2193.4
+860334 kops: 2234.1
+882669 kops: 2225.1
+904997 kops: 2223.9
+927213 kops: 2212.5
+949520 kops: 2221.7
+971817 kops: 2222
+994034 kops: 2213.7
+1016356 kops: 2222.8
+1038824 kops: 2238.6
+1061413 kops: 2250.7
+1084002 kops: 2250.5
+1106379 kops: 2229.3
+1128655 kops: 2219.2
+1150248 kops: 2149.2
+1171468 kops: 2116.3
+1192786 kops: 2123.9
+1214223 kops: 2136.6
+1235642 kops: 2134.1
+1256965 kops: 2123.8
+1278656 kops: 2161.7
+1300278 kops: 2154.1
+1321986 kops: 2162.2
+1343664 kops: 2160
+1365829 kops: 2208.9
+1388004 kops: 2209.2
+1410109 kops: 2202
+1432372 kops: 2218.5
+1454612 kops: 2216.7
+1476877 kops: 2218.2
+1499329 kops: 2237
+1521481 kops: 2208
+1543654 kops: 2209.1
+1566181 kops: 2244
+1588464 kops: 2220.2
+1610593 kops: 2207.3
+1632914 kops: 2224.2
+1655063 kops: 2208.1
+1677529 kops: 2238.9
+1699657 kops: 2204.9
+1722131 kops: 2239.3
+1744132 kops: 2191.6
+1766355 kops: 2214.1
+1788817 kops: 2237.9
+1811264 kops: 2236.5
+1833656 kops: 2231.4
+1856120 kops: 2237.4
+1878501 kops: 2229.9
+1901028 kops: 2244.5
+1923362 kops: 2225
+1945644 kops: 2220.3
+1967984 kops: 2225.9
+1990693 kops: 2262.4
+2012807 kops: 2202.8
+2035354 kops: 2245.8
+2057701 kops: 2227.1
+2079844 kops: 2204.7
+2101877 kops: 2194.9
+2123837 kops: 2188.3
+2145815 kops: 2190.1
+2167652 kops: 2175.7
+2189955 kops: 2222.3
+2211940 kops: 2189.8
+2234153 kops: 2213.4
+2256451 kops: 2222.2
+2278869 kops: 2232.9
+2300377 kops: 2142.7
+2322388 kops: 2193.5
+2344365 kops: 2190.2
+2366507 kops: 2207.1
+2389024 kops: 2243.2
+2411333 kops: 2222.6
+2433745 kops: 2232.9
+2455971 kops: 2213.3
+2478329 kops: 2226.7
+2500412 kops: 2200.7
+2522728 kops: 2224.2
+2544728 kops: 2192.3
+2566767 kops: 2195.4
+2588942 kops: 2208.5
+2610803 kops: 2177.5
+2632636 kops: 2176.4
+2654886 kops: 2216.5
+2677003 kops: 2203.8
+2699228 kops: 2214.9
+2721489 kops: 2217.5
+2743601 kops: 2203.2
+2765777 kops: 2206.9
+2787613 kops: 2174.2
+2809517 kops: 2182.2
+2831332 kops: 2172.6
+2853329 kops: 2192
+2875450 kops: 2203.4
+2897650 kops: 2210.8
+2919729 kops: 2199.2
+2942145 kops: 2231.8
+2964325 kops: 2210.5
+2986708 kops: 2228.6
+3008832 kops: 2204.7
+3031091 kops: 2218
+3053379 kops: 2220.5
+3075638 kops: 2217.1
+3098040 kops: 2232.5
+3120215 kops: 2209.1
+3142429 kops: 2213.3
+3164644 kops: 2212.9
+3186955 kops: 2223
+3209276 kops: 2224.5
+3231685 kops: 2233.6
+3253801 kops: 2203.4
+3276279 kops: 2239.5
+3298665 kops: 2230.4
+3320869 kops: 2211.7
+3342360 kops: 2142.8
+3363651 kops: 2122
+3384937 kops: 2122.2
+3406545 kops: 2153.7
+3427796 kops: 2116.3
+3449310 kops: 2143.1
+3470709 kops: 2131.8
+3492240 kops: 2144.7
+
+Thread 1 "microbench_epli" received signal SIGINT, Interrupt.
+0x0000555555581eae in test_uniform_warm_up() ()
 (gdb) q
+A debugging session is active.
+
+	Inferior 1 [process 310879] will be killed.
+
+Quit anyway? (y or n) y

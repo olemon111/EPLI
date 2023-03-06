@@ -96,22 +96,26 @@ lbtree_wrapper::lbtree_wrapper(void *nvm_addr, bool recover)
     {
         delbulk = true;
     }
-    num_bulkloaded = 1;
-    delbulk = true;
+    // num_bulkloaded = 1000000;
+    // num_bulkloaded = 10000000;
+    num_bulkloaded = 100000000;
+    // delbulk = true;
     lbt = initTree(nvm_addr, recover);
     the_treep = lbt;
+    // // lbt->print();
+    // // simpleKeyInput input(num_bulkloaded, 0, 1);
     simpleKeyInput input(num_bulkloaded, 0, 1);
     auto worker_num = worker_thread_num;
     worker_thread_num = 1;
     auto root = lbt->bulkload(num_bulkloaded, &input, bfill);
     worker_thread_num = worker_num;
-    // printf("%lld keys bulkloaded (deleted? %d), root is %d, bfill %f. ", num_bulkloaded, delbulk, root, bfill);
+    printf("%lld keys bulkloaded (deleted? %d), root is %d, bfill %f. ", num_bulkloaded, delbulk, root, bfill);
 #ifndef VAR_KEY
     KEY_TYPE start, end;
     lbt->check(&start, &end);
     for (auto i = start; i < end && delbulk; i++)
         lbt->del(i);
-        // printf("lbt->check() start: %lld, end: %lld\n", start, end);
+    printf("lbt->check() start: %lld, end: %lld\n", start, end);
 #endif
 }
 

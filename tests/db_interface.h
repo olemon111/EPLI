@@ -359,10 +359,12 @@ namespace dbInter
       the_thread_mempools.init(worker_thread_num, 16 * 1024 * 1024 * 1024, MEMPOOL_ALIGNMENT);
       // the_thread_mempools.init(1, 4096, MEMPOOL_ALIGNMENT);
       the_thread_nvmpools.init(worker_thread_num, pool_path_, pool_size_);
+      cout << "recover nvmpool" << endl;
       char *nvm_addr = (char *)nvmpool_alloc(256);
+      cout << "nvm addr : " << (int *)nvm_addr << endl;
       nvmLogInit(worker_thread_num);
-      tree_ = new lbtree_wrapper(nvm_addr, true); // TODO: recover
-      cout << "init lbtree wrapper" << endl;
+      tree_ = new lbtree_wrapper(nvm_addr, true);
+      cout << "recover lbtree wrapper" << endl;
     }
 
     void Init()
@@ -381,6 +383,7 @@ namespace dbInter
       // the_thread_mempools.init(1, 4096, MEMPOOL_ALIGNMENT);
       the_thread_nvmpools.init(worker_thread_num, pool_path_, pool_size_);
       char *nvm_addr = (char *)nvmpool_alloc(256);
+      // cout << "nvm addr : " << (int *)nvm_addr << endl;
       nvmLogInit(worker_thread_num);
       tree_ = new lbtree_wrapper(nvm_addr, false);
       cout << "init lbtree wrapper" << endl;

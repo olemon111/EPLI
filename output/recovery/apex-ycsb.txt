@@ -1,0 +1,171 @@
+2023年 03月 06日 星期一 11:37:54 CST
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from numactl...
+(No debugging symbols found in numactl)
+(gdb) r
+Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_epli --dbname apex --load-size 100000000 --put-size 0 --get-size 100000000 --loadstype 3 --reverse 0 -t 1
+process 299028 is executing new program: /home/lbl/code/EPLI/build/microbench_epli
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+THREAD NUMBER:         1
+LOAD_SIZE:             100000000
+PUT_SIZE:              0
+GET_SIZE:              100000000
+DB  name:              apex
+Loads type:            3
+Reverse:               0
+read 100000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 567 ms (176.367 M values/s)
+before newdb, dram space use: 0.751724 GB
+------------------------------
+Start Testing Recovery
+opening an existing pool, and trying to map to same address
+pool opened at: 0x7ff5c0000000
+recover
+Intial allocator: 1
+The root node addr = 0x7ffdc013e490
+[Metic-Recovery]: Recovery: cost 32.372 ms, kops/s: 3.08909e+06 .
+after recovery, dram space use: 0.0448418 GB
+------------------------------
+------------------------------
+[New Thread 0x7fffc53a7700 (LWP 299099)]
+Start Testing Uniform Workload Warm up: 
+101 kops: 10.1
+2146 kops: 205.5
+33942 kops: 3169.7
+69797 kops: 3573.8
+107424 kops: 3749.1
+146289 kops: 3873.1
+185602 kops: 3923.2
+225652 kops: 3989.5
+265901 kops: 4010.9
+306195 kops: 4014.6
+346711 kops: 4037.1
+387133 kops: 4028.2
+427507 kops: 4023.1
+468004 kops: 4035.3
+508387 kops: 4024.4
+548764 kops: 4022.7
+589129 kops: 4025.8
+629420 kops: 4014.1
+669895 kops: 4033
+710238 kops: 4020.1
+750723 kops: 4034
+790487 kops: 3960.9
+828221 kops: 3759.3
+865110 kops: 3674.1
+901908 kops: 3666.2
+938540 kops: 3649.7
+974596 kops: 3591.9
+1012299 kops: 3757.1
+1050927 kops: 3848.3
+1090181 kops: 3911.5
+1129959 kops: 3963.1
+1170036 kops: 3992.5
+1210297 kops: 4011.6
+1250458 kops: 4001.2
+1291044 kops: 4043.1
+1331571 kops: 4036.6
+1371752 kops: 4009.8
+1411908 kops: 4001.1
+1451328 kops: 3927.8
+1490718 kops: 3925
+1529726 kops: 3885.9
+1569250 kops: 3938.2
+1609304 kops: 3991.3
+1649612 kops: 4016
+1690005 kops: 4025.4
+1730537 kops: 4037.6
+1771045 kops: 4036
+1811712 kops: 4052.4
+1852191 kops: 4033.6
+1892849 kops: 4051.8
+1933280 kops: 4027.4
+1973667 kops: 4024.1
+2013883 kops: 4006.9
+2054121 kops: 4009.3
+2094458 kops: 4018.6
+2134960 kops: 4035.8
+2175464 kops: 4035.7
+2215833 kops: 4022
+2256279 kops: 4031.4
+2296961 kops: 4052.5
+2337425 kops: 4025.9
+2377525 kops: 3996.7
+2417950 kops: 4027.8
+2458198 kops: 4010.4
+2498722 kops: 4038
+2539241 kops: 4037.4
+2579734 kops: 4034.4
+2620255 kops: 4037.7
+2660911 kops: 4051.5
+2701503 kops: 4045.9
+2742046 kops: 4039.4
+2782469 kops: 4028.1
+2822911 kops: 4029.8
+2863522 kops: 4046.2
+2903919 kops: 4023.7
+2944499 kops: 4042.8
+2984916 kops: 4027.1
+3025350 kops: 4029.4
+3064975 kops: 3947.8
+3102818 kops: 3769.4
+3141858 kops: 3889.4
+3181268 kops: 3927.5
+3221024 kops: 3962.3
+3261104 kops: 3992.7
+3301239 kops: 3999.8
+3340753 kops: 3936.7
+3380319 kops: 3942.5
+3420061 kops: 3960
+3459873 kops: 3967
+3499923 kops: 3989.1
+3540065 kops: 3999.9
+3580258 kops: 4004.4
+3620671 kops: 4027.2
+3660979 kops: 4016.2
+3701168 kops: 4004.5
+3741231 kops: 3991.8
+3781401 kops: 4002.6
+3821588 kops: 4004.5
+3861787 kops: 4004.8
+3901952 kops: 4002.9
+3942094 kops: 3999.1
+3982369 kops: 4012.5
+4021978 kops: 3946.5
+4061371 kops: 3923.8
+4100625 kops: 3911.5
+4140539 kops: 3977.2
+4180666 kops: 3997.9
+4221103 kops: 4029.5
+4261397 kops: 4007.5
+4301281 kops: 3974.9
+4341527 kops: 4010.4
+4381740 kops: 4006.1
+4422148 kops: 4026.9
+4462611 kops: 4031.6
+4502980 kops: 4022.2
+4543439 kops: 4032.4
+4584115 kops: 4052.9
+
+Thread 1 "microbench_epli" received signal SIGINT, Interrupt.
+0x00005555555c6006 in apex::Apex<unsigned long, unsigned long, apex::AlexCompare, my_alloc::allocator<std::pair<unsigned long, unsigned long> >, true>::search_unsafe(unsigned long const&, unsigned long*) const ()
+(gdb) q
+A debugging session is active.
+
+	Inferior 1 [process 299028] will be killed.
+
+Quit anyway? (y or n) y

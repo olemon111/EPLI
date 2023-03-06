@@ -342,6 +342,61 @@ void test_recovery()
     cout << "------------------------------" << endl;
     load_pos = LOAD_SIZE;
 }
+
+void test_uniform_warm_up()
+{
+#ifdef REST
+    sleep(20);
+    remove_cache();
+#endif
+    remove_cache();
+    cout << "------------------------------" << endl;
+    cout << "Start Testing Uniform Workload Warm up: \n";
+    util::FastRandom ranny(18);
+    vector<uint32_t> rand_pos;
+    std::mt19937_64 gen(std::random_device{}());
+    std::uniform_int_distribution<uint32_t> dis(0, load_pos - 1);
+    for (uint64_t i = 0; i < GET_SIZE; i++)
+    {
+        uint32_t pos = dis(gen);
+        rand_pos.push_back(pos);
+    }
+    uint64_t i = 0; // get count
+    uint64_t pre = 0;
+
+    TaskTimer task_timer;
+    uint64_t interval = 10; // ms
+    task_timer.start(interval, [interval, &i, &pre]
+                     {
+                        std::cout << i << " kops: "  <<(double) (i - pre) / (double)interval << std::endl;
+                        pre = i; });
+
+    timer.Clear();
+    timer.Record("start");
+
+    int wrong_get = 0;
+    uint64_t value = 0;
+    for (; i < GET_SIZE; i++)
+    {
+        db->Get(data_base[rand_pos[i]], value);
+        if (value != data_base[rand_pos[i]])
+        {
+            wrong_get++;
+        }
+    }
+
+    timer.Record("stop");
+    task_timer.stop();
+    cout << "wrong get: " << wrong_get << endl;
+    us_times = timer.Microsecond("stop", "start");
+    cout << "[Metic-Operate]: Operate " << GET_SIZE << ", "
+         << "cost " << us_times / 1000000.0 << "s, "
+         << "kops/s: " << (double)(GET_SIZE) / (double)us_times * 1000.0 << " ." << endl;
+    cout << "dram space use: " << (physical_memory_used_by_process() - init_dram_space_use) / 1024.0 / 1024.0 << " GB" << endl;
+    db->Info();
+    db->Reset();
+}
+
 #endif
 
 void test_uniform(string rwtype)
@@ -695,7 +750,8 @@ int main(int argc, char *argv[])
     init_opts(argc, argv);
 #ifdef TEST_RECOVERY // before init db
     test_recovery();
-    test_uniform("r"); // test correctness
+    // test_uniform("r"); // test correctness
+    test_uniform_warm_up(); // test
     return 0;
 #endif
     db->Init();
@@ -706,7 +762,7 @@ int main(int argc, char *argv[])
 #else
     load();
 #endif
-    // test_uniform("r");
+    test_uniform("r");
     // db->Info(); // print info
     // test_all_zipfian();
     return 0;
