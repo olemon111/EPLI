@@ -1,23 +1,26 @@
-2023年 02月 15日 星期三 03:50:09 CST
+2023年 03月 07日 星期二 01:41:11 CST
 THREAD NUMBER:         1
-LOAD_SIZE:             320000000
+LOAD_SIZE:             230000000
 PUT_SIZE:              10000000
 GET_SIZE:              10000000
 DB  name:              lbtree
 Loads type:            5
 Workload type:         rw
-read 330141294 values from /home/lbl/dataset/generate_random_osm_longtitudes.dat in 1632 ms (202.292 M values/s)
-before newdb, dram space use: 2.46669 GB
-init lbtree wrapper
+read 240000000 values from /home/lbl/dataset/generate_random_osm_longtitudes.dat in 1254 ms (191.388 M values/s)
+before newdb, dram space use: 1.79501 GB
+Total NVM pool size: 42949672960 
+Using actual NVM
+NVM mapping address: 0x7f8a00000000, size: 42949672960
+1 keys bulkloaded (deleted? 1), root is 0, bfill 1.000000. lbt->check() start: 0, end: 0
 Start loading ....
-[Metic-Load]: Load 320000000: cost 552.437s, kops/s: 579.251 .
-after load, dram space use: 1.53861 GB
+[Metic-Load]: Load 230000000: cost 390.618s, kops/s: 588.81 .
+after load, dram space use: 1.07378 GB
 ------------------------------
 Start Testing Workload: r
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 1: cost 9.63322s, kops 1038.07 .
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 9.5863s, kops 1043.16 .
 ------------------------------
 Start Testing Workload: w
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 0: cost 18.0858s, kops 552.92 .
-lbtree dram size: 1576.77 MB
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 17.7844s, kops 562.29 .
+lbtree dram size: 1147.22 MB

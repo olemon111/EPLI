@@ -60,7 +60,12 @@ namespace epltree
             while (cur != NULL)
             {
                 index_kvs[index_kvs_size].first = cur->GetMinKey();
+#ifdef USE_BITMAP
+                MetaData *data = new MetaData(cur);
+                index_kvs[index_kvs_size++].second = data;
+#else
                 index_kvs[index_kvs_size++].second = cur;
+#endif
                 cur = cur->next;
             }
             index->bulk_load(index_kvs, index_kvs_size); // min-key already in order

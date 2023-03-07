@@ -327,12 +327,12 @@ void test_recovery()
     // KvDB *new_db = new LBTreeDB();
     cout << "------------------------------" << endl;
     cout << "Start Testing Recovery" << endl;
-    timer.Clear();
-    timer.Record("start");
     if (dbName == "epli")
     {
         db->Init(true);
     }
+    timer.Clear();
+    timer.Record("start");
     db->Recover(LOAD_SIZE);
     // new_db->Recover();
     timer.Record("stop");
@@ -345,13 +345,12 @@ void test_recovery()
     load_pos = LOAD_SIZE;
 }
 
-void test_uniform_warm_up()
+void test_uniform_warm_up(uint64_t interval = 100) // ms
 {
 #ifdef REST
     sleep(20);
     remove_cache();
 #endif
-    remove_cache();
     cout << "------------------------------" << endl;
     cout << "Start Testing Uniform Workload Warm up: \n";
     util::FastRandom ranny(18);
@@ -367,7 +366,6 @@ void test_uniform_warm_up()
     uint64_t pre = 0;
 
     TaskTimer task_timer;
-    uint64_t interval = 10; // ms
     task_timer.start(interval, [interval, &i, &pre]
                      {
                         std::cout << i << " kops: "  <<(double) (i - pre) / (double)interval << std::endl;
@@ -476,7 +474,8 @@ void test_all_zipfian()
     util::FastRandom ranny(18);
     vector<uint32_t> rand_pos;
     size_t tot = GET_SIZE;
-    std::vector<float> thetas = {0.6, 0.7, 0.8, 0.9, 0.99};
+    std::vector<float> thetas = {0.99};
+    // std::vector<float> thetas = {0.6, 0.7, 0.8, 0.9, 0.99};
     if (Reverse)
     {
         reverse(thetas.begin(), thetas.end());
@@ -756,10 +755,9 @@ int main(int argc, char *argv[])
         db->Init();
         // load();
     }
-    // test_uniform("r");
     test_recovery();
     test_uniform("r"); // test correctness
-    // test_uniform_warm_up(); // test when APEX's throughput back to normal
+    // test_uniform_warm_up(); // test when APEX's throughput backs to normal
     return 0;
 #endif
     db->Init();
@@ -767,11 +765,10 @@ int main(int argc, char *argv[])
     test_scalability();
     db->Info(); // print info
     return 0;
-#else
-    load();
 #endif
-    // test_uniform("r");
-    // db->Info(); // print info
-    // test_all_zipfian();
+    load();
+    db->Info();
+    test_uniform("r");
+    test_all_zipfian();
     return 0;
 }

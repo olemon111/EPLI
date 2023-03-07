@@ -113,10 +113,14 @@ function main() {
 # main epli 10000000 10000000 0 1 0 r ycsb
 # main epli 100000000 10000000 0 1 0 r ycsb
 
-# main epli 50000 10000000 0 1 0 r llt
-# main epli 100000 10000000 0 1 0 r llt
-main epli 150000 10000000 0 1 0 r llt
+# main epli 50000000 10000000 0 1 0 r llt
+# main epli 100000000 10000000 0 1 0 r llt
+main epli 150000000 10000000 0 1 0 r llt
 
-# main apex 50000 10000000 0 1 0 r llt
-# main apex 100000 10000000 0 1 0 r llt
-# main apex 150000 10000000 0 1 0 r llt
+# main epli 50000000 10000000 0 1 0 r ycsb
+# main epli 100000000 10000000 0 1 0 r ycsb
+# main epli 150000000 10000000 0 1 0 r ycsb
+
+# main apex 50000000 100000000 0 1 0 r llt
+# main apex 100000000 100000000 0 1 0 r llt
+# main apex 150000000 100000000 0 1 0 r llt

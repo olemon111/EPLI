@@ -55,8 +55,8 @@ function test_read_write() {
 }
 
 function run_all() {
-    dbs="epli apex"
     # dbs="epli apex lbtree fastfair"
+    dbs="lbtree fastfair"
     for dbname in $dbs; do
         echo "Run: " $dbname
         Run $dbname $1 $2 $3 $4 $5 $6
@@ -103,55 +103,49 @@ function main() {
     fi
 }
 
-# # YCSB
-# main all 400000000 10000000 0 1 rw ycsb
-# main all 400000000 10000000 0 1 rhwh ycsb
-# # LLT
-# main all 400000000 10000000 0 1 rw llt
-# main all 400000000 10000000 0 1 rhwh llt
-# # LTD
-# main all 320000000 10000000 0 1 rw ltd
-# main all 320000000 10000000 0 1 rhwh ltd
-# # LGN
-# main all 170000000 10000000 0 1 rw lgn
-# main all 170000000 10000000 0 1 rhwh lgn
-# # remain 10million for insert
+# # # # # YCSB
+# # z means zipfian
+# # # main all 400000000 10000000 0 1 rw ycsb
+# # # main all 400000000 10000000 0 1 rhwh ycsb
+# main all 400000000 10000000 0 1 whz ycsb
+# # # # # LLT
+# # # main all 400000000 10000000 0 1 rw llt
+# # # main all 400000000 10000000 0 1 rhwh llt
+# main all 400000000 10000000 0 1 whz llt
+# # # # # LTD
+# # # main all 230000000 10000000 0 1 rw ltd
+# # # main all 230000000 10000000 0 1 rhwh ltd
+# main all 230000000 10000000 0 1 whz ltd
+# # # # # LGN
+# # # main all 130000000 10000000 0 1 rw lgn
+# # # main all 130000000 10000000 0 1 rhwh lgn
+# main all 130000000 10000000 0 1 whz lgn
+# # # # remain 10million for insert
 
+# # EPLI only (open bitmap in writing test)
+# # # YCSB
 # main epli 400000000 10000000 0 1 rrh ycsb
 # main epli 400000000 10000000 0 1 wh ycsb
 # main epli 400000000 10000000 0 1 w ycsb
 
-main epli 400000000 10000000 0 1 rrh llt
+# main epli 400000000 10000000 0 1 rrh llt
 # main epli 400000000 10000000 0 1 wh llt
 # main epli 400000000 10000000 0 1 w llt
 
-# # LTD
-# main epli 320000000 10000000 0 1 rrh ltd
-# main epli 320000000 10000000 0 1 wh ltd
-# sleep 30
-# main epli 320000000 10000000 0 1 w ltd
-
-# # LGN
-# main epli 170000000 10000000 0 1 rrh lgn
-# main epli 170000000 10000000 0 1 wh lgn
-# main epli 170000000 10000000 0 1 w lgn
-
-# # # APEX
-
 # # # LTD
-# # main apex 320000000 10000000 0 1 rw ltd
-# main apex 320000000 10000000 0 1 rhwh ltd
+# main epli 230000000 10000000 0 1 rrh ltd
+# # sleep 30
+# main epli 230000000 10000000 0 1 wh ltd
+# # sleep 30
+# main epli 230000000 10000000 0 1 w ltd
+# sleep 30
 
 # # # LGN
-# main apex 170000000 10000000 0 1 rw lgn
-# main apex 170000000 10000000 0 1 rhwh lgn
+# main epli 130000000 10000000 0 1 rrh lgn
+# sleep 30
+# main epli 130000000 10000000 0 1 wh lgn
+# sleep 30
+# main epli 130000000 10000000 0 1 w lgn
 
-# # # LLT
-# main apex 400000000 10000000 0 1 rw llt
-# sleep 20
-# main apex 400000000 10000000 0 1 rhwh llt
-
-# # # YCSB
-# sleep 20
-# main apex 390000000 10000000 0 1 w ycsb
-# main apex 400000000 10000000 0 1 rhwh ycsb
+# # # Test Dynamic workload
+main epli 400000000 10000000 0 1 d llt

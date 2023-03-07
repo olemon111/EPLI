@@ -107,6 +107,7 @@ function main() {
 }
 
 # # Test dram_usage
-main epli 400000000 10000000 0 1 0 r llt
+# main epli 400000000 10000000 0 1 0 r llt
 # main apex 400000000 10000000 0 1 0 r llt
+main lbtree 400000000 10000000 0 1 0 r llt
 # main all 400000000 10000000 0 1 0 r llt

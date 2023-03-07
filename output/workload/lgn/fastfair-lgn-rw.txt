@@ -1,14 +1,25 @@
-2023年 02月 15日 星期三 11:24:25 CST
+2023年 03月 07日 星期二 02:49:07 CST
 THREAD NUMBER:         1
-LOAD_SIZE:             190000000
+LOAD_SIZE:             130000000
 PUT_SIZE:              10000000
 GET_SIZE:              10000000
 DB  name:              fastfair
 Loads type:            6
 Workload type:         rw
-read 200000000 values from /home/lbl/dataset/lognormal.dat in 1002 ms (199.601 M values/s)
-before newdb, dram space use: 1.49714 GB
-Map addrs:0x7f8580000000
-Current addrs:0x7f8580000000
-[Fast-Fair]: root is 0x7f8580000000, btree is 0x55c7df9cf880.
+read 140000000 values from /home/lbl/dataset/lognormal.dat in 740 ms (189.189 M values/s)
+before newdb, dram space use: 1.05004 GB
+Map addrs:0x7fbe80000000
+Current addrs:0x7fbe80000000
+[Fast-Fair]: root is 0x7fbe80000000, btree is 0x559399b44f60.
 Start loading ....
+[Metic-Load]: Load 130000000: cost 373.002s, kops/s: 348.524 .
+after load, dram space use: 0.000240326 GB
+------------------------------
+Start Testing Workload: r
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 16.0624s, kops 622.571 .
+------------------------------
+Start Testing Workload: w
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 31.0472s, kops 322.091 .
+fast&fair tree size is 4152.435303 MB.

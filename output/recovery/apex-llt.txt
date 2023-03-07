@@ -1,4 +1,4 @@
-2023年 03月 07日 星期二 00:05:53 CST
+2023年 03月 07日 星期二 17:00:53 CST
 GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
 Copyright (C) 2020 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -16,35 +16,100 @@ For help, type "help".
 Type "apropos word" to search for commands related to "word"...
 Reading symbols from numactl...
 (No debugging symbols found in numactl)
+(gdb) 
 (gdb) r
-Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_epli --dbname apex --load-size 150000 --put-size 0 --get-size 10000000 --loadstype 4 --reverse 0 -t 1
-process 606542 is executing new program: /home/lbl/code/EPLI/build/microbench_epli
+Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_epli --dbname apex --load-size 150000000 --put-size 0 --get-size 100000000 --loadstype 4 --reverse 0 -t 1
+process 803548 is executing new program: /home/lbl/code/EPLI/build/microbench_epli
 [Thread debugging using libthread_db enabled]
 Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
 THREAD NUMBER:         1
-LOAD_SIZE:             150000
+LOAD_SIZE:             150000000
 PUT_SIZE:              0
-GET_SIZE:              10000000
+GET_SIZE:              100000000
 DB  name:              apex
 Loads type:            4
 Reverse:               0
-read 150000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1 ms (150 M values/s)
-before newdb, dram space use: 0.00775528 GB
+read 150000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 810 ms (185.185 M values/s)
+before newdb, dram space use: 1.12436 GB
 ------------------------------
 Start Testing Recovery
 opening an existing pool, and trying to map to same address
-pool opened at: 0x7ff5c0000000
+pool opened at: 0x7ff580000000
 recover
 Intial allocator: 1
-The root node addr = 0x7ff5c0404450
-[Metic-Recovery]: Recovery: cost 50.127 ms, kops/s: 2992.4 .
-after recovery, dram space use: 0.0449371 GB
+The root node addr = 0x7ff580404450
+[Metic-Recovery]: Recovery: cost 34.207 ms, kops/s: 4.38507e+06 .
+after recovery, dram space use: 0.0447464 GB
 ------------------------------
 ------------------------------
-Start Testing Uniform Workload: Read
-wrong get: 0
-[Metic-Operate]: Operate 10000000, cost 0.592494s, kops/s: 16877.8 .
-dram space use: 0.0841942 GB
-apex DRAM size: 0.723511 MB.
-[Inferior 1 (process 606542) exited normally]
+[New Thread 0x7fffad62f700 (LWP 803582)]
+Start Testing Uniform Workload Warm up: 
+704 kops: 7.04
+1428 kops: 7.24
+2170 kops: 7.42
+2994 kops: 8.24
+3823 kops: 8.29
+4696 kops: 8.72
+5563 kops: 8.67
+6530 kops: 9.67
+7557 kops: 10.27
+8619 kops: 10.62
+9733 kops: 11.13
+10867 kops: 11.34
+12113 kops: 12.45
+13469 kops: 13.56
+14944 kops: 14.75
+16520 kops: 15.76
+18087 kops: 15.71
+19925 kops: 18.3
+21897 kops: 19.72
+24018 kops: 21.18
+26449 kops: 24.27
+29055 kops: 26.06
+31817 kops: 27.62
+35183 kops: 33.66
+39185 kops: 40.02
+44021 kops: 48.36
+49974 kops: 59.53
+57365 kops: 73.91
+68529 kops: 111.65
+85110 kops: 165.51
+113369 kops: 282.55
+172193 kops: 588.13
+287119 kops: 1148.8
+442823 kops: 1556.5
+614408 kops: 1714.9
+790084 kops: 1756.05
+966357 kops: 1762.04
+1140372 kops: 1739.49
+1315820 kops: 1753.75
+1486888 kops: 1709.95
+1651361 kops: 1644.05
+1825454 kops: 1740.31
+2001941 kops: 1764.17
+2178725 kops: 1767.07
+2355191 kops: 1763.82
+2531956 kops: 1766.97
+2708599 kops: 1765.77
+2883946 kops: 1752.72
+3060495 kops: 1764.87
+3229211 kops: 1686.43
+3392447 kops: 1631.69
+3562878 kops: 1703.67
+3737352 kops: 1744.08
+3914566 kops: 1771.42
+4091511 kops: 1768.78
+4264320 kops: 1727.33
+4423268 kops: 1588.83
+4590417 kops: 1670.77
+4764319 kops: 1738.31
+4934638 kops: 1702.37
+
+Thread 1 "microbench_epli" received signal SIGINT, Interrupt.
+0x00005555555c6e4b in apex::Apex<unsigned long, unsigned long, apex::AlexCompare, my_alloc::allocator<std::pair<unsigned long, unsigned long> >, true>::search_unsafe(unsigned long const&, unsigned long*) const ()
 (gdb) q
+A debugging session is active.
+
+	Inferior 1 [process 803548] will be killed.
+
+Quit anyway? (y or n) t[Ky

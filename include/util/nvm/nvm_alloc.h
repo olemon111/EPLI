@@ -133,10 +133,11 @@ namespace NVM
         {
             size_t kb = used_ / 1024;
             size_t mb = kb / 1024;
-            std::cout << pmem_file_ << " used: " << used_ << " bytes. (" << mb << " Mib, "
-                      << kb % 1024 << "kib."
-                      << " free " << freed_ / 1024 / 1024 << " Mib, "
-                      << (freed_ / 1024) % 1024 << "kib.)" << std::endl;
+            std::cout << pmem_file_ << " used: " << used_ << " bytes. (" << (double)used_ / 1024.0 / 1024.0 / 1024.0 << " Gib)" << std::endl;
+            // std::cout << pmem_file_ << " used: " << used_ << " bytes. (" << mb << " Mib, "
+                    //   << kb % 1024 << "kib."
+                    //   << " free " << freed_ / 1024 / 1024 << " Mib, "
+                    //   << (freed_ / 1024) % 1024 << "kib.)" << std::endl;
         }
 
         void *alloc(size_t size)

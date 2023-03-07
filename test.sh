@@ -17,9 +17,9 @@ sudo mkdir -p /mnt/pmem1/lbl
 # chmod +x ./tests/run_microbench_epli.sh
 # sudo ./tests/run_microbench_epli.sh
 
-# # microbench workload
-# chmod +x ./tests/run_microbench_workload.sh
-# sudo ./tests/run_microbench_workload.sh
+# microbench workload
+chmod +x ./tests/run_microbench_workload.sh
+sudo ./tests/run_microbench_workload.sh
 
 # # microbench scalability
 # chmod +x ./tests/run_microbench_scalability.sh
@@ -29,6 +29,6 @@ sudo mkdir -p /mnt/pmem1/lbl
 # chmod +x ./tests/run_microbench_dram_usage.sh
 # sudo ./tests/run_microbench_dram_usage.sh
 
-# # microbench recovery
-chmod +x ./tests/run_microbench_recovery.sh
-sudo ./tests/run_microbench_recovery.sh
+# # # microbench recovery
+# chmod +x ./tests/run_microbench_recovery.sh
+# sudo ./tests/run_microbench_recovery.sh

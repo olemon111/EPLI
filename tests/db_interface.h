@@ -213,6 +213,7 @@ namespace dbInter
     void Info()
     {
       epli_->Info();
+      NVM::show_stat();
     }
 
     void Reset()
@@ -301,6 +302,7 @@ namespace dbInter
     void Info()
     {
       cout << "apex DRAM size: " << apex_->get_DRAM_size() / (1024 * 1024.0) << " MB." << endl;
+      cout << "apex PM size: " << apex_->get_PM_size() / (1024 * 1024 * 1024.0) << " GB." << endl;
       // apex_->PrintInfo();
     }
 
@@ -391,7 +393,8 @@ namespace dbInter
 
     void Info()
     {
-      cout << "lbtree dram size: " << the_thread_mempools.tm_pools[worker_id].total_size << " MB" << endl;
+      cout << "lbtree DRAM size: " << the_thread_mempools.tm_pools[worker_id].total_size << " MB" << endl;
+      cout << "lbtree PM size: " << the_thread_nvmpools.tm_pools[worker_id].total_size / 1024.0 << " GB" << endl;
     }
 
     void Close()
@@ -461,8 +464,8 @@ namespace dbInter
     void Info()
     {
       // std::cout << "NVM WRITE : " << NVM::pmem_size << std::endl;
-      // NVM::show_stat();
       tree_->PrintInfo();
+      NVM::show_stat();
     }
 
     void Close()

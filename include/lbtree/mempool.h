@@ -241,7 +241,7 @@ public:
     */
    void *alloc_node(int size)
    {
-      total_size += (size / (1024 * 1024.0));
+      // total_size += (size / (1024 * 1024.0));
       // printf("alloc node: %lf\n", total_size);
       if (mempool_free_node)
       {

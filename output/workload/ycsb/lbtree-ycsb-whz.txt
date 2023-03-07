@@ -1,0 +1,8 @@
+2023年 03月 07日 星期二 20:14:42 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              lbtree
+Loads type:            3
+Workload type:         whz

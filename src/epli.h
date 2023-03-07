@@ -8,8 +8,7 @@ using namespace epltree;
 
 #define SAMPLE_M 20 // TODO:
 #define MIN_HIT_RATE 0.01
-// #define MIN_HIT_RATE 0.001
-// #define SWTABLE_DEFAULT_OPEN
+#define SWTABLE_DEFAULT_OPEN
 
 class EPLI
 {

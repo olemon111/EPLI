@@ -1,4 +1,4 @@
-2023年 03月 06日 星期一 00:36:41 CST
+2023年 03月 07日 星期二 01:34:40 CST
 GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
 Copyright (C) 2020 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -16,37 +16,4 @@ For help, type "help".
 Type "apropos word" to search for commands related to "word"...
 Reading symbols from numactl...
 (No debugging symbols found in numactl)
-(gdb) r
-Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/microbench_epli --dbname epli --load-size 100000000 --put-size 0 --get-size 10000000 --loadstype 3 --reverse 0 -t 1
-process 199836 is executing new program: /home/lbl/code/EPLI/build/microbench_epli
-[Thread debugging using libthread_db enabled]
-Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
-THREAD NUMBER:         1
-LOAD_SIZE:             100000000
-PUT_SIZE:              0
-GET_SIZE:              10000000
-DB  name:              epli
-Loads type:            3
-Reverse:               0
-read 100000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 556 ms (179.856 M values/s)
-before newdb, dram space use: 0.751698 GB
-Map addrs:0x7ffec0000000
-Current addrs:0x7ffec0000000
-Map addrs:0x7ff880000000
-Current addrs:0x7ff880000000
-[ALLOC] initializing allocator with fs size: 507 objects
-[ALLOC] initializing allocator with fs size: 507 objects
-------------------------------
-Start Testing Recovery
-[Metic-Recovery]: Recovery: cost 1912.26 ms, kops/s: 52294.3 .
-after recovery, dram space use: 0.153915 GB
-------------------------------
-------------------------------
-Start Testing Uniform Workload: Read
-wrong get: 0
-[Metic-Operate]: Operate 10000000, cost 6.42949s, kops/s: 1555.33 .
-dram space use: 0.23362 GB
-hit cnt: 25067, total get cnt: 10000000
-EPLI total dram size: 174.991 MB, alex size: 156.922, table size: 18.0681
-[Inferior 1 (process 199836) exited normally]
 (gdb) q

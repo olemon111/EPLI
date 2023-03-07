@@ -1,25 +1,30 @@
-2023年 02月 23日 星期四 00:31:22 CST
+2023年 03月 07日 星期二 18:45:53 CST
 THREAD NUMBER:         1
-LOAD_SIZE:             170000000
+LOAD_SIZE:             130000000
 PUT_SIZE:              10000000
 GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            6
 Workload type:         w
-read 180000000 values from /home/lbl/dataset/lognormal.dat in 932 ms (193.133 M values/s)
-before newdb, dram space use: 1.34794 GB
-Map addrs:0x7f6380000000
-Current addrs:0x7f6380000000
-Map addrs:0x7f5d40000000
-Current addrs:0x7f5d40000000
+read 140000000 values from /home/lbl/dataset/lognormal.dat in 735 ms (190.476 M values/s)
+before newdb, dram space use: 1.05009 GB
+Map addrs:0x7fd180000000
+Current addrs:0x7fd180000000
+Map addrs:0x7fcb40000000
+Current addrs:0x7fcb40000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
 bulk load 1000000 kvs
-[Metic-Load]: Load 170000000: cost 118.438s, kops/s: 1435.35 .
-after load, dram space use: 0.924572 GB
+[Metic-Load]: Load 130000000: cost 101.91s, kops/s: 1275.63 .
+after load, dram space use: 0.677189 GB
 ------------------------------
 Start Testing Workload: w
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 0: cost 7.11149s, kops 1406.18 .
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 8.21386s, kops 1217.45 .
 hit cnt: 0, total get cnt: 0
+EPLI total dram size: 302.87 MB, alex size: 302.855, table size: 0.0156326
+/mnt/pmem1/lbl/data used: 3382752768 bytes. (3.15043 Gib)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
+/mnt/pmem1/lbl/data used: 3382752768 bytes. (3226 Mib, 45kib. free 0 Mib, 0kib.)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Mib, 0kib. free 0 Mib, 0kib.)

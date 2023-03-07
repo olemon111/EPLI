@@ -19,7 +19,7 @@
 #include "random.h"
 #include "util/zipf/utils.h"
 
-#define REST // sleep between tests
+// #define REST // sleep between tests
 
 using epltree::Random;
 using epltree::Timer;
@@ -258,8 +258,8 @@ void load()
     cout << "Start loading ...." << endl;
     timer.Record("start");
 
-    if (dbName == "alex")
-    // if (dbName == "epli" || dbName == "alex" || dbName == "apex") // support bulk load
+    // if (dbName == "alex")
+    if (dbName == "epli" || dbName == "alex" || dbName == "apex") // support bulk load
     {
         auto values = new std::pair<uint64_t, uint64_t>[LOAD_SIZE];
         for (int i = 0; i < LOAD_SIZE; i++)
@@ -511,6 +511,16 @@ void test_workload(string type)
     cout << "------------------------------" << endl;
     cout << "Start Testing Workload: " << type << endl;
     float read_ratio = 0;
+    bool zipfian = false; // default: uniform distribution
+    float theta = 0.8;
+    // float theta = 0.5;
+    // zipfian distribution
+    if (type[type.size() - 1] == 'z')
+    {
+        zipfian = true;
+        type = type.substr(0, type.size() - 1);
+    }
+
     if (type == "r")
     {
         read_ratio = 1;
@@ -528,11 +538,22 @@ void test_workload(string type)
     uint64_t value = 0;
 
     util::FastRandom ranny(18);
+    std::default_random_engine gen;
+    zipfian_int_distribution<int> dis(0, load_pos - 1, theta);
     vector<uint64_t> rand_pos_get;
     for (uint64_t i = 0; i < GET_SIZE; i++)
     {
-        rand_pos_get.push_back(ranny.RandUint32(0, load_pos - 1));
+        if (zipfian)
+        {
+            uint32_t pos = dis(gen);
+            rand_pos_get.push_back(pos);
+        }
+        else
+        {
+            rand_pos_get.push_back(ranny.RandUint32(0, load_pos - 1));
+        }
     }
+    std::random_shuffle(rand_pos_get.begin(), rand_pos_get.end());
 
     timer.Clear();
     timer.Record("start");
@@ -560,11 +581,81 @@ void test_workload(string type)
               << "kops " << (double)(GET_SIZE) / (double)us_times * 1000.0 << " ." << std::endl;
 }
 
+// split the loaded data into two parts
+// after perform the left part, switch to the other part
+void test_dynamic_workload(size_t interval = 10)
+{
+    cout << "------------------------------" << endl;
+    cout << "Start Testing Dynamic Workload: " << endl;
+    float theta = 0.99;
+
+    int wrong_get = 0;
+    uint64_t value = 0;
+    // prepare get position
+    std::default_random_engine gen_left;
+    std::default_random_engine gen_right;
+    zipfian_int_distribution<int> dis_left(0, load_pos / 2, theta);
+    zipfian_int_distribution<int> dis_right(load_pos / 2, load_pos - 1, theta);
+    vector<uint64_t> pos_left, pos_right;
+
+    for (uint64_t i = 0; i < GET_SIZE / 2; i++)
+    {
+        pos_left.push_back(dis_left(gen_left));
+        pos_right.push_back(dis_right(gen_right));
+    }
+    std::random_shuffle(pos_left.begin(), pos_left.end());
+    std::random_shuffle(pos_right.begin(), pos_right.end());
+
+    // Peform GET
+    uint64_t i = 0; // get count
+    uint64_t pre = 0;
+
+    TaskTimer task_timer;
+    task_timer.start(interval, [interval, &i, &pre]
+                     {
+                        std::cout << "kops: "  <<(double) (i - pre) / (double)interval << std::endl;
+                        pre = i; });
+
+    timer.Clear();
+    timer.Record("start");
+    // left part
+    for (; i < GET_SIZE / 2; i++)
+    {
+        db->Get(data_base[pos_left[i]], value);
+        if (value != data_base[pos_left[i]])
+        {
+            wrong_get++;
+        }
+    }
+    cout << "Switch hotspot ===========" << endl;
+    // switch to the right part
+    for (; i < GET_SIZE; i++)
+    {
+        db->Get(data_base[pos_right[i]], value);
+        if (value != data_base[pos_right[i]])
+        {
+            wrong_get++;
+        }
+    }
+    timer.Record("stop");
+    us_times = timer.Microsecond("stop", "start");
+    std::cout << "wrong get: " << wrong_get << std::endl;
+    std::cout << "[Metic-Operate]: Operate " << GET_SIZE << ": "
+              << "cost " << us_times / 1000000.0 << "s, "
+              << "kops " << (double)(GET_SIZE) / (double)us_times * 1000.0 << " ." << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
     init_opts(argc, argv);
     db->Init();
     load();
+    // test dynamic workload
+    if (workload_type[0] == 'd')
+    {
+        test_dynamic_workload();
+    }
+    // test normal read-write workload
     if (workload_type == "rw")
     {
         test_workload("r"); // read-only

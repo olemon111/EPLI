@@ -292,6 +292,22 @@ namespace apex
       return size;
     }
 
+    double get_PM_size()
+    {
+      double size = 0;
+      for (NodeIterator node_it = NodeIterator(this); !node_it.is_end();
+           node_it.next())
+      {
+        AlexNode<T, P> *cur = node_it.current();
+        if (cur->is_leaf_)
+        {
+          AlexDataNode<T, P> *cur_data_node = reinterpret_cast<AlexDataNode<T, P> *>(cur);
+          size += cur_data_node->get_PM_size();
+        }
+      }
+      return size;
+    }
+
     void set_default_parameters()
     {
       root_node_ = nullptr;

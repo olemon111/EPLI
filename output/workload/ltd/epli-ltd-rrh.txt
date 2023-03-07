@@ -1,32 +1,33 @@
-2023年 02月 23日 星期四 01:03:19 CST
+2023年 03月 07日 星期二 18:23:58 CST
 THREAD NUMBER:         1
-LOAD_SIZE:             320000000
+LOAD_SIZE:             230000000
 PUT_SIZE:              10000000
 GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            5
 Workload type:         rrh
-read 330000000 values from /home/lbl/dataset/generate_random_osm_longtitudes.dat in 1664 ms (198.317 M values/s)
-before newdb, dram space use: 2.46549 GB
-Map addrs:0x7f7440000000
-Current addrs:0x7f7440000000
-Map addrs:0x7f6e00000000
-Current addrs:0x7f6e00000000
+read 240000000 values from /home/lbl/dataset/generate_random_osm_longtitudes.dat in 1240 ms (193.548 M values/s)
+before newdb, dram space use: 1.79505 GB
+Map addrs:0x7f7dc0000000
+Current addrs:0x7f7dc0000000
+Map addrs:0x7f7780000000
+Current addrs:0x7f7780000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
-[Metic-Load]: Load 320000000: cost 283.734s, kops/s: 1127.82 .
-after load, dram space use: 0.740555 GB
+[Metic-Load]: Load 230000000: cost 200.814s, kops/s: 1145.34 .
+after load, dram space use: 0.541496 GB
 ------------------------------
 Start Testing Workload: r
-[STATUS-00] #bu:     256 / #elems:    1305 / full%: 169.9219% / expands:  256 / max expands:  3
-[RESIZE-00] to #bu    1024 = MB:    0.06    | took:        109004 ti = 0.000052 s
-[STATUS-00] #bu:    1024 / #elems:    5102 / full%: 166.0807% / expands: 1024 / max expands:  4
-[RESIZE-00] to #bu    4096 = MB:    0.25    | took:        397188 ti = 0.000189 s
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 1: cost 4.67121s, kops 2140.77 .
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 6.76259s, kops 1478.72 .
 ------------------------------
 Start Testing Workload: rh
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 0.7: cost 5.97366s, kops 1674.02 .
-hit cnt: 1, total get cnt: 224409
+[Metic-Operate]: Operate 10000000 read_ratio 0.7: cost 7.20796s, kops 1387.35 .
+hit cnt: 380427, total get cnt: 17000000
+EPLI total dram size: 553.465 MB, alex size: 530.483, table size: 22.9814
+/mnt/pmem1/lbl/data used: 6037740032 bytes. (5.62308 Gib)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
+/mnt/pmem1/lbl/data used: 6037740032 bytes. (5758 Mib, 38kib. free 0 Mib, 0kib.)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Mib, 0kib. free 0 Mib, 0kib.)

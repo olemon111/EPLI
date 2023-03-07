@@ -1,4 +1,4 @@
-2023年 03月 01日 星期三 14:06:44 CST
+2023年 03月 07日 星期二 21:14:30 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              0
@@ -6,58 +6,75 @@ GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            4
 Reverse:               0
-read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2019 ms (198.118 M values/s)
-before newdb, dram space use: 2.98693 GB
-Map addrs:0x7f2fc0000000
-Current addrs:0x7f2fc0000000
-Map addrs:0x7f2980000000
-Current addrs:0x7f2980000000
+read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2052 ms (194.932 M values/s)
+before newdb, dram space use: 2.9872 GB
+Map addrs:0x7ff100000000
+Current addrs:0x7ff100000000
+Map addrs:0x7feac0000000
+Current addrs:0x7feac0000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
-[Metic-Load]: Load 400000000: cost 352.1s, kops/s: 1136.04 .
-after load, dram space use: 0.931213 GB
+bulk load 400000000 kvs
+[Metic-Load]: Load 400000000: cost 57.8837s, kops/s: 6910.4 .
+after load, dram space use: 7.00429 GB
+hit cnt: 0, total get cnt: 0
+EPLI total dram size: 630.794 MB, alex size: 630.779, table size: 0.0156326
+/mnt/pmem1/lbl/data used: 7314285824 bytes. (6.81196 Gib)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
 ------------------------------
 Start Testing Uniform Workload: Read
-Close SWTable with hit rate: 4.82854e-06, hit_cnt: 1, tot_get:207102
+Close SWTable with hit rate: 1.96881e-05, hit_cnt: 1, tot_get:50792
 wrong get: 0
-[Metic-Operate]: Operate 10000000, cost 4.91445s, kops/s: 2034.82 .
-dram space use: 0.975262 GB
-hit cnt: 1, total get cnt: 207102
-EPLI total dram size: 917.051 MB, alex size: 916.735, table size: 0.316048
+[Metic-Operate]: Operate 10000000, cost 4.72135s, kops/s: 2118.04 .
+dram space use: 7.05611 GB
+hit cnt: 1, total get cnt: 50792
+EPLI total dram size: 630.857 MB, alex size: 630.779, table size: 0.0784378
+/mnt/pmem1/lbl/data used: 7314285824 bytes. (6.81196 Gib)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
 ------------------------------
 Start Testing Zipfian Workload
 --------------
 Close SWTable with hit rate: 0.000361664, hit_cnt: 1, tot_get:2765
 wrong get: 0
-[Metic-Operate]: Operate 10000000 theta: 0.6, cost 4.80054s, kops/s: 2083.1 .
-dram space use: 0.998856 GB
+[Metic-Operate]: Operate 10000000 theta: 0.6, cost 4.65055s, kops/s: 2150.28 .
+dram space use: 7.0724 GB
 hit cnt: 1, total get cnt: 2765
-EPLI total dram size: 917.053 MB, alex size: 916.735, table size: 0.318245
+EPLI total dram size: 630.859 MB, alex size: 630.779, table size: 0.0803909
+/mnt/pmem1/lbl/data used: 7314285824 bytes. (6.81196 Gib)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
 --------------
 Close SWTable with hit rate: 0.00077821, hit_cnt: 1, tot_get:1285
 wrong get: 0
-[Metic-Operate]: Operate 10000000 theta: 0.7, cost 4.7596s, kops/s: 2101.02 .
-dram space use: 0.998856 GB
+[Metic-Operate]: Operate 10000000 theta: 0.7, cost 4.63244s, kops/s: 2158.69 .
+dram space use: 7.0724 GB
 hit cnt: 1, total get cnt: 1285
-EPLI total dram size: 917.055 MB, alex size: 916.735, table size: 0.319405
+EPLI total dram size: 630.86 MB, alex size: 630.779, table size: 0.0813675
+/mnt/pmem1/lbl/data used: 7314285824 bytes. (6.81196 Gib)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
 --------------
 Close SWTable with hit rate: 0.00990099, hit_cnt: 1, tot_get:101
 wrong get: 0
-[Metic-Operate]: Operate 10000000 theta: 0.8, cost 4.6038s, kops/s: 2172.12 .
-dram space use: 0.998856 GB
+[Metic-Operate]: Operate 10000000 theta: 0.8, cost 4.50305s, kops/s: 2220.72 .
+dram space use: 7.0724 GB
 hit cnt: 1, total get cnt: 101
-EPLI total dram size: 917.055 MB, alex size: 916.735, table size: 0.319466
+EPLI total dram size: 630.86 MB, alex size: 630.779, table size: 0.0814896
+/mnt/pmem1/lbl/data used: 7314285824 bytes. (6.81196 Gib)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
 --------------
 Close SWTable with hit rate: 0.00990099, hit_cnt: 1, tot_get:101
 wrong get: 0
-[Metic-Operate]: Operate 10000000 theta: 0.9, cost 4.22944s, kops/s: 2364.38 .
-dram space use: 0.998856 GB
+[Metic-Operate]: Operate 10000000 theta: 0.9, cost 4.19874s, kops/s: 2381.66 .
+dram space use: 7.0724 GB
 hit cnt: 1, total get cnt: 101
-EPLI total dram size: 917.055 MB, alex size: 916.735, table size: 0.319527
+EPLI total dram size: 630.86 MB, alex size: 630.779, table size: 0.0816116
+/mnt/pmem1/lbl/data used: 7314285824 bytes. (6.81196 Gib)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
 --------------
 wrong get: 0
-[Metic-Operate]: Operate 10000000 theta: 0.99, cost 3.81934s, kops/s: 2618.25 .
-dram space use: 0.999107 GB
-hit cnt: 4.83941e+06, total get cnt: 10000000
-EPLI total dram size: 923.614 MB, alex size: 916.735, table size: 6.87849
+[Metic-Operate]: Operate 10000000 theta: 0.99, cost 3.97904s, kops/s: 2513.17 .
+dram space use: 7.07265 GB
+hit cnt: 4.83932e+06, total get cnt: 10000000
+EPLI total dram size: 637.51 MB, alex size: 630.779, table size: 6.73127
+/mnt/pmem1/lbl/data used: 7314285824 bytes. (6.81196 Gib)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)

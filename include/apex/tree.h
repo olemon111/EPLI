@@ -22,6 +22,7 @@ public:
   // Return #keys really scanned
   virtual int range_scan_by_size(const T &, uint32_t, V *&result, bool epoch = false) = 0;
   virtual double get_DRAM_size();
+  virtual double get_PM_size();
 
   // Do most initialization work here
   Tree<T, P> *create_tree()

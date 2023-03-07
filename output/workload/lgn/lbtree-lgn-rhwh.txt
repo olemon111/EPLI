@@ -1,23 +1,26 @@
-2023年 02月 15日 星期三 15:08:23 CST
+2023年 03月 07日 星期二 02:58:09 CST
 THREAD NUMBER:         1
-LOAD_SIZE:             170000000
+LOAD_SIZE:             130000000
 PUT_SIZE:              10000000
 GET_SIZE:              10000000
 DB  name:              lbtree
 Loads type:            6
 Workload type:         rhwh
-read 180000000 values from /home/lbl/dataset/lognormal.dat in 950 ms (189.474 M values/s)
-before newdb, dram space use: 1.34802 GB
-init lbtree wrapper
+read 140000000 values from /home/lbl/dataset/lognormal.dat in 751 ms (186.418 M values/s)
+before newdb, dram space use: 1.05005 GB
+Total NVM pool size: 42949672960 
+Using actual NVM
+NVM mapping address: 0x7f9780000000, size: 42949672960
+1 keys bulkloaded (deleted? 1), root is 0, bfill 1.000000. lbt->check() start: 0, end: 0
 Start loading ....
-[Metic-Load]: Load 170000000: cost 288.365s, kops/s: 589.53 .
-after load, dram space use: 0.83889 GB
+[Metic-Load]: Load 130000000: cost 215.099s, kops/s: 604.374 .
+after load, dram space use: 0.606926 GB
 ------------------------------
 Start Testing Workload: rh
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 0.7: cost 11.6881s, kops 855.571 .
+[Metic-Operate]: Operate 10000000 read_ratio 0.7: cost 11.5534s, kops 865.549 .
 ------------------------------
 Start Testing Workload: wh
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 15.1551s, kops 659.846 .
-lbtree dram size: 860.413 MB
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 14.8933s, kops 671.443 .
+lbtree dram size: 669.227 MB
