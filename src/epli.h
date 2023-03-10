@@ -6,9 +6,12 @@
 using namespace std;
 using namespace epltree;
 
-#define SAMPLE_M 20 // TODO:
-#define MIN_HIT_RATE 0.01
-#define SWTABLE_DEFAULT_OPEN
+#define SAMPLE_M 20 // change in dynamic workload test
+#define MIN_HIT_RATE 0.1
+// #define USE_SWTABLE // comment this line to disable SWTable
+#ifdef USE_SWTABLE
+// #define SWTABLE_AUTO_CLOSE // comment this line to close SWTable when hit rate is too low
+#endif
 
 class EPLI
 {
@@ -19,13 +22,13 @@ public:
     void Init(bool recover = false)
     {
         tree = new EPLTree(recover);
+#ifdef USE_SWTABLE
         table = new SWTable();
         table->Init();
-#ifdef SWTABLE_DEFAULT_OPEN
         table_on = true;
-#endif
         hit_cnt = 0;
         tot_get = 0;
+#endif
     }
 
     void Recover(size_t load_size)
@@ -45,13 +48,12 @@ public:
 
     void Get(key_type key, val_type &val)
     {
-#ifdef SWTABLE_DEFAULT_OPEN
+#ifdef USE_SWTABLE
         if (!table_on) // SWTable closed
         {
             tree->Get(key, val);
             return;
         }
-#endif
         /* search in SW-Table */
         val = table->Get(key);
         if (val)
@@ -67,7 +69,7 @@ public:
             }
         }
         tot_get++;
-#ifdef SWTABLE_DEFAULT_OPEN
+#ifdef SWTABLE_AUTO_CLOSE
         /* close SWTable when hit rate is too low */
         if (hit_cnt > 0 && hit_cnt < MIN_HIT_RATE * tot_get)
         {
@@ -75,28 +77,40 @@ public:
             cout << "Close SWTable with hit rate: " << hit_cnt / (double)tot_get << ", hit_cnt: " << hit_cnt << ", tot_get:" << tot_get << endl;
         }
 #endif
+#else
+        tree->Get(key, val);
+#endif
     }
 
     void Reset() // open swtable
     {
+#ifdef USE_SWTABLE
+        cout << "reset swtable" << endl;
         table_on = true;
         tot_get = 0;
         hit_cnt = 0;
+#endif
     }
 
     void Info()
     {
-        cout << "hit cnt: " << hit_cnt << ", total get cnt: " << tot_get << endl;
-        // table->Print();
         double index_sz = tree->get_size();
+#ifdef USE_SWTABLE
+        cout << "hit cnt: " << hit_cnt << ", total get cnt: " << tot_get << endl;
         double table_sz = table->get_size();
+        // table->Print();
         cout << "EPLI total dram size: " << (index_sz + table_sz) / 1024.0 / 1024.0 << " MB, alex size: " << index_sz / 1024.0 / 1024.0 << ", table size: " << table_sz / 1024.0 / 1024.0 << endl;
+#else
+        cout << "EPLI total dram size: " << index_sz / 1024.0 / 1024.0 << " MB, alex size: " << index_sz / 1024.0 / 1024.0 << endl;
+#endif
     }
 
 private:
     EPLTree *tree;
+#ifdef USE_SWTABLE
     SWTable *table;
     bool table_on; // open SWTable for tilt workload
     double hit_cnt;
     size_t tot_get;
+#endif
 };

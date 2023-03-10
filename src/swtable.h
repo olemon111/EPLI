@@ -6,7 +6,13 @@
 
 class SWTable
 {
-    const static size_t num_buckets = 256; // TODO:
+    // const static size_t num_buckets = 256; // TODO:
+    // const static size_t num_buckets = 1024;
+    // const static size_t num_buckets = 4096;
+    const static size_t num_buckets = 16384;
+    // const static size_t num_buckets = 65536;
+    // const static size_t num_buckets = 262144;
+    // const static size_t num_buckets = 1048576;
     size_t num_threads = 1;
 
 public:

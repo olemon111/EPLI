@@ -1,0 +1,27 @@
+2023年 03月 09日 星期四 02:00:49 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              epli
+Loads type:            3
+Workload type:         whz
+read 410000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 1975 ms (207.595 M values/s)
+before newdb, dram space use: 3.06176 GB
+Map addrs:0x7f8a00000000
+Current addrs:0x7f8a00000000
+Map addrs:0x7f83c0000000
+Current addrs:0x7f83c0000000
+Start loading ....
+[Metic-Load]: Load 400000000: cost 314.154s, kops/s: 1273.26 .
+after load, dram space use: 2.06942 GB
+------------------------------
+Start Testing Workload: whz
+theta: 0.8
+wrong get: 272319
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 7.05646s, kops 1417.14 .
+EPLI total dram size: 896.909 MB, alex size: 896.909
+/mnt/pmem1/lbl/data used: 9766248704 bytes. (9.09553 Gib)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
+/mnt/pmem1/lbl/data used: 9766248704 bytes. (9313 Mib, 840kib. free 0 Mib, 0kib.)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Mib, 0kib. free 0 Mib, 0kib.)

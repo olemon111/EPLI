@@ -349,8 +349,8 @@ void test_uniform_warm_up(uint64_t interval = 100) // ms
 {
 #ifdef REST
     sleep(20);
-    remove_cache();
 #endif
+    remove_cache();
     cout << "------------------------------" << endl;
     cout << "Start Testing Uniform Workload Warm up: \n";
     util::FastRandom ranny(18);
@@ -403,8 +403,8 @@ void test_uniform(string rwtype)
 {
 #ifdef REST
     sleep(40);
-    remove_cache();
 #endif
+    remove_cache();
     cout << "------------------------------" << endl;
     cout << "Start Testing Uniform Workload: ";
     size_t tot;
@@ -474,8 +474,8 @@ void test_all_zipfian()
     util::FastRandom ranny(18);
     vector<uint32_t> rand_pos;
     size_t tot = GET_SIZE;
-    std::vector<float> thetas = {0.99};
-    // std::vector<float> thetas = {0.6, 0.7, 0.8, 0.9, 0.99};
+    // std::vector<float> thetas = {0.99};
+    std::vector<float> thetas = {0.6, 0.7, 0.8, 0.9, 0.99};
     if (Reverse)
     {
         reverse(thetas.begin(), thetas.end());
@@ -485,8 +485,8 @@ void test_all_zipfian()
         cout << "--------------" << endl;
 #ifdef REST
         sleep(60);
-        remove_cache();
 #endif
+        remove_cache();
         std::default_random_engine gen;
         zipfian_int_distribution<int> dis(0, load_pos - 1, thetas[k]);
         rand_pos.clear();
@@ -768,7 +768,7 @@ int main(int argc, char *argv[])
 #endif
     load();
     db->Info();
-    test_uniform("r");
+    // test_uniform("r");
     test_all_zipfian();
     return 0;
 }

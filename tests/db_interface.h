@@ -453,7 +453,11 @@ namespace dbInter
   public:
     FastFairDb() : tree_(nullptr) {}
     FastFairDb(btree *tree) : tree_(tree) {}
-    virtual ~FastFairDb() {}
+    virtual ~FastFairDb()
+    {
+      NVM::env_exit();
+      delete tree_;
+    }
     void Init()
     {
       NVM::data_init();

@@ -1,4 +1,4 @@
-2023年 03月 07日 星期二 19:04:41 CST
+2023年 03月 08日 星期三 00:38:20 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              10000000
@@ -6,24 +6,24 @@ GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            3
 Workload type:         whz
-read 410000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 2067 ms (198.355 M values/s)
-before newdb, dram space use: 3.0615 GB
-Map addrs:0x7fd7c0000000
-Current addrs:0x7fd7c0000000
-Map addrs:0x7fd180000000
-Current addrs:0x7fd180000000
+read 410000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 2019 ms (203.071 M values/s)
+before newdb, dram space use: 3.06171 GB
+Map addrs:0x7f6c80000000
+Current addrs:0x7f6c80000000
+Map addrs:0x7f6640000000
+Current addrs:0x7f6640000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
-[Metic-Load]: Load 400000000: cost 315.641s, kops/s: 1267.26 .
-after load, dram space use: 2.06957 GB
+[Metic-Load]: Load 400000000: cost 322.848s, kops/s: 1238.97 .
+after load, dram space use: 2.06952 GB
 ------------------------------
 Start Testing Workload: whz
-Close SWTable with hit rate: 0.00262467, hit_cnt: 1, tot_get:381
-wrong get: 272319
-[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 7.23672s, kops 1381.84 .
-hit cnt: 1, total get cnt: 381
-EPLI total dram size: 896.925 MB, alex size: 896.909, table size: 0.0156326
+Close SWTable with hit rate: 2.20775e-05, hit_cnt: 1, tot_get:45295
+wrong get: 266049
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 7.42624s, kops 1346.58 .
+hit cnt: 1, total get cnt: 45295
+EPLI total dram size: 896.983 MB, alex size: 896.909, table size: 0.0741653
 /mnt/pmem1/lbl/data used: 9766248704 bytes. (9.09553 Gib)
 /mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
 /mnt/pmem1/lbl/data used: 9766248704 bytes. (9313 Mib, 840kib. free 0 Mib, 0kib.)

@@ -1,0 +1,15 @@
+2023年 03月 09日 星期四 00:08:17 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              epli
+Loads type:            4
+Workload type:         d
+read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1968 ms (208.333 M values/s)
+before newdb, dram space use: 3.0616 GB
+Map addrs:0x7f8f00000000
+Current addrs:0x7f8f00000000
+Map addrs:0x7f88c0000000
+Current addrs:0x7f88c0000000
+Start loading ....

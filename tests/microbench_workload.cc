@@ -41,6 +41,7 @@ size_t PUT_SIZE = 10000000;
 size_t GET_SIZE = 10000000;
 int Loads_type = 3;
 string workload_type = "r";
+float theta = 0.99;
 
 std::vector<uint64_t> data_base;
 KvDB *db = nullptr;
@@ -382,7 +383,8 @@ void init_opts(int argc, char *argv[])
         {"dbname", required_argument, NULL, 0},       // 4
         {"loadstype", required_argument, NULL, 0},    // 5
         {"workloadtype", required_argument, NULL, 0}, // 6
-        {"help", no_argument, NULL, 'h'},             // 7
+        {"theta", required_argument, NULL, 0},        // 7
+        {"help", no_argument, NULL, 'h'},             // 8
         {NULL, 0, NULL, 0}};
 
     int c;
@@ -418,6 +420,9 @@ void init_opts(int argc, char *argv[])
                 workload_type = optarg;
                 break;
             case 7:
+                theta = atof(optarg);
+                break;
+            case 8:
                 show_help(argv[0]);
                 // return 0;
                 exit(0);
@@ -508,17 +513,17 @@ void init_opts(int argc, char *argv[])
 
 void test_workload(string type)
 {
+    clear_cache();
     cout << "------------------------------" << endl;
     cout << "Start Testing Workload: " << type << endl;
     float read_ratio = 0;
     bool zipfian = false; // default: uniform distribution
-    float theta = 0.8;
-    // float theta = 0.5;
     // zipfian distribution
     if (type[type.size() - 1] == 'z')
     {
         zipfian = true;
         type = type.substr(0, type.size() - 1);
+        cout << "theta: " << theta << endl;
     }
 
     if (type == "r")
@@ -540,6 +545,8 @@ void test_workload(string type)
     util::FastRandom ranny(18);
     std::default_random_engine gen;
     zipfian_int_distribution<int> dis(0, load_pos - 1, theta);
+    std::mt19937_64 gen_uniform(std::random_device{}());
+    std::uniform_int_distribution<uint32_t> dis_uniform(0, load_pos - 1);
     vector<uint64_t> rand_pos_get;
     for (uint64_t i = 0; i < GET_SIZE; i++)
     {
@@ -550,7 +557,9 @@ void test_workload(string type)
         }
         else
         {
-            rand_pos_get.push_back(ranny.RandUint32(0, load_pos - 1));
+            uint32_t pos = dis_uniform(gen_uniform);
+            // rand_pos_get.push_back(ranny.RandUint32(0, load_pos - 1));
+            rand_pos_get.push_back(pos);
         }
     }
     std::random_shuffle(rand_pos_get.begin(), rand_pos_get.end());
@@ -583,19 +592,16 @@ void test_workload(string type)
 
 // split the loaded data into two parts
 // after perform the left part, switch to the other part
-void test_dynamic_workload(size_t interval = 10)
+void test_dynamic_workload(size_t interval = 100)
 {
     cout << "------------------------------" << endl;
-    cout << "Start Testing Dynamic Workload: " << endl;
-    float theta = 0.99;
+    cout << "Start Testing Dynamic Workload, theta: " << theta << endl;
 
     int wrong_get = 0;
     uint64_t value = 0;
     // prepare get position
-    std::default_random_engine gen_left;
-    std::default_random_engine gen_right;
-    zipfian_int_distribution<int> dis_left(0, load_pos / 2, theta);
-    zipfian_int_distribution<int> dis_right(load_pos / 2, load_pos - 1, theta);
+    std::default_random_engine gen_left, gen_right;
+    zipfian_int_distribution<int> dis_left(0, load_pos / 2, theta), dis_right(load_pos / 2 + 1, load_pos - 1, theta);
     vector<uint64_t> pos_left, pos_right;
 
     for (uint64_t i = 0; i < GET_SIZE / 2; i++)
@@ -610,10 +616,11 @@ void test_dynamic_workload(size_t interval = 10)
     uint64_t i = 0; // get count
     uint64_t pre = 0;
 
+    // print real-time throughput
     TaskTimer task_timer;
     task_timer.start(interval, [interval, &i, &pre]
                      {
-                        std::cout << "kops: "  <<(double) (i - pre) / (double)interval << std::endl;
+                        std::cout  <<(double) (i - pre) / (double)interval << std::endl;
                         pre = i; });
 
     timer.Clear();
@@ -627,12 +634,12 @@ void test_dynamic_workload(size_t interval = 10)
             wrong_get++;
         }
     }
-    cout << "Switch hotspot ===========" << endl;
+    cout << "(switch)" << endl;
     // switch to the right part
     for (; i < GET_SIZE; i++)
     {
-        db->Get(data_base[pos_right[i]], value);
-        if (value != data_base[pos_right[i]])
+        db->Get(data_base[pos_right[i - GET_SIZE / 2]], value);
+        if (value != data_base[pos_right[i - GET_SIZE / 2]])
         {
             wrong_get++;
         }
@@ -654,6 +661,7 @@ int main(int argc, char *argv[])
     if (workload_type[0] == 'd')
     {
         test_dynamic_workload();
+        return 0;
     }
     // test normal read-write workload
     if (workload_type == "rw")

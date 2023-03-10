@@ -1,0 +1,23 @@
+2023年 03月 08日 星期三 01:42:24 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              apex
+Loads type:            3
+Workload type:         whz
+read 410000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 2046 ms (200.391 M values/s)
+before newdb, dram space use: 3.06178 GB
+creating a new pool
+pool opened at: 0x7fd180000000
+Intial allocator: 1
+Start loading ....
+[Metic-Load]: Load 400000000: cost 289.464s, kops/s: 1381.86 .
+after load, dram space use: 3.96153 GB
+------------------------------
+Start Testing Workload: whz
+theta: 0.5
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 7.98584s, kops 1252.22 .
+apex DRAM size: 1704.95 MB.
+apex PM size: 7.27156 GB.

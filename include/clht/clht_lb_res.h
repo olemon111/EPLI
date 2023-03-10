@@ -44,14 +44,18 @@ extern __thread ssmem_allocator_t *clht_alloc;
 #define true 1
 #define false 0
 
-#define MAX_BUCKET_SIZE 512 * 1024 // TODO:
+// #define MAX_BUCKET_SIZE 2 * 1024 * 1024
+#define MAX_BUCKET_SIZE 1024 * 1024
+// #define MAX_BUCKET_SIZE 512 * 1024 // TODO: max size: *64B = 32MB
 #define MAX_ACTIVE_ELIMINATION_TIME 512
 /* #define DEBUG */
 
 #define CLHT_READ_ONLY_FAIL 1
 #define CLHT_HELP_RESIZE 0
 #define CLHT_PERC_EXPANSIONS 1
-#define CLHT_MAX_EXPANSIONS 24
+// #define CLHT_MAX_EXPANSIONS 6
+#define CLHT_MAX_EXPANSIONS 12
+// #define CLHT_MAX_EXPANSIONS 24 // TODO:
 #define CLHT_PERC_FULL_DOUBLE 50 /* % */
 #define CLHT_RATIO_DOUBLE 2
 #define CLHT_OCCUP_AFTER_RES 40

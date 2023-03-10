@@ -1,0 +1,23 @@
+2023年 03月 08日 星期三 02:02:01 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              fastfair
+Loads type:            3
+Workload type:         whz
+read 410000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 1969 ms (208.228 M values/s)
+before newdb, dram space use: 3.06179 GB
+Map addrs:0x7f1480000000
+Current addrs:0x7f1480000000
+[Fast-Fair]: root is 0x7f1480000000, btree is 0x556c592e8f80.
+Start loading ....
+[Metic-Load]: Load 400000000: cost 1227.42s, kops/s: 325.888 .
+after load, dram space use: 0.000263214 GB
+------------------------------
+Start Testing Workload: whz
+theta: 0.5
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 28.6738s, kops 348.75 .
+fast&fair tree size is 11977.765381 MB.
+/mnt/pmem1/lbl/data used: 12559597312 bytes. (11.697 Gib)

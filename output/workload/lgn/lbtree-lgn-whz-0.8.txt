@@ -1,0 +1,24 @@
+2023年 03月 08日 星期三 04:54:39 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             130000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              lbtree
+Loads type:            6
+Workload type:         whz
+read 140000000 values from /home/lbl/dataset/lognormal.dat in 730 ms (191.781 M values/s)
+before newdb, dram space use: 1.05006 GB
+Total NVM pool size: 42949672960 
+Using actual NVM
+NVM mapping address: 0x7f3540000000, size: 42949672960
+1 keys bulkloaded (deleted? 1), root is 0, bfill 1.000000. lbt->check() start: 0, end: 0
+Start loading ....
+[Metic-Load]: Load 130000000: cost 214.619s, kops/s: 605.725 .
+after load, dram space use: 0.606926 GB
+------------------------------
+Start Testing Workload: whz
+theta: 0.8
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 14.6069s, kops 684.607 .
+lbtree DRAM size: 327.352 MB
+lbtree PM size: 3.30555 GB

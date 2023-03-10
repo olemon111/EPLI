@@ -1,0 +1,72 @@
+2023年 03月 08日 星期三 10:20:31 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              epli
+Loads type:            4
+Workload type:         d
+read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1978 ms (207.28 M values/s)
+before newdb, dram space use: 3.06174 GB
+Map addrs:0x7fadc0000000
+Current addrs:0x7fadc0000000
+Map addrs:0x7fa780000000
+Current addrs:0x7fa780000000
+[ALLOC] initializing allocator with fs size: 507 objects
+[ALLOC] initializing allocator with fs size: 507 objects
+Start loading ....
+bulk load 400000000 kvs
+[Metic-Load]: Load 400000000: cost 57.2427s, kops/s: 6987.79 .
+after load, dram space use: 7.00433 GB
+------------------------------
+Start Testing Dynamic Workload, theta: 0.5
+Close SWTable with hit rate: 7.5188e-05, hit_cnt: 1, tot_get:13300
+1941.61
+2114.7
+2141.18
+2148.49
+2134.96
+2142.73
+2162.56
+2166.85
+2168.22
+2169.66
+2160.73
+2164.23
+2162.07
+2166.71
+2150.77
+2159.63
+2170.43
+2174.8
+2180.54
+2176.34
+2177.01
+2170
+2180.3
+(switch)
+2120.61
+2118.99
+2142.59
+2168.96
+2172.7
+2178.74
+2179.14
+2185.16
+2190.25
+2182.5
+2183.08
+2165.22
+2186.85
+2200.12
+2197.53
+2198.63
+2190.85
+2200.16
+2196.38
+2198.9
+2185.41
+2168.46
+2187.48
+wrong get: 0
+[Metic-Operate]: Operate 10000000: cost 4.62487s, kops 2162.22 .

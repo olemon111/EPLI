@@ -160,7 +160,6 @@ function main() {
 main apex 400000000 10000000 0 1 0 r ycsb
 # main epli 400000000 10000000 0 1 0 w ycsb
 # main epli 400000000 10000000 0 1 0 a llt
-sleep 60
 main lbtree 400000000 10000000 0 1 0 r ycsb
 # main apex 400000000 10000000 0 1 0 a
 # main epli 2000000 10000000 0 1 0 a
