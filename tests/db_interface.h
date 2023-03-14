@@ -235,6 +235,7 @@ namespace dbInter
 
     int Update(uint64_t key, uint64_t value) // TODO:
     {
+      epli_->Update(key, value);
       return 1;
     }
 
@@ -245,6 +246,12 @@ namespace dbInter
 
     int Scan(uint64_t start_key, int len, std::vector<std::pair<uint64_t, uint64_t>> &results)
     {
+    }
+
+    int RangeScan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
+    {
+      epli_->RangeScan(start_key, end_key, results);
+      return 1;
     }
 
   private:

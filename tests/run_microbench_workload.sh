@@ -59,7 +59,7 @@ function test_read_write() {
 function run_all() {
     dbs="epli"
     # dbs="apex"
-    # dbs="epli apex lbtree fastfair"
+    # dbs="lbtree fastfair"
     for dbname in $dbs; do
         echo "Run: " $dbname
         Run $dbname $1 $2 $3 $4 $5 $6 $7
@@ -173,20 +173,9 @@ function main() {
 # main epli 400000000 10000000 0 1 d llt 0.99
 
 # # Test Skew workload
-# main epli 16000000 8000000 0 1 rz llt 0.99
-# main epli 16000000 16000000 0 1 rz llt 0.99
-# main epli 16000000 32000000 0 1 rz llt 0.99
-
-# main all 16000000 64000000 0 1 rz llt 0.99
-# main all 16000000 64000000 0 1 rz llt 0.9
-# main all 16000000 64000000 0 1 rz llt 0.8
-# main all 16000000 64000000 0 1 rz llt 0.7
-# main all 16000000 64000000 0 1 rz llt 0.6
-# main all 16000000 64000000 0 1 r llt
-
-main all 16000000 128000000 0 1 rz llt 0.99
+# main all 16000000 128000000 0 1 rz llt 0.99
 main all 16000000 128000000 0 1 rz llt 0.9
-main all 16000000 128000000 0 1 rz llt 0.8
-main all 16000000 128000000 0 1 rz llt 0.7
-main all 16000000 128000000 0 1 rz llt 0.6
-main all 16000000 128000000 0 1 r llt
+# main all 16000000 128000000 0 1 rz llt 0.8
+# main all 16000000 128000000 0 1 rz llt 0.7
+# main all 16000000 128000000 0 1 rz llt 0.6
+# main all 16000000 128000000 0 1 r llt

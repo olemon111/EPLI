@@ -23,6 +23,7 @@ function test_read() {
     scansize=$4
     thread=$5
 
+    rm -f /mnt/pmem1/lbl/*
     date | tee output/multi_thread/multi-${dbname}-${Loadname}-th${thread}-${workloadtype}.txt
     # gdb --args \
     numactl --cpubind=1 --membind=1 ${BUILDDIR}/multi_bench --dbname ${dbname} \
@@ -41,19 +42,29 @@ function test_write() {
     scansize=$4
     thread=$5
 
+    rm -f /mnt/pmem1/lbl/*
     date | tee output/multi_thread/multi-${dbname}-${Loadname}-th${thread}-${workloadtype}.txt
     # gdb --args \
     numactl --cpubind=1 --membind=1 ${BUILDDIR}/multi_bench --dbname ${dbname} \
-    --loadstype 4 --load-size ${loadnum} --put-size ${opnum} --get-size 0 --workloadtype ${workloadtype} \
+    --loadstype 4 --load-size ${loadnum} --put-size ${opnum} --get-size ${opnum} --workloadtype ${workloadtype} \
         -t $thread | tee -a output/multi_thread/multi-${dbname}-${Loadname}-th${thread}-${workloadtype}.txt
 
     echo numactl --cpubind=1 --membind=1 ${BUILDDIR}/multi_bench --dbname ${dbname} \
-    --loadstype 4 --load-size ${loadnum} --put-size ${opnum} --get-size 0 --workloadtype ${workloadtype} \
+    --loadstype 4 --load-size ${loadnum} --put-size ${opnum} --get-size ${opnum} --workloadtype ${workloadtype} \
         -t $thread | tee -a output/multi_thread/multi-${dbname}-${Loadname}-th${thread}-${workloadtype}.txt
+
+    # numactl --cpubind=1 --membind=1 ${BUILDDIR}/multi_bench --dbname ${dbname} \
+    # --loadstype 4 --load-size ${loadnum} --put-size ${opnum} --get-size 0 --workloadtype ${workloadtype} \
+    #     -t $thread | tee -a output/multi_thread/multi-${dbname}-${Loadname}-th${thread}-${workloadtype}.txt
+
+    # echo numactl --cpubind=1 --membind=1 ${BUILDDIR}/multi_bench --dbname ${dbname} \
+    # --loadstype 4 --load-size ${loadnum} --put-size ${opnum} --get-size 0 --workloadtype ${workloadtype} \
+    #     -t $thread | tee -a output/multi_thread/multi-${dbname}-${Loadname}-th${thread}-${workloadtype}.txt
 }
 
-function run_all() {
-    dbs="epli apex lbtree fastfair"
+function Run_all() {
+    dbs="apex"
+    # dbs="apex epli lbtree fastfair"
     for dbname in $dbs; do
         echo "Run: " $dbname
         Run $dbname $1 $2 $3 $4 $5
@@ -66,24 +77,15 @@ dbname="all"
 loadnum=400000000
 opnum=10000000
 scansize=0
-thread=16
 workloadtype="r"
 
-# # write
-# loadnum=50000000
-# opnum=100000000
-# workloadtype="w"
 
-# dbname="epli"
-# dbname="apex"
-# dbname="lbtree"
-# dbname="fastfair"
-# loadnum=10000000
-
-
-
-for thread in 1..16;
+for thread in {5..16}
 do
-    run_all $loadnum $opnum $scansize $thread $workloadtype
-    # Run $dbname $loadnum $opnum $scansize $thread $workloadtype
+    if [ $dbname == "all" ]; then
+        Run_all $loadnum $opnum $scansize $thread $workloadtype
+    else
+        Run $dbname $loadnum $opnum $scansize $thread $workloadtype
+    fi
+    # sleep 100
 done

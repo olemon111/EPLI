@@ -1,4 +1,4 @@
-2023年 03月 07日 星期二 21:54:33 CST
+2023年 03月 12日 星期日 20:13:52 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              0
@@ -6,29 +6,35 @@ GET_SIZE:              10000000
 DB  name:              lbtree
 Loads type:            4
 Reverse:               0
-read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 20151 ms (19.8501 M values/s)
-before newdb, dram space use: 2.98717 GB
+read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1960 ms (204.082 M values/s)
+before newdb, dram space use: 2.98713 GB
 Total NVM pool size: 42949672960 
 Using actual NVM
-NVM mapping address: 0x7f8400000000, size: 42949672960
+NVM mapping address: 0x7ef680000000, size: 42949672960
 1 keys bulkloaded (deleted? 1), root is 0, bfill 1.000000. lbt->check() start: 0, end: 0
 Start loading ....
-[Metic-Load]: Load 400000000: cost 693.587s, kops/s: 576.712 .
-after load, dram space use: 1.86684 GB
-lbtree dram size: 955.696 MB
-lbtree pm size: 9.65171 GB
-------------------------------
-Start Testing Uniform Workload: Read
-wrong get: 0
-[Metic-Operate]: Operate 10000000, cost 9.98036s, kops/s: 1001.97 .
-dram space use: 1.90403 GB
-lbtree dram size: 955.696 MB
-lbtree pm size: 9.65171 GB
+[Metic-Load]: Load 400000000: cost 697.578s, kops/s: 573.412 .
+after load, dram space use: 1.86688 GB
+lbtree DRAM size: 955.696 MB
+lbtree PM size: 9.65171 GB
 ------------------------------
 Start Testing Zipfian Workload
 --------------
 wrong get: 0
-[Metic-Operate]: Operate 10000000 theta: 0.99, cost 7.16786s, kops/s: 1395.12 .
-dram space use: 1.90424 GB
-lbtree dram size: 955.696 MB
-lbtree pm size: 9.65171 GB
+[Metic-Operate]: Operate 10000000 theta: 0.6, cost 10.259s, kops/s: 974.758 .
+dram space use: 1.9043 GB
+lbtree DRAM size: 955.696 MB
+lbtree PM size: 9.65171 GB
+--------------
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.7, cost 10.2156s, kops/s: 978.9 .
+dram space use: 1.90451 GB
+lbtree DRAM size: 955.696 MB
+lbtree PM size: 9.65171 GB
+--------------
+wrong get: 0
+[Metic-Operate]: Operate 10000000 theta: 0.8, cost 9.89743s, kops/s: 1010.36 .
+dram space use: 1.90451 GB
+lbtree DRAM size: 955.696 MB
+lbtree PM size: 9.65171 GB
+--------------

@@ -7,8 +7,10 @@ using namespace std;
 using namespace epltree;
 
 #define SAMPLE_M 20 // change in dynamic workload test
-#define MIN_HIT_RATE 0.1
-// #define USE_SWTABLE // comment this line to disable SWTable
+// #define MIN_HIT_RATE 0.001
+#define MIN_HIT_RATE 0.002
+// #define MIN_HIT_RATE 0.1
+#define USE_SWTABLE // comment this line to disable SWTable
 #ifdef USE_SWTABLE
 // #define SWTABLE_AUTO_CLOSE // comment this line to close SWTable when hit rate is too low
 #endif
@@ -46,6 +48,14 @@ public:
         tree->Insert(key, val);
     }
 
+    void Update(key_type key, val_type val)
+    {
+#ifdef USE_SWTABLE
+        table->Update(key, val);
+#endif
+        tree->Update(key, val);
+    }
+
     void Get(key_type key, val_type &val)
     {
 #ifdef USE_SWTABLE
@@ -80,6 +90,19 @@ public:
 #else
         tree->Get(key, val);
 #endif
+    }
+
+    int RangeScan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
+    {
+        return tree->RangeScan(start_key, end_key, results);
+    }
+
+    void Remove(key_type key)
+    {
+#ifdef USE_SWTABLE
+        table->Remove(key);
+#endif
+        tree->Remove(key);
     }
 
     void Reset() // open swtable

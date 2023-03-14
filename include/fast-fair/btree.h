@@ -1594,6 +1594,6 @@ namespace FastFair
     // printf("Tree height is %d.\n", height);
     size_t space = 0;
     CalculateSapce(space);
-    printf("fast&fair tree size is %f MB.\n", (double)space / 1024.0 / 1024.0);
+    printf("fast&fair tree size is %f GB.\n", (double)space / 1024.0 / 1024.0 / 1024.0);
   }
 } // namespace FastFair

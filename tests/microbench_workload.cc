@@ -260,7 +260,8 @@ void load()
     timer.Record("start");
 
     // if (dbName == "alex")
-    if (dbName == "epli" || dbName == "alex" || dbName == "apex") // support bulk load
+    if (dbName == "alex" || dbName == "apex") // test mode
+    // if (dbName == "epli" || dbName == "alex" || dbName == "apex") // support bulk load
     {
         auto values = new std::pair<uint64_t, uint64_t>[LOAD_SIZE];
         for (int i = 0; i < LOAD_SIZE; i++)

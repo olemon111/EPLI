@@ -147,6 +147,36 @@ namespace epltree
             return STATUS_OK;
         }
 
+        status Update(key_type key, val_type val)
+        {
+            for (int i = 0; i < KVS_PER_ENTRY; i++)
+            {
+                if (kvs[i].first == key)
+                {
+                    kvs[i].second = val;
+                    clflush((char *)&kvs[i]);
+                    fence();
+                    return STATUS_OK;
+                }
+            }
+            return STATUS_FAIL;
+        }
+
+        status Remove(key_type key)
+        {
+            for (int i = 0; i < KVS_PER_ENTRY; i++)
+            {
+                if (kvs[i].first == key)
+                {
+                    kvs[i].first = INVALID_KEY;
+                    clflush((char *)&kvs[i]);
+                    fence();
+                    return STATUS_OK;
+                }
+            }
+            return STATUS_FAIL;
+        }
+
 #ifdef USE_BITMAP
         // insert if there's empty place
         status PutAtPos(key_type key, val_type val, int pos)

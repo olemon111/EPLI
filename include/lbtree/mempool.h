@@ -105,7 +105,7 @@ private:
    PMEMobjpool *pop;
 
 public:
-   double total_size; // used for calculation of DRAM space usage
+   double total_size; // used for calculation of DRAM/NVM space usage
    // ---
    // Initialization and basics
    // ---

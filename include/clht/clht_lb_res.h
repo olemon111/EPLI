@@ -415,6 +415,9 @@ clht_t *clht_create(uint64_t num_buckets);
 /* Insert a key-value pair into a hashtable. */
 int clht_put(clht_t *hashtable, clht_addr_t key, clht_val_t val, uint32_t lt);
 
+/* Update an existing key-value entry in a hash table. */
+int clht_update(clht_t *h, clht_addr_t key, clht_val_t val, uint32_t lt);
+
 /* Retrieve a key-value pair from a hashtable. */
 clht_val_t clht_get(clht_hashtable_t *hashtable, clht_addr_t key, uint32_t t);
 

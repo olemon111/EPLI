@@ -18,7 +18,7 @@
 #include "util.h"
 #include "random.h"
 #include "util/zipf/utils.h"
-// #define REST // sleep between tests
+#define REST // sleep between tests
 
 using epltree::Random;
 using epltree::Timer;
@@ -259,7 +259,7 @@ void load()
   timer.Record("start");
 
   // if (dbName == "epli" || dbName == "alex" || dbName == "apex") // support bulk load
-  if (dbName == "alex" || dbName == "apex")
+  if (dbName == "alex" || dbName == "apex") // test mode for read and write
   // if (dbName == "alex")
   {
     auto values = new std::pair<uint64_t, uint64_t>[LOAD_SIZE];
@@ -606,9 +606,30 @@ void test_workload(string type)
     std::vector<std::thread> threads;
     std::atomic_int thread_id_count(0);
     size_t per_thread_size = GET_SIZE / thread_num;
-    Random get_rnd(0, GET_SIZE - 1);
-    for (size_t i = 0; i < GET_SIZE; ++i)
-      swap(data_base[i], data_base[get_rnd.Next()]);
+    // Random get_rnd(0, GET_SIZE - 1);
+    // for (size_t i = 0; i < GET_SIZE; ++i)
+    //   swap(data_base[i], data_base[get_rnd.Next()]);
+
+    // std::default_random_engine gen;
+    // zipfian_int_distribution<int> dis(0, load_pos - 1, theta);
+    std::mt19937_64 gen_uniform(std::random_device{}());
+    std::uniform_int_distribution<uint32_t> dis_uniform(0, load_pos - 1);
+    vector<uint64_t> rand_pos_get;
+    for (uint64_t i = 0; i < GET_SIZE; i++)
+    {
+      // if (zipfian)
+      // {
+      // uint32_t pos = dis(gen);
+      // rand_pos_get.push_back(pos);
+      // }
+      // else
+      // {
+      uint32_t pos = dis_uniform(gen_uniform);
+      rand_pos_get.push_back(pos);
+      // }
+    }
+    std::random_shuffle(rand_pos_get.begin(), rand_pos_get.end());
+
     timer.Clear();
     timer.Record("start");
     size_t wrong_get = 0;
@@ -621,10 +642,12 @@ void test_workload(string type)
             size_t size = (thread_id == thread_num-1) ? GET_SIZE-(thread_num-1)*per_thread_size : per_thread_size;
             size_t value;
             for (size_t j = 0; j < size; ++j) {
-                bool ret = db->Get(data_base[start_pos+j], value);
-                if (ret != true || value != data_base[start_pos+j]) {
+                bool ret = db->Get(data_base[rand_pos_get[start_pos+j]], value);
+                if (ret != true || value != data_base[rand_pos_get[start_pos+j]]) {
+                // bool ret = db->Get(data_base[start_pos+j], value);
+                // if (ret != true || value != data_base[start_pos+j]) {
                   wrong_get++;
-                  std::cout << wrong_get << ", " << j << " Get error! " << data_base[start_pos+j] << ", val:" << value  << std::endl;
+                  // std::cout << wrong_get << ", " << j << " Get error! " << data_base[start_pos+j] << ", val:" << value  << std::endl;
                 }
                 if(thread_id == 0 && (j + 1) % 100000 == 0) std::cerr << "Operate: " << j + 1 << '\r';
             } });
@@ -639,6 +662,44 @@ void test_workload(string type)
               << "cost " << us_times / 1000000.0 << "s, "
               << "kops " << (double)(GET_SIZE) / (double)us_times * 1000.0 << " ." << std::endl;
   }
+  // else // Perform GET
+  // {
+  //   std::vector<std::thread> threads;
+  //   std::atomic_int thread_id_count(0);
+  //   size_t per_thread_size = GET_SIZE / thread_num;
+  //   Random get_rnd(0, GET_SIZE - 1);
+  //   for (size_t i = 0; i < GET_SIZE; ++i)
+  //     swap(data_base[i], data_base[get_rnd.Next()]);
+  //   timer.Clear();
+  //   timer.Record("start");
+  //   size_t wrong_get = 0;
+  //   for (int i = 0; i < thread_num; ++i)
+  //   {
+  //     threads.emplace_back([&]()
+  //                          {
+  //           int thread_id = thread_id_count.fetch_add(1);
+  //           size_t start_pos = thread_id *per_thread_size;
+  //           size_t size = (thread_id == thread_num-1) ? GET_SIZE-(thread_num-1)*per_thread_size : per_thread_size;
+  //           size_t value;
+  //           for (size_t j = 0; j < size; ++j) {
+  //               bool ret = db->Get(data_base[start_pos+j], value);
+  //               if (ret != true || value != data_base[start_pos+j]) {
+  //                 wrong_get++;
+  //                 // std::cout << wrong_get << ", " << j << " Get error! " << data_base[start_pos+j] << ", val:" << value  << std::endl;
+  //               }
+  //               if(thread_id == 0 && (j + 1) % 100000 == 0) std::cerr << "Operate: " << j + 1 << '\r';
+  //           } });
+  //   }
+  //   for (auto &t : threads)
+  //     t.join();
+  //   cout << "Wrong get: " << wrong_get << endl;
+
+  //   timer.Record("stop");
+  //   us_times = timer.Microsecond("stop", "start");
+  //   std::cout << "[Metic-Get]: Get " << GET_SIZE << ": "
+  //             << "cost " << us_times / 1000000.0 << "s, "
+  //             << "kops " << (double)(GET_SIZE) / (double)us_times * 1000.0 << " ." << std::endl;
+  // }
 }
 
 int main(int argc, char *argv[])
@@ -647,7 +708,7 @@ int main(int argc, char *argv[])
   db->Init();
   load();
   test_workload(workload_type); // test concurrency
-  test_uniform("r");            // test correctness
+  // test_uniform("r");            // test correctness
   // db->Info();
   delete db;
   return 0;

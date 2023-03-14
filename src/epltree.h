@@ -256,14 +256,97 @@ namespace epltree
 
         int Update(key_type key, val_type val)
         {
+#ifdef USE_BITMAP
+            Entry *entry = (*(index->get_payload_last_no_greater_than(key)))->entryPointer.pointer();
+#else
+            Entry *entry = *(index->get_payload_last_no_greater_than(key));
+#endif
+            // assert(key >= entry->GetMinKey());
+            return entry->Update(key, val);
         }
 
-        int Delete(key_type key)
+        int Remove(key_type key)
         {
+#ifdef USE_BITMAP
+            Entry *entry = (*(index->get_payload_last_no_greater_than(key)))->entryPointer.pointer();
+#else
+            Entry *entry = *(index->get_payload_last_no_greater_than(key));
+#endif
+            // assert(key >= entry->GetMinKey());
+            return entry->Remove(key);
+        }
+
+        int RangeScan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
+        {
+#ifdef USE_BITMAP
+            Entry *start_entry = (*(index->get_payload_last_no_greater_than(start_key)))->entryPointer.pointer();
+            Entry *end_entry = (*(index->get_payload_last_no_greater_than(end_key)))->entryPointer.pointer();
+#else
+            Entry *start_entry = *(index->get_payload_last_no_greater_than(start_key));
+            Entry *end_entry = *(index->get_payload_last_no_greater_than(end_key));
+#endif
+            // scan start entry
+            for (int i = 0; i < KVS_PER_ENTRY; i++)
+            {
+                if (start_entry->kvs[i].first >= start_key && start_entry->kvs[i].first <= end_key)
+                {
+                    results.push_back(start_entry->kvs[i]);
+                }
+            }
+            if (start_entry == end_entry)
+            {
+                return STATUS_OK;
+            }
+            // scan middle entries
+            while (start_entry != end_entry)
+            {
+                for (int i = 0; i < KVS_PER_ENTRY; i++)
+                {
+                    results.push_back(start_entry->kvs[i]);
+                }
+                start_entry = start_entry->next;
+            }
+            // scan end entry
+            for (int i = 0; i < KVS_PER_ENTRY; i++)
+            {
+                if (end_entry->kvs[i].first >= start_key && end_entry->kvs[i].first <= end_key)
+                {
+                    results.push_back(end_entry->kvs[i]);
+                }
+            }
+            return STATUS_OK;
         }
 
         int Scan(key_type start_key, int size, std::vector<kv_type> &results)
         {
+#ifdef USE_BITMAP
+            Entry *entry = (*(index->get_payload_last_no_greater_than(start_key)))->entryPointer.pointer();
+#else
+            Entry *entry = *(index->get_payload_last_no_greater_than(start_key));
+#endif
+            // assert(key >= entry->GetMinKey());
+            // results.clear();
+            int cnt = 0;
+            while (entry != NULL)
+            {
+                memcpy(tmp_kvs, entry->kvs, sizeof(entry->kvs));
+                sort(tmp_kvs, tmp_kvs + KVS_PER_ENTRY, [](auto const &a, auto const &b)
+                     { return a.first < b.first; });
+                for (int i = 0; i < KVS_PER_ENTRY; i++)
+                {
+                    if (tmp_kvs[i].first >= start_key)
+                    {
+                        results.push_back(tmp_kvs[i]);
+                        cnt++;
+                    }
+                    if (cnt == size)
+                    {
+                        return STATUS_OK;
+                    }
+                }
+                entry = entry->next;
+            }
+            return STATUS_OK;
         }
 
         double get_size()

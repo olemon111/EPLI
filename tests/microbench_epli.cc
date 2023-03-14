@@ -768,7 +768,7 @@ int main(int argc, char *argv[])
 #endif
     load();
     db->Info();
-    // test_uniform("r");
-    test_all_zipfian();
+    test_uniform("r");
+    // test_all_zipfian();
     return 0;
 }

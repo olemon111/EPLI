@@ -296,6 +296,44 @@ bucket_exists(volatile bucket_t *bucket, clht_addr_t key)
   return false;
 }
 
+/* Update an existing key-value entry in a hash table. */
+int clht_update(clht_t *h, clht_addr_t key, clht_val_t val, uint32_t lt)
+{
+  clht_hashtable_t *hashtable = h->ht;
+  size_t bin = clht_hash(hashtable, key);
+  volatile bucket_t *bucket = hashtable->table + bin;
+
+  clht_lock_t *lock = &bucket->lock;
+  while (!LOCK_ACQ(lock, hashtable))
+  {
+    hashtable = h->ht;
+    size_t bin = clht_hash(hashtable, key);
+
+    bucket = hashtable->table + bin;
+    lock = &bucket->lock;
+  }
+
+  CLHT_GC_HT_VERSION_USED(hashtable);
+  CLHT_CHECK_STATUS(h);
+
+  uint32_t j;
+  do
+  {
+    for (j = 0; j < ENTRIES_PER_BUCKET; j++)
+    {
+      if (bucket->key[j] == key) // key exists
+      {
+        bucket->val[j] = val;
+        LOCK_RLS(lock);
+        return true;
+      }
+    }
+    bucket = bucket->next;
+  } while (unlikely(bucket != NULL));
+  LOCK_RLS(lock);
+  return false; // key not exist
+}
+
 /* Insert a key-value entry into a hash table. */
 int clht_put(clht_t *h, clht_addr_t key, clht_val_t val, uint32_t lt)
 {

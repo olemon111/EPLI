@@ -1,0 +1,51 @@
+2023年 03月 13日 星期一 20:08:50 CST
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from numactl...
+(No debugging symbols found in numactl)
+(gdb) r
+Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/multi_bench --dbname apex --loadstype 4 --load-size 50000000 --put-size 10000000 --get-size 10000000 --workloadtype w -t 1
+process 240134 is executing new program: /home/lbl/code/EPLI/build/multi_bench
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+THREAD NUMBER:         1
+LOAD_SIZE:             50000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              apex
+Loads type:            4
+Workload type:         w
+read 60000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 357 ms (168.067 M values/s)
+before newdb, dram space use: 0.454765 GB
+creating a new pool
+pool opened at: 0x7ff5c0000000
+Intial allocator: 1
+Start loading ....
+[Metic-Load]: Load 50000000: cost 14.0638s, kops/s: 3555.24 .
+after load, dram space use: 0.927078 GB
+------------------------------
+Start Testing Workload: w
+[New Thread 0x7fffc13ff700 (LWP 240208)]
+[Metic-Put]: Put 10000000: cost 6.32294s, kops 1581.54 .
+[Thread 0x7fffc13ff700 (LWP 240208) exited]
+------------------------------
+Start Testing Uniform Workload: Read
+wrong get: 0
+[Metic-Operate]: Operate 10000000, cost 4.60702s, kops/s: 2170.6 .
+dram space use: 1.12282 GB
+[Inferior 1 (process 240134) exited normally]
+(gdb) q
+numactl --cpubind=1 --membind=1 ./tests/../build/multi_bench --dbname apex --loadstype 4 --load-size 50000000 --put-size 10000000 --get-size 10000000 --workloadtype w -t 1

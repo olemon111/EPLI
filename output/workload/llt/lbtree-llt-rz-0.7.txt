@@ -1,0 +1,24 @@
+2023年 03月 11日 星期六 09:12:43 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             16000000
+PUT_SIZE:              128000000
+GET_SIZE:              128000000
+DB  name:              lbtree
+Loads type:            4
+Workload type:         rz
+read 144000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 758 ms (189.974 M values/s)
+before newdb, dram space use: 1.07974 GB
+Total NVM pool size: 42949672960 
+Using actual NVM
+NVM mapping address: 0x7fb0c0000000, size: 42949672960
+1 keys bulkloaded (deleted? 1), root is 0, bfill 1.000000. lbt->check() start: 0, end: 0
+Start loading ....
+[Metic-Load]: Load 16000000: cost 23.3593s, kops/s: 684.951 .
+after load, dram space use: 0.0747604 GB
+------------------------------
+Start Testing Workload: rz
+theta: 0.7
+wrong get: 0
+[Metic-Operate]: Operate 128000000 read_ratio 1: cost 90.3064s, kops 1417.4 .
+lbtree DRAM size: 38.2422 MB
+lbtree PM size: 0.386156 GB

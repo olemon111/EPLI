@@ -1,4 +1,4 @@
-2023年 03月 10日 星期五 00:10:00 CST
+2023年 03月 11日 星期六 22:20:03 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             16000000
 PUT_SIZE:              128000000
@@ -6,27 +6,26 @@ GET_SIZE:              128000000
 DB  name:              epli
 Loads type:            4
 Workload type:         rz
-read 144000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 754 ms (190.981 M values/s)
-before newdb, dram space use: 1.07988 GB
-Map addrs:0x7fbd00000000
-Current addrs:0x7fbd00000000
-Map addrs:0x7fb6c0000000
-Current addrs:0x7fb6c0000000
+read 144000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 792 ms (181.818 M values/s)
+before newdb, dram space use: 1.07987 GB
+Map addrs:0x7f0b80000000
+Current addrs:0x7f0b80000000
+Map addrs:0x7f0540000000
+Current addrs:0x7f0540000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
-bulk load 16000000 kvs
-[Metic-Load]: Load 16000000: cost 2.04251s, kops/s: 7833.5 .
-after load, dram space use: 0.283577 GB
+[Metic-Load]: Load 16000000: cost 12.6216s, kops/s: 1267.67 .
+after load, dram space use: 0.0385857 GB
 ------------------------------
 Start Testing Workload: rz
 theta: 0.6
-Stop Resize, bucket size: 1304898, trigger Passive elimination in bin: 262144
+Close SWTable with hit rate: 0.000194137, hit_cnt: 1, tot_get:5151
 wrong get: 0
-[Metic-Operate]: Operate 128000000 read_ratio 1: cost 69.4969s, kops 1841.81 .
-hit cnt: 4.02645e+07, total get cnt: 127999996
-EPLI total dram size: 121.251 MB, alex size: 26.6248, table size: 94.6264
-/mnt/pmem1/lbl/data used: 292571648 bytes. (0.272479 Gib)
+[Metic-Operate]: Operate 128000000 read_ratio 1: cost 49.9623s, kops 2561.93 .
+hit cnt: 1, total get cnt: 5151
+EPLI total dram size: 37.2737 MB, alex size: 36.2737, table size: 1.00001
+/mnt/pmem1/lbl/data used: 414678784 bytes. (0.3862 Gib)
 /mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
-/mnt/pmem1/lbl/data used: 292571648 bytes. (279 Mib, 18kib. free 0 Mib, 0kib.)
+/mnt/pmem1/lbl/data used: 414678784 bytes. (395 Mib, 479kib. free 0 Mib, 0kib.)
 /mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Mib, 0kib. free 0 Mib, 0kib.)

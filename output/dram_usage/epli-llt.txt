@@ -1,4 +1,4 @@
-2023年 03月 08日 星期三 23:59:22 CST
+2023年 03月 14日 星期二 00:05:25 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              0
@@ -6,30 +6,24 @@ GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            4
 Reverse:               0
-read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2002 ms (199.8 M values/s)
-before newdb, dram space use: 2.98722 GB
-Map addrs:0x7f46c0000000
-Current addrs:0x7f46c0000000
-Map addrs:0x7f4080000000
-Current addrs:0x7f4080000000
-[ALLOC] initializing allocator with fs size: 507 objects
-[ALLOC] initializing allocator with fs size: 507 objects
+read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1985 ms (201.511 M values/s)
+before newdb, dram space use: 2.98714 GB
+Map addrs:0x7f1d40000000
+Current addrs:0x7f1d40000000
+Map addrs:0x7f1700000000
+Current addrs:0x7f1700000000
 Start loading ....
 bulk load 400000000 kvs
-[Metic-Load]: Load 400000000: cost 62.1548s, kops/s: 6435.55 .
-after load, dram space use: 7.0199 GB
-hit cnt: 0, total get cnt: 0
-EPLI total dram size: 646.779 MB, alex size: 630.779, table size: 16
+[Metic-Load]: Load 400000000: cost 56.8616s, kops/s: 7034.63 .
+after load, dram space use: 7.00436 GB
+EPLI total dram size: 630.779 MB, alex size: 630.779
 /mnt/pmem1/lbl/data used: 7314285824 bytes. (6.81196 Gib)
 /mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
 ------------------------------
-Start Testing Zipfian Workload
---------------
+Start Testing Uniform Workload: Read
 wrong get: 0
-[Metic-Operate]: Operate 10000000 theta: 0.99, cost 3.7054s, kops/s: 2698.76 .
-dram space use: 7.09105 GB
-hit cnt: 5.63253e+06, total get cnt: 10000000
-EPLI total dram size: 658.604 MB, alex size: 630.779, table size: 27.8258
+[Metic-Operate]: Operate 10000000, cost 4.58692s, kops/s: 2180.11 .
+dram space use: 7.05615 GB
+EPLI total dram size: 630.779 MB, alex size: 630.779
 /mnt/pmem1/lbl/data used: 7314285824 bytes. (6.81196 Gib)
 /mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
-reset swtable

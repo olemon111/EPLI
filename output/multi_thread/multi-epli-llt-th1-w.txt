@@ -1,0 +1,60 @@
+2023年 03月 13日 星期一 21:22:40 CST
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from numactl...
+(No debugging symbols found in numactl)
+(gdb) r
+Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/multi_bench --dbname epli --loadstype 4 --load-size 10000000 --put-size 1000 --get-size 1000 --workloadtype w -t 1
+process 256104 is executing new program: /home/lbl/code/EPLI/build/multi_bench
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+THREAD NUMBER:         1
+LOAD_SIZE:             10000000
+PUT_SIZE:              1000
+GET_SIZE:              1000
+DB  name:              epli
+Loads type:            4
+Workload type:         w
+read 10001000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 66 ms (151.53 M values/s)
+before newdb, dram space use: 0.0821457 GB
+Map addrs:0x7ffec0000000
+Current addrs:0x7ffec0000000
+Map addrs:0x7ff880000000
+Current addrs:0x7ff880000000
+Start loading ....
+epli bulk load 10000000 kvs
+first: 30893835898 , last: 324717490753
+start alex bulkload
+Min key = 0
+Max key = 324639462232
+end alex bulkload
+[Metic-Load]: Load 10000000: cost 1.40332s, kops/s: 7125.93 .
+after load, dram space use: 0.219032 GB
+------------------------------
+Start Testing Workload: w
+[New Thread 0x7fffdfeff700 (LWP 256135)]
+[Metic-Put]: Put 1000: cost 0.005955s, kops 167.926 .
+[Thread 0x7fffdfeff700 (LWP 256135) exited]
+------------------------------
+Start Testing Uniform Workload: Read
+wrong get: 0
+[Metic-Operate]: Operate 1000, cost 0.000385s, kops/s: 2597.4 .
+dram space use: 0.220276 GB
+/mnt/pmem1/lbl/data used: 183112960 bytes. (174 Mib, 645kib. free 0 Mib, 0kib.)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Mib, 0kib. free 0 Mib, 0kib.)
+[Inferior 1 (process 256104) exited normally]
+(gdb) q
+numactl --cpubind=1 --membind=1 ./tests/../build/multi_bench --dbname epli --loadstype 4 --load-size 10000000 --put-size 1000 --get-size 1000 --workloadtype w -t 1
