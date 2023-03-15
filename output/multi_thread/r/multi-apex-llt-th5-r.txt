@@ -12,3 +12,10 @@ creating a new pool
 pool opened at: 0x7f5080000000
 Intial allocator: 1
 Start loading ....
+[Metic-Load]: Load 400000000: cost 120.264s, kops/s: 3326.03 .
+after load, dram space use: 6.97776 GB
+------------------------------
+Start Testing Workload: r
+Wrong get: 0
+[Metic-Get]: Get 10000000: cost 1.26496s, kops 7905.38 .
+numactl --cpubind=1 --membind=1 ./tests/../build/multi_bench --dbname apex --loadstype 4 --load-size 400000000 --put-size 0 --get-size 10000000 --workloadtype r -t 5

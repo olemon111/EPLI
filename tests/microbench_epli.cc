@@ -20,7 +20,7 @@
 #include "util/zipf/utils.h"
 
 // #define REST
-// #define TEST_SCALABILITY
+#define TEST_SCALABILITY
 // #define TEST_RECOVERY
 
 using epltree::Random;
@@ -535,6 +535,7 @@ void test_scalability()
 
     if (dbName == "apex" || (dbName == "epli" && (Loads_type == 5 || Loads_type == 6))) // pre bulk load
     {
+        /* apex needs bulkload first */
         auto values = new std::pair<uint64_t, uint64_t>[PRE_LOAD_SIZE];
         for (int i = 0; i < PRE_LOAD_SIZE; i++)
         {
@@ -549,35 +550,78 @@ void test_scalability()
         db->Bulk_load(values, int(PRE_LOAD_SIZE));
         timer.Record("stop");
         us_times = timer.Microsecond("stop", "start");
-        cout << "[Metic-Operate]: Operate LOAD: " << PRE_LOAD_SIZE << ", "
-             << "cost " << us_times / 1000000.0 << "s, "
-             << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
+        // cout << "[Metic-Operate]: Operate LOAD: " << PRE_LOAD_SIZE << ", "
+        //      << "cost " << us_times / 1000000.0 << "s, "
+        //      << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
+        cout << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << endl;
+        load_pos = PRE_LOAD_SIZE;
 
-        // put one by one
-        timer.Clear();
-        timer.Record("start");
-        for (int i = PRE_LOAD_SIZE; i < LOAD_SIZE; i++)
+        if (thread_num > 1)
         {
-            // cout << i << " put: " << data_base[i] << endl;
-            db->Put(data_base[i], data_base[i]);
-            if (i % PRE_LOAD_SIZE == 0 && i > PRE_LOAD_SIZE)
+            while (load_pos < LOAD_SIZE)
             {
-                timer.Record("stop");
-                us_times = timer.Microsecond("stop", "start");
-                cout << "[Metic-Operate]: Operate LOAD: " << i << ", "
-                     << "cost " << us_times / 1000000.0 << "s, "
-                     << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
-                // std::cout << "put " << i << " kvs" << std::endl
-                //           << std::flush;
+                std::vector<std::thread> threads;
+                std::atomic_int thread_id_count(0);
+                size_t per_thread_size = PUT_SIZE / thread_num;
                 timer.Clear();
                 timer.Record("start");
+                for (int i = 0; i < thread_num; i++)
+                {
+                    threads.emplace_back([&]()
+                                         {
+                    int thread_id = thread_id_count.fetch_add(1);
+                    size_t start_pos = thread_id * per_thread_size + load_size;
+                    size_t size = (thread_id == thread_num-1) ? PUT_SIZE-(thread_num-1)*per_thread_size : per_thread_size;
+                    for (size_t j = 0; j < size; ++j) {
+                        auto ret = db->Put(data_base[start_pos+j], data_base[start_pos+j]);
+                        if (ret != 1) {
+                            std::cout << "Put error, key: " << data_base[start_pos+j] << ", size: " << j << std::endl;
+                            db->Put(data_base[start_pos+j], data_base[start_pos+j]);
+                            assert(0);
+                        }
+                        // if(thread_id == 0 && (j + 1) % 100000 == 0) std::cerr << "Operate: " << j + 1 << '\r';
+                    } });
+                }
+                for (auto &t : threads)
+                    t.join();
+
+                timer.Record("stop");
+                us_times = timer.Microsecond("stop", "start");
+                // std::cout << "[Metic-Put]: Put " << load_pos << ": "
+                //           << "cost " << us_times / 1000000.0 << "s, "
+                //           << "kops " << (double)(PUT_SIZE) / (double)us_times * 1000.0 << " ." << std::endl;
+                std::cout << (double)(PUT_SIZE) / (double)us_times * 1000.0 << std::endl;
+                load_pos += PUT_SIZE;
             }
         }
-        timer.Record("stop");
-        us_times = timer.Microsecond("stop", "start");
-        cout << "[Metic-Operate]: Operate LOAD: " << LOAD_SIZE << ", "
-             << "cost " << us_times / 1000000.0 << "s, "
-             << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
+        else
+        {
+            // put one by one
+            timer.Clear();
+            timer.Record("start");
+            for (int i = PRE_LOAD_SIZE; i < LOAD_SIZE; i++)
+            {
+                // cout << i << " put: " << data_base[i] << endl;
+                db->Put(data_base[i], data_base[i]);
+                if (i % PRE_LOAD_SIZE == 0 && i > PRE_LOAD_SIZE)
+                {
+                    timer.Record("stop");
+                    us_times = timer.Microsecond("stop", "start");
+                    cout << "[Metic-Operate]: Operate LOAD: " << i << ", "
+                         << "cost " << us_times / 1000000.0 << "s, "
+                         << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
+                    // std::cout << "put " << i << " kvs" << std::endl
+                    //           << std::flush;
+                    timer.Clear();
+                    timer.Record("start");
+                }
+            }
+            timer.Record("stop");
+            us_times = timer.Microsecond("stop", "start");
+            cout << "[Metic-Operate]: Operate LOAD: " << LOAD_SIZE << ", "
+                 << "cost " << us_times / 1000000.0 << "s, "
+                 << "kops/s: " << (double)(PRE_LOAD_SIZE) / (double)us_times * 1000.0 << " ." << endl;
+        }
     }
     else // put one by one
     {

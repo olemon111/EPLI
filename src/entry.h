@@ -2,10 +2,21 @@
 #include "util/nvm/nvm_alloc.h"
 #include "pmem.h"
 
-// #define USE_BITMAP // open to accelerate write
-
+#define USE_BITMAP // open to accelerate write
+#define ENTRY_SIZE 256
 #define likely(x) __builtin_expect((x), 1)
 #define unlikely(x) __builtin_expect((x), 0)
+
+#define bitScan(x) __builtin_ffs(x)
+#define countBit(x) __builtin_popcount(x)
+
+static inline unsigned char hashcode1B(key_type x)
+{
+    x ^= x >> 32;
+    x ^= x >> 16;
+    x ^= x >> 8;
+    return (unsigned char)(x & 0x0ffULL);
+}
 
 typedef uint64_t key_type;
 typedef uint64_t val_type;
@@ -17,7 +28,8 @@ namespace epltree
 {
     // each Entry occupies 256B of NVM
     static const key_type INVALID_KEY = 0;
-    static const int KVS_PER_ENTRY = 14;
+    // static const int KVS_PER_ENTRY = 14;
+    static const int KVS_PER_ENTRY = (ENTRY_SIZE - 17) / sizeof(kv_type);
 
     typedef int status;
     const static int STATUS_OK = 0;

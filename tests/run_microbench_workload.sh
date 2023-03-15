@@ -174,7 +174,7 @@ function main() {
 
 # # Test Skew workload
 # main all 16000000 128000000 0 1 rz llt 0.99
-main all 16000000 128000000 0 1 rz llt 0.9
+# main all 16000000 128000000 0 1 rz llt 0.9
 # main all 16000000 128000000 0 1 rz llt 0.8
 # main all 16000000 128000000 0 1 rz llt 0.7
 # main all 16000000 128000000 0 1 rz llt 0.6

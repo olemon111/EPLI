@@ -166,6 +166,11 @@ namespace dbInter
       }
       return 1;
     }
+
+    int Range_scan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
+    {
+    }
+
     void PrintStatic()
     {
     }
@@ -248,7 +253,7 @@ namespace dbInter
     {
     }
 
-    int RangeScan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
+    int Range_scan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
     {
       epli_->RangeScan(start_key, end_key, results);
       return 1;
@@ -338,6 +343,11 @@ namespace dbInter
     {
       return 1;
     }
+
+    int Range_scan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
+    {
+    }
+
     void PrintStatic()
     {
     }
@@ -412,6 +422,7 @@ namespace dbInter
     {
       // tree_->bulkload(size, );
     }
+
     int Put(uint64_t key, uint64_t value)
     {
       memcpy(kp, &key, sizeof(key));
@@ -419,6 +430,7 @@ namespace dbInter
       tree_->insert(kp, sizeof(key), vp, sizeof(value));
       return 1;
     }
+
     int Get(uint64_t key, uint64_t &value)
     {
       memcpy(kp, &key, sizeof(key));
@@ -428,6 +440,7 @@ namespace dbInter
       value = res;
       return 1;
     }
+
     int Update(uint64_t key, uint64_t value)
     {
       memcpy(kp, &key, sizeof(key));
@@ -435,6 +448,7 @@ namespace dbInter
       tree_->update(kp, sizeof(key), vp, sizeof(value));
       return 1;
     }
+
     int Delete(uint64_t key)
     {
       // tree_->del(key);
@@ -445,6 +459,11 @@ namespace dbInter
     {
       return 1;
     }
+
+    int Range_scan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
+    {
+    }
+
     void PrintStatic()
     {
       // tree_->PrintInfo();
@@ -510,6 +529,11 @@ namespace dbInter
       tree_->btree_search_range(start_key, UINT64_MAX, results, len);
       return 1;
     }
+
+    int Range_scan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
+    {
+    }
+
     void PrintStatic()
     {
       NVM::show_stat();

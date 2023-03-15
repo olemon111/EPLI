@@ -43,11 +43,11 @@ function test_scalability() {
     # Read and Write
     rm -f /mnt/pmem1/lbl/*
     Loadname="${Loadname}"
-    date | tee output/scalability/${dbname}-${Loadname}.txt
+    date | tee output/scalability/${dbname}-${Loadname}-${thread}.txt
     # gdb --args \
     numactl --cpubind=1 --membind=1 ${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} \
     --put-size ${opnum} --get-size ${opnum} \
-    --loadstype ${loadstype} --reverse ${reverse} -t $thread | tee -a output/scalability/${dbname}-${Loadname}.txt
+    --loadstype ${loadstype} --reverse ${reverse} -t $thread | tee -a output/scalability/${dbname}-${Loadname}-${thread}.txt
     # rm -f /mnt/pmem1/lbl/*
 
     echo numactl --cpubind=1 --membind=1 "${BUILDDIR}/microbench_epli --dbname ${dbname} --load-size ${loadnum} "\
@@ -109,8 +109,16 @@ function main() {
 # # Test Scalability
 # # open scalability in microbench_epli.cc first
 # main fastfair 400000000 0 0 1 0 r llt
-main epli 400000000 0 0 1 0 r ycsb
+# main epli 400000000 0 0 1 0 r ycsb
+# main epli 400000000 0 0 1 0 r llt
 # main apex 400000000 0 0 1 0 r llt
 # main apex 400000000 0 0 1 0 r ycsb
 # main all 400000000 0 0 1 0 r ycsb
 # main epli 330000000 0 0 1 0 r ltd
+
+# # multi thread
+for thread in {3..16}
+do
+    main apex 400000000 10000000 0 $thread 0 r llt
+    sleep 100
+done

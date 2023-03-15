@@ -10,7 +10,7 @@ using namespace epltree;
 // #define MIN_HIT_RATE 0.001
 #define MIN_HIT_RATE 0.002
 // #define MIN_HIT_RATE 0.1
-#define USE_SWTABLE // comment this line to disable SWTable
+// #define USE_SWTABLE // comment this line to disable SWTable
 #ifdef USE_SWTABLE
 // #define SWTABLE_AUTO_CLOSE // comment this line to close SWTable when hit rate is too low
 #endif

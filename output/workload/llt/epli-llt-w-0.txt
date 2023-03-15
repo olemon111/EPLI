@@ -1,0 +1,26 @@
+2023年 03月 15日 星期三 12:53:26 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              epli
+Loads type:            4
+Workload type:         w
+read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2032 ms (201.772 M values/s)
+before newdb, dram space use: 3.06178 GB
+Map addrs:0x7f5f00000000
+Current addrs:0x7f5f00000000
+Map addrs:0x7f58c0000000
+Current addrs:0x7f58c0000000
+Start loading ....
+[Metic-Load]: Load 400000000: cost 371.003s, kops/s: 1078.16 .
+after load, dram space use: 0.43449 GB
+------------------------------
+Start Testing Workload: w
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 9.5244s, kops 1049.93 .
+EPLI total dram size: 436.678 MB, alex size: 436.678
+/mnt/pmem1/lbl/data used: 10006040064 bytes. (9.31885 Gib)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
+/mnt/pmem1/lbl/data used: 10006040064 bytes. (9542 Mib, 515kib. free 0 Mib, 0kib.)
+/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Mib, 0kib. free 0 Mib, 0kib.)

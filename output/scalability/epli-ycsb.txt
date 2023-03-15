@@ -1,4 +1,4 @@
-2023年 02月 24日 星期五 22:32:24 CST
+2023年 03月 15日 星期三 13:03:08 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              0
@@ -6,3 +6,11 @@ GET_SIZE:              0
 DB  name:              epli
 Loads type:            3
 Reverse:               0
+read 400000000 values from /home/lbl/dataset/generate_random_ycsb.dat in 2043 ms (195.791 M values/s)
+before newdb, dram space use: 2.98704 GB
+Map addrs:0x7ff2c0000000
+Current addrs:0x7ff2c0000000
+Map addrs:0x7fec80000000
+Current addrs:0x7fec80000000
+Start Testing Scalability ....
+[Metic-Operate]: Operate LOAD: 10000000, cost 7.06023s, kops/s: 1416.38 .

@@ -79,13 +79,17 @@ opnum=10000000
 scansize=0
 workloadtype="r"
 
+dbname="epli"
 
-for thread in {5..16}
+
+for thread in {1..16}
+# for thread in {2..16}
+# for thread in  1, 2, 4, 8, 16
 do
-    if [ $dbname == "all" ]; then
-        Run_all $loadnum $opnum $scansize $thread $workloadtype
-    else
-        Run $dbname $loadnum $opnum $scansize $thread $workloadtype
-    fi
-    # sleep 100
+    # if [ $dbname == "all" ]; then
+        # Run_all $loadnum $opnum $scansize $thread $workloadtype
+    # else
+    Run $dbname $loadnum $opnum $scansize $thread $workloadtype
+    # fi
+    sleep 100
 done

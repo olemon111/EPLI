@@ -1,0 +1,57 @@
+2023年 03月 15日 星期三 16:11:59 CST
+THREAD NUMBER:         2
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              apex
+Loads type:            4
+Reverse:               0
+read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2059 ms (199.126 M values/s)
+before newdb, dram space use: 3.06173 GB
+creating a new pool
+pool opened at: 0x7f1140000000
+Intial allocator: 1
+Start Testing Scalability ....
+4995.26
+4327.96
+4352.98
+4350.29
+4353.86
+4356.89
+4356.86
+4346.9
+4364.7
+4348.25
+4358.39
+4344.26
+4358.05
+4364.28
+4353.64
+4362.39
+4345.12
+4370.44
+4343.3
+4372.35
+4349.11
+4375.23
+4347.56
+4358.39
+4369.5
+4343.02
+4355.42
+4354.89
+4355.19
+4354.89
+4358.45
+4352.76
+4361.1
+4355.11
+4359.68
+4338.51
+4353.9
+4342.33
+4345.52
+4353.58
+dram space use: 0.243149 GB
+apex DRAM size: 24.1782 MB.
+apex PM size: 0.216693 GB.

@@ -1,0 +1,26 @@
+2023年 03月 14日 星期二 20:52:50 CST
+THREAD NUMBER:         5
+LOAD_SIZE:             50000000
+PUT_SIZE:              100000000
+GET_SIZE:              100000000
+DB  name:              fastfair
+Loads type:            4
+Workload type:         w
+read 150000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 727 ms (206.327 M values/s)
+before newdb, dram space use: 1.12459 GB
+Map addrs:0x7ff1c0000000
+Current addrs:0x7ff1c0000000
+[Fast-Fair]: root is 0x7ff1c0000000, btree is 0x5623de239f80.
+Start loading ....
+[Metic-Load]: Load 50000000: cost 130.391s, kops/s: 383.461 .
+after load, dram space use: 0.000225067 GB
+------------------------------
+Start Testing Workload: w
+[Metic-Put]: Put 100000000: cost 72.3145s, kops 1382.85 .
+------------------------------
+Start Testing Uniform Workload: Read
+wrong get: 26
+[Metic-Operate]: Operate 100000000, cost 162.575s, kops/s: 615.101 .
+dram space use: 0.37669 GB
+/mnt/pmem1/lbl/data used: 4664937984 bytes. (4448 Mib, 851kib. free 0 Mib, 0kib.)
+numactl --cpubind=1 --membind=1 ./tests/../build/multi_bench --dbname fastfair --loadstype 4 --load-size 50000000 --put-size 100000000 --get-size 100000000 --workloadtype w -t 5,

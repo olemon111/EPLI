@@ -1,0 +1,78 @@
+2023年 03月 14日 星期二 22:04:03 CST
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from numactl...
+(No debugging symbols found in numactl)
+(gdb) r
+Starting program: /usr/bin/numactl --cpubind=1 --membind=1 ./tests/../build/multi_bench --dbname fastfair --loadstype 4 --load-size 50000000 --put-size 100000000 --get-size 100000000 --workloadtype w -t 14
+process 447893 is executing new program: /home/lbl/code/EPLI0/build/multi_bench
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+THREAD NUMBER:         14
+LOAD_SIZE:             50000000
+PUT_SIZE:              100000000
+GET_SIZE:              100000000
+DB  name:              fastfair
+Loads type:            4
+Workload type:         w
+read 150000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 782 ms (191.816 M values/s)
+before newdb, dram space use: 1.12432 GB
+Map addrs:0x7ff980000000
+Current addrs:0x7ff980000000
+[Fast-Fair]: root is 0x7ff980000000, btree is 0x5555555f2f80.
+Start loading ....
+[Metic-Load]: Load 50000000: cost 130.069s, kops/s: 384.411 .
+after load, dram space use: 0.000328064 GB
+------------------------------
+Start Testing Workload: w
+[New Thread 0x7fffaf40e700 (LWP 448163)]
+[New Thread 0x7fffaec0d700 (LWP 448164)]
+[New Thread 0x7fffae40c700 (LWP 448165)]
+[New Thread 0x7fffadc0b700 (LWP 448166)]
+[New Thread 0x7fffad40a700 (LWP 448167)]
+[New Thread 0x7fffacc09700 (LWP 448168)]
+[New Thread 0x7fffac408700 (LWP 448169)]
+[New Thread 0x7fffabc07700 (LWP 448170)]
+[New Thread 0x7fffab406700 (LWP 448171)]
+[New Thread 0x7fffaac05700 (LWP 448172)]
+[New Thread 0x7fffaa404700 (LWP 448173)]
+[New Thread 0x7fffa9c03700 (LWP 448174)]
+[New Thread 0x7fffa9402700 (LWP 448175)]
+[New Thread 0x7fffa8c01700 (LWP 448176)]
+[Thread 0x7fffae40c700 (LWP 448165) exited]
+[Thread 0x7fffab406700 (LWP 448171) exited]
+[Thread 0x7fffabc07700 (LWP 448170) exited]
+[Thread 0x7fffacc09700 (LWP 448168) exited]
+[Thread 0x7fffaac05700 (LWP 448172) exited]
+[Thread 0x7fffad40a700 (LWP 448167) exited]
+[Thread 0x7fffaf40e700 (LWP 448163) exited]
+[Thread 0x7fffaec0d700 (LWP 448164) exited]
+[Thread 0x7fffadc0b700 (LWP 448166) exited]
+[Thread 0x7fffac408700 (LWP 448169) exited]
+[Thread 0x7fffa8c01700 (LWP 448176) exited]
+[Thread 0x7fffaa404700 (LWP 448173) exited]
+[Thread 0x7fffa9c03700 (LWP 448174) exited]
+[Thread 0x7fffa9402700 (LWP 448175) exited]
+[Metic-Put]: Put 100000000: cost 40.1151s, kops 2492.83 .
+------------------------------
+Start Testing Uniform Workload: Read
+wrong get: 187
+[Metic-Operate]: Operate 100000000, cost 161.951s, kops/s: 617.472 .
+dram space use: 0.376858 GB
+/mnt/pmem1/lbl/data used: 4664901632 bytes. (4448 Mib, 816kib. free 0 Mib, 0kib.)
+[Inferior 1 (process 447893) exited normally]
+(gdb) 那个祖传的有时候会挂[C[C[C[C[C[Cr[K[K(gdb) r[Kq
+numactl --cpubind=1 --membind=1 ./tests/../build/multi_bench --dbname fastfair --loadstype 4 --load-size 50000000 --put-size 100000000 --get-size 100000000 --workloadtype w -t 14
