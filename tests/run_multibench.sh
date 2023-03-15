@@ -26,7 +26,8 @@ function test_read() {
     rm -f /mnt/pmem1/lbl/*
     date | tee output/multi_thread/multi-${dbname}-${Loadname}-th${thread}-${workloadtype}.txt
     # gdb --args \
-    numactl --cpubind=1 --membind=1 ${BUILDDIR}/multi_bench --dbname ${dbname} \
+    # numactl --cpubind=1 --membind=1 ${BUILDDIR}/multi_bench --dbname ${dbname} \
+    LD_PRELOAD=libhugetlbfs.so HUGETLB_MORECORE=yes numactl --cpubind=1 --membind=1 ${BUILDDIR}/multi_bench --dbname ${dbname} \
     --loadstype 4 --load-size ${loadnum} --put-size 0 --get-size ${opnum} --workloadtype ${workloadtype} \
         -t $thread | tee -a output/multi_thread/multi-${dbname}-${Loadname}-th${thread}-${workloadtype}.txt
 
