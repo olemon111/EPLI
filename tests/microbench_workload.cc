@@ -574,6 +574,7 @@ void test_workload(string type)
         if (value != data_base[rand_pos_get[i]])
         {
             wrong_get++;
+            // cout << wrong_get << "wrong get: " << value << ", " << data_base[rand_pos_get[i]] << endl;
         }
     }
     // Peform PUT

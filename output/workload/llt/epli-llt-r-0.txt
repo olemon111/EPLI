@@ -1,30 +1,26 @@
-2023年 03月 11日 星期六 22:21:35 CST
+2023年 03月 15日 星期三 21:50:13 CST
 THREAD NUMBER:         1
-LOAD_SIZE:             16000000
-PUT_SIZE:              128000000
-GET_SIZE:              128000000
+LOAD_SIZE:             100
+PUT_SIZE:              100
+GET_SIZE:              100
 DB  name:              epli
 Loads type:            4
 Workload type:         r
-read 144000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 769 ms (187.256 M values/s)
-before newdb, dram space use: 1.07973 GB
-Map addrs:0x7f8b80000000
-Current addrs:0x7f8b80000000
-Map addrs:0x7f8540000000
-Current addrs:0x7f8540000000
-[ALLOC] initializing allocator with fs size: 507 objects
-[ALLOC] initializing allocator with fs size: 507 objects
+read 200 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 0 ms (inf M values/s)
+before newdb, dram space use: 0.00592804 GB
+Map addrs:0x7f27c0000000
+Current addrs:0x7f27c0000000
+Map addrs:0x7f2180000000
+Current addrs:0x7f2180000000
 Start loading ....
-[Metic-Load]: Load 16000000: cost 12.6526s, kops/s: 1264.56 .
-after load, dram space use: 0.0385857 GB
+[Metic-Load]: Load 100: cost 7.9e-05s, kops/s: 1265.82 .
+after load, dram space use: 0.00136948 GB
 ------------------------------
 Start Testing Workload: r
-Close SWTable with hit rate: 4.77829e-05, hit_cnt: 1, tot_get:20928
 wrong get: 0
-[Metic-Operate]: Operate 128000000 read_ratio 1: cost 51.9779s, kops 2462.58 .
-hit cnt: 1, total get cnt: 20928
-EPLI total dram size: 37.2737 MB, alex size: 36.2737, table size: 1.00001
-/mnt/pmem1/lbl/data used: 414678784 bytes. (0.3862 Gib)
+[Metic-Operate]: Operate 100 read_ratio 1: cost 8e-06s, kops 12500 .
+EPLI total dram size: 0.000434875 MB, alex size: 0.000434875
+/mnt/pmem1/lbl/data used: 2560 bytes. (2.38419e-06 Gib)
 /mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
-/mnt/pmem1/lbl/data used: 414678784 bytes. (395 Mib, 479kib. free 0 Mib, 0kib.)
+/mnt/pmem1/lbl/data used: 2560 bytes. (0 Mib, 2kib. free 0 Mib, 0kib.)
 /mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Mib, 0kib. free 0 Mib, 0kib.)

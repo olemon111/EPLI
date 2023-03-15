@@ -181,12 +181,47 @@ namespace epltree
         int Get(key_type key, val_type &val)
         {
 #ifdef USE_BITMAP
-            Entry *entry = (*(index->get_payload_last_no_greater_than(key)))->entryPointer.pointer();
+            MetaData *data = *(index->get_payload_last_no_greater_than(key));
+            Entry *entry = data->entryPointer.pointer();
 #else
             Entry *entry = *(index->get_payload_last_no_greater_than(key));
 #endif
             // assert(key >= entry->GetMinKey());
             // cout << "get key: " << key << ", min key: " << entry->GetMinKey() << endl;
+#ifdef USE_FGPT
+            unsigned char key_hash = hashcode1B(key);
+            // SIMD comparison
+            // a. set every byte to key_hash in a 16B register
+            __m128i key_16B = _mm_set1_epi8((char)key_hash);
+
+            // b. load meta into another 16B register
+            __m128i fgpt_16B = _mm_load_si128((const __m128i *)data);
+
+            // c. compare them
+            __m128i cmp_res = _mm_cmpeq_epi8(key_16B, fgpt_16B);
+
+            // d. generate a mask
+            unsigned int mask = (unsigned int)
+                _mm_movemask_epi8(cmp_res); // 1: same; 0: diff
+
+            // remove the lower 2 bits then AND bitmap
+            mask = (mask >> 2) & ((unsigned int)(data->bitmap));
+
+            // search every matching candidate
+            while (mask)
+            {
+                int j = __builtin_ffs(mask) - 1; // next candidate
+                if (entry->kvs[j].first == key)
+                { // found
+                    val = entry->kvs[j].second;
+                    return STATUS_OK;
+                }
+
+                mask &= ~(0x1 << j); // remove this bit
+            }                        // end while
+            val = 0;
+            return STATUS_FAIL;
+#endif
             if (entry->Get(key, val) != STATUS_OK) // key not exist
             {
                 // cout << "key: " << key << " not exist, min key: " << entry->GetMinKey() << endl;
@@ -216,6 +251,9 @@ namespace epltree
             // assert(key >= entry->GetMinKey());
             // cout << "min key: " << entry->GetMinKey() << endl;
             int ret = 0;
+#ifdef USE_FGPT
+            unsigned char key_hash = hashcode1B(key);
+#endif
 #ifdef USE_BITMAP
             int pos = data->find_first_zero();
             if (pos >= KVS_PER_ENTRY) // overflow
@@ -232,18 +270,16 @@ namespace epltree
             {
                 entry->PutAtPos(key, val, pos);
                 data->set_bitmap(pos);
+#ifdef USE_FGPT
+                data->set_fgpt(pos, key_hash);
+#endif
                 return STATUS_OK;
             }
 #else
             ret = entry->MaybePut(key, val);
-#endif
             if (ret == STATUS_OVERFLOW) // need to split
             {
-#ifdef USE_BITMAP
-                splitEntry(data);
-#else
                 splitEntry(entry);
-#endif
                 return Insert(key, val); // insert again
                 // if (key >= entry->next->GetMinKey()) // FIXME: may cause trouble in lgn test
                 // {
@@ -252,6 +288,7 @@ namespace epltree
                 // return entry->MaybePut(key, val);
             }
             return ret; // OK/FAIL
+#endif
         }
 
         int Update(key_type key, val_type val)
@@ -400,9 +437,15 @@ namespace epltree
             entry->next = new_entry;
             MetaData *newData = new MetaData(new_entry);
             newData->reset_half_bitmap();
+#ifdef USE_FGPT
+            newData->set_n_fgpt(tmp_kvs + KVS_PER_ENTRY / 2, (KVS_PER_ENTRY + 1) / 2);
+#endif
             index->insert(new_min_key, newData);
             entry->setOrderedKVs(tmp_kvs, KVS_PER_ENTRY / 2);
             data->reset_half_bitmap();
+#ifdef USE_FGPT
+            data->set_n_fgpt(tmp_kvs, KVS_PER_ENTRY / 2);
+#endif
             // end split
             entry->setFlag(0);
             NVM::Mem_persist(entry, sizeof(Entry));

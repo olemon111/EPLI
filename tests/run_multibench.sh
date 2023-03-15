@@ -82,7 +82,7 @@ workloadtype="r"
 dbname="epli"
 
 
-for thread in {1..16}
+for thread in 16
 # for thread in {2..16}
 # for thread in  1, 2, 4, 8, 16
 do

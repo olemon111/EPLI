@@ -2,21 +2,11 @@
 #include "util/nvm/nvm_alloc.h"
 #include "pmem.h"
 
-#define USE_BITMAP // open to accelerate write
+// #define USE_BITMAP // open to accelerate write
+// #define USE_FGPT   // open to use fingerprint for get
 #define ENTRY_SIZE 256
 #define likely(x) __builtin_expect((x), 1)
 #define unlikely(x) __builtin_expect((x), 0)
-
-#define bitScan(x) __builtin_ffs(x)
-#define countBit(x) __builtin_popcount(x)
-
-static inline unsigned char hashcode1B(key_type x)
-{
-    x ^= x >> 32;
-    x ^= x >> 16;
-    x ^= x >> 8;
-    return (unsigned char)(x & 0x0ffULL);
-}
 
 typedef uint64_t key_type;
 typedef uint64_t val_type;
@@ -26,6 +16,15 @@ using namespace std;
 
 namespace epltree
 {
+#ifdef USE_FGPT
+    static inline unsigned char hashcode1B(key_type x)
+    {
+        x ^= x >> 32;
+        x ^= x >> 16;
+        x ^= x >> 8;
+        return (unsigned char)(x & 0x0ffULL);
+    }
+#endif
     // each Entry occupies 256B of NVM
     static const key_type INVALID_KEY = 0;
     // static const int KVS_PER_ENTRY = 14;
@@ -272,19 +271,29 @@ namespace epltree
 
     struct MetaData
     {
-        uint16_t bitmap;           // 2B bitmap
+        uint16_t bitmap; // 2B bitmap
+#ifdef USE_FGPT
+        unsigned char fgpt[KVS_PER_ENTRY]; // 14B fingerprint
+#endif
         EntryPointer entryPointer; // 6B pointer
         // Entry *entry;
         /* constructor */
         MetaData()
         {
-            // memset(this, 0, sizeof(MetaData));
+#ifdef USE_FGPT
+            memset(this, 0, sizeof(MetaData));
+#else
             bitmap = 0x0000;
+#endif
         }
 
         MetaData(Entry *entry)
         {
+#ifdef USE_FGPT
+            memset(this, 0, sizeof(MetaData));
+#else
             bitmap = 0x0000;
+#endif
             this->entryPointer.Setup(entry);
             // this->entry = entry;
         }
@@ -304,6 +313,21 @@ namespace epltree
             bitmap = 0x007F;
         }
 
+#ifdef USE_FGPT
+        inline void set_n_fgpt(const kv_type kvs[], size_t size)
+        {
+            for (int i = 0; i < size; i++)
+            {
+                fgpt[i] = hashcode1B(kvs[i].first);
+            }
+        }
+
+        inline void reset_half_fgpt()
+        {
+            memset(fgpt + KVS_PER_ENTRY / 2, 0, sizeof(unsigned char) * (KVS_PER_ENTRY + 1) / 2);
+        }
+#endif
+
         inline void reset_n_bitmap(size_t n)
         {
             if (likely(n == KVS_PER_ENTRY))
@@ -316,6 +340,13 @@ namespace epltree
                 bitmap |= 1 << n;
             }
         }
+
+#ifdef USE_FGPT
+        inline void set_fgpt(int pos, unsigned char key_hash) // pos = 0..15
+        {
+            fgpt[pos] = key_hash;
+        }
+#endif
     };
 #endif
 }
