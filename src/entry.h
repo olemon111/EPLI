@@ -4,7 +4,7 @@
 
 // #define USE_BITMAP // open to accelerate write
 // #define USE_FGPT   // open to use fingerprint for get
-#define ENTRY_SIZE 256
+#define ENTRY_SIZE 256 // 256B
 #define likely(x) __builtin_expect((x), 1)
 #define unlikely(x) __builtin_expect((x), 0)
 

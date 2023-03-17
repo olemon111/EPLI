@@ -1,0 +1,20 @@
+2023年 03月 16日 星期四 14:32:20 CST
+THREAD NUMBER:         16
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              apex
+Loads type:            4
+Workload type:         w
+read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1983 ms (206.757 M values/s)
+before newdb, dram space use: 3.06173 GB
+creating a new pool
+pool opened at: 0x7f7dc0000000
+Intial allocator: 1
+Start loading ....
+[Metic-Load]: Load 400000000: cost 338.989s, kops/s: 1179.98 .
+after load, dram space use: 5.25469 GB
+------------------------------
+Start Testing Workload: w
+[Metic-Put]: Put 10000000: cost 2.92461s, kops 3419.26 .
+numactl --cpubind=1 --membind=1 ./tests/../build/multi_bench --dbname apex --loadstype 4 --load-size 400000000 --put-size 10000000 --get-size 10000000 --workloadtype w -t 16

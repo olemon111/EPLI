@@ -410,6 +410,19 @@ namespace alex
       derived_params_.max_data_node_slots = params_.max_node_size / sizeof(V);
     }
 
+    // added
+    void set_max_model_node_size(int max_node_size)
+    {
+      assert(max_node_size >= sizeof(V));
+      derived_params_.max_fanout = max_node_size / sizeof(void *);
+    }
+
+    void set_max_data_node_size(int max_node_size)
+    {
+      assert(max_node_size >= sizeof(V));
+      derived_params_.max_data_node_slots = max_node_size / sizeof(V);
+    }
+
     // Bulk load faster by using sampling to train models.
     // This is only useful if you set it before bulk loading.
     void set_approximate_model_computation(bool approximate_model_computation)

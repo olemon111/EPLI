@@ -64,7 +64,8 @@ function test_write() {
 }
 
 function Run_all() {
-    dbs="apex"
+    # dbs="apex"
+    dbs="fastfair apex lbtree"
     # dbs="apex epli lbtree fastfair"
     for dbname in $dbs; do
         echo "Run: " $dbname
@@ -78,17 +79,23 @@ dbname="all"
 loadnum=400000000
 opnum=10000000
 scansize=0
-workloadtype="r"
+# workloadtype="r"
 
-dbname="epli"
+# # write
+workloadtype="w"
+
+# dbname="epli"
+# dbname="apex"
+dbname="lbtree"
+# dbname="fastfair"
 
 
-for thread in 16
-# for thread in {2..16}
-# for thread in  1, 2, 4, 8, 16
+# for thread in  1, 8, 16
+# for thread in 16, 8
+for thread in {1..16}
 do
     # if [ $dbname == "all" ]; then
-        # Run_all $loadnum $opnum $scansize $thread $workloadtype
+    # Run_all $loadnum $opnum $scansize $thread $workloadtype
     # else
     Run $dbname $loadnum $opnum $scansize $thread $workloadtype
     # fi

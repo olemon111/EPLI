@@ -20,7 +20,7 @@
 #include "util/zipf/utils.h"
 
 // #define REST
-#define TEST_SCALABILITY
+// #define TEST_SCALABILITY
 // #define TEST_RECOVERY
 
 using epltree::Random;
@@ -261,8 +261,8 @@ void load()
     cout << "Start loading ...." << endl;
     timer.Record("start");
 
-    if (dbName == "epli" || dbName == "alex" || dbName == "apex") // support bulk load
-    // if (dbName == "alex")
+    // if (dbName == "epli" || dbName == "alex" || dbName == "apex") // support bulk load, comment this line out when test dram space use
+    if (dbName == "alex")
     {
         auto values = new std::pair<uint64_t, uint64_t>[LOAD_SIZE];
         for (int i = 0; i < LOAD_SIZE; i++)

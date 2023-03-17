@@ -259,8 +259,8 @@ void load()
   timer.Record("start");
 
   // if (dbName == "epli" || dbName == "alex" || dbName == "apex") // support bulk load
-  if (dbName == "alex" || dbName == "apex") // test mode for read and write
-  // if (dbName == "alex")
+  // if (dbName == "alex" || dbName == "apex") // test mode for read and write
+  if (dbName == "alex")
   {
     auto values = new std::pair<uint64_t, uint64_t>[LOAD_SIZE];
     for (int i = 0; i < LOAD_SIZE; i++)
@@ -702,12 +702,104 @@ void test_workload(string type)
   // }
 }
 
+void test_workload_all_threads(string type)
+{
+  cout << "------------------------------" << endl;
+  cout << "Start Testing Workload: " << type << endl;
+  if (type == "w") // Peform PUT
+  {
+    std::vector<std::thread> threads;
+    std::atomic_int thread_id_count(0);
+    size_t per_thread_size = PUT_SIZE / thread_num;
+    timer.Clear();
+    timer.Record("start");
+    for (int i = 0; i < thread_num; i++)
+    {
+      threads.emplace_back([&]()
+                           {
+            int thread_id = thread_id_count.fetch_add(1);
+            size_t start_pos = thread_id * per_thread_size + LOAD_SIZE;
+            size_t size = (thread_id == thread_num-1) ? PUT_SIZE-(thread_num-1)*per_thread_size : per_thread_size;
+            for (size_t j = 0; j < size; ++j) {
+                auto ret = db->Put(data_base[start_pos+j], data_base[start_pos+j]);
+                if (ret != 1) {
+                    std::cout << "Put error, key: " << data_base[start_pos+j] << ", size: " << j << std::endl;
+                    db->Put(data_base[start_pos+j], data_base[start_pos+j]);
+                    assert(0);
+                }
+                if(thread_id == 0 && (j + 1) % 100000 == 0) std::cerr << "Operate: " << j + 1 << '\r';
+            } });
+    }
+    for (auto &t : threads)
+      t.join();
+
+    timer.Record("stop");
+    us_times = timer.Microsecond("stop", "start");
+    std::cout << "[Metic-Put]: Put " << PUT_SIZE << ": "
+              << "cost " << us_times / 1000000.0 << "s, "
+              << "kops " << (double)(PUT_SIZE) / (double)us_times * 1000.0 << " ." << std::endl;
+    load_pos += PUT_SIZE;
+  }
+  else // Perform GET
+  {
+    const int TOTAL_THREAD_NUM = 16;
+    for (int thread_num = 1; thread_num <= TOTAL_THREAD_NUM; thread_num++)
+    {
+      std::vector<std::thread> threads;
+      std::atomic_int thread_id_count(0);
+      size_t per_thread_size = GET_SIZE / thread_num;
+      std::mt19937_64 gen_uniform(std::random_device{}());
+      std::uniform_int_distribution<uint32_t> dis_uniform(0, load_pos - 1);
+      vector<uint64_t> rand_pos_get;
+      for (uint64_t i = 0; i < GET_SIZE; i++)
+      {
+        uint32_t pos = dis_uniform(gen_uniform);
+        rand_pos_get.push_back(pos);
+      }
+      std::random_shuffle(rand_pos_get.begin(), rand_pos_get.end());
+
+      timer.Clear();
+      timer.Record("start");
+      size_t wrong_get = 0;
+      for (int i = 0; i < thread_num; ++i)
+      {
+        threads.emplace_back([&]()
+                             {
+            int thread_id = thread_id_count.fetch_add(1);
+            size_t start_pos = thread_id *per_thread_size;
+            size_t size = (thread_id == thread_num-1) ? GET_SIZE-(thread_num-1)*per_thread_size : per_thread_size;
+            size_t value;
+            for (size_t j = 0; j < size; ++j) {
+                bool ret = db->Get(data_base[rand_pos_get[start_pos+j]], value);
+                if (ret != true || value != data_base[rand_pos_get[start_pos+j]]) {
+                // bool ret = db->Get(data_base[start_pos+j], value);
+                // if (ret != true || value != data_base[start_pos+j]) {
+                  wrong_get++;
+                  // std::cout << wrong_get << ", " << j << " Get error! " << data_base[start_pos+j] << ", val:" << value  << std::endl;
+                }
+                if(thread_id == 0 && (j + 1) % 100000 == 0) std::cerr << "Operate: " << j + 1 << '\r';
+            } });
+      }
+      for (auto &t : threads)
+        t.join();
+      cout << "Wrong get: " << wrong_get << endl;
+
+      timer.Record("stop");
+      us_times = timer.Microsecond("stop", "start");
+      std::cout << "[Metic-Get]: Get " << GET_SIZE << ": "
+                << "cost " << us_times / 1000000.0 << "s, "
+                << "kops " << (double)(GET_SIZE) / (double)us_times * 1000.0 << " ." << std::endl;
+    }
+  }
+}
+
 int main(int argc, char *argv[])
 {
   init_opts(argc, argv);
   db->Init();
   load();
   test_workload(workload_type); // test concurrency
+  // test_workload_all_threads(workload_type);
   // test_uniform("r");            // test correctness
   // db->Info();
   delete db;

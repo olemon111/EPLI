@@ -29,6 +29,8 @@ namespace epltree
             datalist->Init(recover);
             // init index
             index = new index_type();
+            // index->set_max_data_node_size(1 << 24);  // 16MB
+            // index->set_max_model_node_size(1 << 19); // 512KB
 #ifdef USE_BITMAP
             base_addr = uint64_t(NVM::data_alloc->pmem_addr_); // record base address
             index->insert(INVALID_KEY, new MetaData(datalist->Head()));

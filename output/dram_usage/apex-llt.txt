@@ -1,4 +1,5 @@
-2023年 03月 14日 星期二 00:35:14 CST
+2023年 03月 17日 星期五 15:15:00 CST
+init dram space use: 0 GB, 0 B
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              0
@@ -6,9 +7,15 @@ GET_SIZE:              10000000
 DB  name:              apex
 Loads type:            4
 Reverse:               0
-read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1976 ms (202.429 M values/s)
-before newdb, dram space use: 2.9872 GB
+read 400000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2070 ms (193.237 M values/s)
+before newdb, dram space use: 2.98731 GB
+before init, dram space use: 0 GB, total: 3132420 B
 creating a new pool
-pool opened at: 0x7fdbc0000000
+pool opened at: 0x7f92c0000000
 Intial allocator: 1
+before load, dram space use: 0.0448723 GB
 Start loading ....
+[Metic-Load]: Load 400000000: cost 123.625s, kops/s: 3235.6 .
+after load, dram space use: 6.97763 GB
+apex DRAM size: 949.092 MB.
+apex PM size: 8.54395 GB.
