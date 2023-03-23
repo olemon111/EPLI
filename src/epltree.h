@@ -363,9 +363,58 @@ namespace epltree
 #else
             Entry *entry = *(index->get_payload_last_no_greater_than(start_key));
 #endif
+            if (entry == NULL)
+            {
+                return STATUS_OK;
+            }
             // assert(key >= entry->GetMinKey());
             // results.clear();
             int cnt = 0;
+            int start_pos = -1;
+            // scan start entry
+            memcpy(tmp_kvs, entry->kvs, sizeof(entry->kvs));
+            sort(tmp_kvs, tmp_kvs + KVS_PER_ENTRY, [](auto const &a, auto const &b)
+                 { return a.first < b.first; });
+            for (int i = 0; i < KVS_PER_ENTRY; i++)
+            {
+                if (tmp_kvs[i].first >= start_key)
+                {
+                    start_pos = i;
+                    break;
+                }
+            }
+            if (start_pos != -1)
+            {
+                int end_pos = min(start_pos + size, KVS_PER_ENTRY);
+                for (int i = start_pos; i < end_pos; i++)
+                {
+                    results.push_back(tmp_kvs[i]);
+                }
+                cnt = end_pos - start_pos;
+                if (cnt == size)
+                {
+                    return STATUS_OK;
+                }
+            }
+            // scan middle entries, no need to sort
+            entry = entry->next;
+            while (entry != NULL && size - cnt >= KVS_PER_ENTRY)
+            {
+                for (int i = 0; i < KVS_PER_ENTRY; i++)
+                {
+                    if (tmp_kvs[i].first != INVALID_KEY)
+                    {
+                        results.push_back(tmp_kvs[i]);
+                        cnt++;
+                    }
+                }
+                if (cnt == size)
+                {
+                    return STATUS_OK;
+                }
+                entry = entry->next;
+            }
+            // scan end entries
             while (entry != NULL)
             {
                 memcpy(tmp_kvs, entry->kvs, sizeof(entry->kvs));
@@ -373,14 +422,13 @@ namespace epltree
                      { return a.first < b.first; });
                 for (int i = 0; i < KVS_PER_ENTRY; i++)
                 {
-                    if (tmp_kvs[i].first >= start_key)
+                    if (tmp_kvs[i].first != INVALID_KEY)
                     {
                         results.push_back(tmp_kvs[i]);
-                        cnt++;
-                    }
-                    if (cnt == size)
-                    {
-                        return STATUS_OK;
+                        if (++cnt == size)
+                        {
+                            return STATUS_OK;
+                        }
                     }
                 }
                 entry = entry->next;
@@ -394,29 +442,29 @@ namespace epltree
         }
 
     private:
-        // void splitEntry(Entry *entry)
-        // {
-        //     // copy kvs and sort
-        //     sort(entry->kvs, entry->kvs + KVS_PER_ENTRY, [](auto const &a, auto const &b)
-        //          { return a.first < b.first; });
-        //     // assign new entry
-        //     Entry *new_entry = (Entry *)NVM::data_alloc->alloc_aligned(sizeof(Entry));
-        //     key_type new_min_key = entry->kvs[KVS_PER_ENTRY / 2].first;
-        //     new (new_entry) Entry(new_min_key, entry->kvs + KVS_PER_ENTRY / 2, (KVS_PER_ENTRY + 1) / 2);
-        //     // mark split
-        //     entry->setPersistFlag(1);
-        //     // entry->setFlag(0);
-        //     // add new entry to link list
-        //     new_entry->next = entry->next;
-        //     NVM::Mem_persist(new_entry, sizeof(Entry));
-        //     //  update prev entry
-        //     entry->next = new_entry;
-        //     index->insert(new_min_key, new_entry);
-        //     entry->resetRightHalfKVs();
-        //     // end split
-        //     entry->setFlag(0);
-        //     NVM::Mem_persist(entry, sizeof(Entry));
-        // }
+// void splitEntry(Entry *entry)
+// {
+//     // copy kvs and sort
+//     sort(entry->kvs, entry->kvs + KVS_PER_ENTRY, [](auto const &a, auto const &b)
+//          { return a.first < b.first; });
+//     // assign new entry
+//     Entry *new_entry = (Entry *)NVM::data_alloc->alloc_aligned(sizeof(Entry));
+//     key_type new_min_key = entry->kvs[KVS_PER_ENTRY / 2].first;
+//     new (new_entry) Entry(new_min_key, entry->kvs + KVS_PER_ENTRY / 2, (KVS_PER_ENTRY + 1) / 2);
+//     // mark split
+//     entry->setPersistFlag(1);
+//     // entry->setFlag(0);
+//     // add new entry to link list
+//     new_entry->next = entry->next;
+//     NVM::Mem_persist(new_entry, sizeof(Entry));
+//     //  update prev entry
+//     entry->next = new_entry;
+//     index->insert(new_min_key, new_entry);
+//     entry->resetRightHalfKVs();
+//     // end split
+//     entry->setFlag(0);
+//     NVM::Mem_persist(entry, sizeof(Entry));
+// }
 #ifdef USE_BITMAP
         void splitEntry(MetaData *data)
         {

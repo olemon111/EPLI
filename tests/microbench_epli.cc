@@ -22,6 +22,7 @@
 // #define REST
 // #define TEST_SCALABILITY
 // #define TEST_RECOVERY
+#define TEST_OPERATION
 
 using epltree::Random;
 using epltree::Timer;
@@ -654,6 +655,92 @@ void test_scalability()
     cout << "dram space use: " << (physical_memory_used_by_process() - init_dram_space_use) / 1024.0 / 1024.0 << " GB" << endl;
 }
 
+void test_operation()
+{
+    uint64_t SCAN_SIZE = 10000000;
+    uint64_t UPDATE_SIZE = 10000000;
+    uint64_t DELETE_SIZE = 10000000;
+    util::FastRandom ranny(18);
+    // perform scan
+    {
+        cout << "Start Testing Scan Operation..." << endl;
+        std::vector<int> scan_size = {100};
+        for (auto scan : scan_size)
+        {
+            timer.Clear();
+            timer.Record("start");
+            uint64_t scan_times = std::min(SCAN_SIZE / scan, load_pos);
+            for (int i = 0; i < scan_times; ++i)
+            {
+                if (i % 1000000 == 0)
+                {
+                    std::cout << "scan times:" << scan_times << std::endl;
+                }
+                uint64_t op_seq = ranny.RandUint32(0, load_pos - 1);
+                std::vector<std::pair<uint64_t, uint64_t>> results;
+                db->Scan(data_base[op_seq], scan, results);
+                // if (i == scan_times - 1)
+                // {
+                //     cout << "scan result: " << endl;
+                //     cout << "key: " << data_base[op_seq] << endl;
+                //     cout << "scan size: " << scan << endl;
+                //     for (auto &result : results)
+                //     {
+                //         cout << "key: " << result.first << ", value: " << result.second << endl;
+                //     }
+                // }
+            }
+            timer.Record("stop");
+            us_times = timer.Microsecond("stop", "start");
+            // getchar();
+            std::cout << "[Metic-Operate]: Scan " << scan << ": "
+                      << "cost " << us_times / 1000000.0 << "s, "
+                      << "kops " << (double)(scan_times) / (double)us_times * 1000.0 << " ." << std::endl;
+        }
+    }
+    // // perform update
+    // {
+    //     cout << "Start Testing Update Operation..." << endl;
+    //     timer.Clear();
+    //     timer.Record("start");
+    //     for (int i = 0; i < UPDATE_SIZE; ++i)
+    //     {
+    //         // if (i % 1000000 == 0)
+    //         // {
+    //         //     std::cout << "update times:" << i << std::endl;
+    //         // }
+    //         uint64_t op_seq = ranny.RandUint32(0, load_pos - 1);
+    //         db->Update(data_base[op_seq], data_base[op_seq] - 1);
+    //     }
+    //     timer.Record("stop");
+    //     us_times = timer.Microsecond("stop", "start");
+    //     std::cout << "[Metic-Operate]: Update " << UPDATE_SIZE << ": "
+    //               << "cost " << us_times / 1000000.0 << "s, "
+    //               << "kops " << (double)(UPDATE_SIZE) / (double)us_times * 1000.0 << " ." << std::endl;
+    // }
+
+    // // perform delete
+    // {
+    //     cout << "Start Testing Delete Operation..." << endl;
+    //     timer.Clear();
+    //     timer.Record("start");
+    //     for (int i = 0; i < DELETE_SIZE; ++i)
+    //     {
+    //         // if (i % 1000000 == 0)
+    //         // {
+    //         //     std::cout << "delete times:" << i << std::endl;
+    //         // }
+    //         uint64_t op_seq = ranny.RandUint32(0, load_pos - 1);
+    //         db->Delete(data_base[op_seq]);
+    //     }
+    //     timer.Record("stop");
+    //     us_times = timer.Microsecond("stop", "start");
+    //     std::cout << "[Metic-Operate]: Delete " << DELETE_SIZE << ": "
+    //               << "cost " << us_times / 1000000.0 << "s, "
+    //               << "kops " << (double)(DELETE_SIZE) / (double)us_times * 1000.0 << " ." << std::endl;
+    // }
+}
+
 void init_opts(int argc, char *argv[])
 {
     static struct option opts[] = {
@@ -812,7 +899,9 @@ int main(int argc, char *argv[])
 #endif
     load();
     db->Info();
-    test_uniform("r");
+    // test_uniform("r");
+    // test_uniform("w");
     // test_all_zipfian();
+    test_operation();
     return 0;
 }

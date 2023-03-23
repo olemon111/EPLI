@@ -1,26 +1,30 @@
-2023年 03月 15日 星期三 21:50:13 CST
+2023年 03月 22日 星期三 14:03:11 CST
 THREAD NUMBER:         1
-LOAD_SIZE:             100
-PUT_SIZE:              100
-GET_SIZE:              100
+LOAD_SIZE:             2000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            4
 Workload type:         r
-read 200 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 0 ms (inf M values/s)
-before newdb, dram space use: 0.00592804 GB
-Map addrs:0x7f27c0000000
-Current addrs:0x7f27c0000000
-Map addrs:0x7f2180000000
-Current addrs:0x7f2180000000
+read 12000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 673 ms (17.8306 M values/s)
+before newdb, dram space use: 0.0961838 GB
+Map addrs:0x7fc480000000
+Current addrs:0x7fc480000000
+Map addrs:0x7fbe40000000
+Current addrs:0x7fbe40000000
+[ALLOC] initializing allocator with fs size: 507 objects
+[ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
-[Metic-Load]: Load 100: cost 7.9e-05s, kops/s: 1265.82 .
-after load, dram space use: 0.00136948 GB
+[Metic-Load]: Load 2000000: cost 0.615862s, kops/s: 3247.48 .
+after load, dram space use: 0.0545425 GB
 ------------------------------
 Start Testing Workload: r
+Close SWTable with hit rate: 0.000248633, hit_cnt: 1, tot_get:4022
 wrong get: 0
-[Metic-Operate]: Operate 100 read_ratio 1: cost 8e-06s, kops 12500 .
-EPLI total dram size: 0.000434875 MB, alex size: 0.000434875
-/mnt/pmem1/lbl/data used: 2560 bytes. (2.38419e-06 Gib)
+[Metic-Operate]: Operate 10000000 read_ratio 1: cost 1.82238s, kops 5487.34 .
+hit cnt: 1, total get cnt: 4022
+EPLI total dram size: 5.52551 MB, alex size: 4.52551, table size: 1.00001
+/mnt/pmem1/lbl/data used: 51828480 bytes. (0.048269 Gib)
 /mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
-/mnt/pmem1/lbl/data used: 2560 bytes. (0 Mib, 2kib. free 0 Mib, 0kib.)
+/mnt/pmem1/lbl/data used: 51828480 bytes. (49 Mib, 437kib. free 0 Mib, 0kib.)
 /mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Mib, 0kib. free 0 Mib, 0kib.)

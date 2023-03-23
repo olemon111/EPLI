@@ -1,4 +1,4 @@
-2023年 03月 11日 星期六 22:37:41 CST
+2023年 03月 18日 星期六 12:47:49 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             16000000
 PUT_SIZE:              128000000
@@ -6,26 +6,18 @@ GET_SIZE:              128000000
 DB  name:              epli
 Loads type:            4
 Workload type:         rz
-read 144000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 768 ms (187.5 M values/s)
-before newdb, dram space use: 1.07981 GB
-Map addrs:0x7f7440000000
-Current addrs:0x7f7440000000
-Map addrs:0x7f6e00000000
-Current addrs:0x7f6e00000000
+read 144000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 701 ms (205.421 M values/s)
+before newdb, dram space use: 1.07968 GB
+Map addrs:0x7f6a40000000
+Current addrs:0x7f6a40000000
+Map addrs:0x7f6400000000
+Current addrs:0x7f6400000000
 [ALLOC] initializing allocator with fs size: 507 objects
 [ALLOC] initializing allocator with fs size: 507 objects
 Start loading ....
-[Metic-Load]: Load 16000000: cost 12.6277s, kops/s: 1267.06 .
-after load, dram space use: 0.0385895 GB
+[Metic-Load]: Load 16000000: cost 12.3314s, kops/s: 1297.51 .
+after load, dram space use: 0.0384674 GB
 ------------------------------
 Start Testing Workload: rz
 theta: 0.9
-Stop Resize, bucket size: 1304700, trigger Passive elimination in bin: 262144
-wrong get: 0
-[Metic-Operate]: Operate 128000000 read_ratio 1: cost 39.8274s, kops 3213.87 .
-hit cnt: 7.98593e+07, total get cnt: 127999996
-EPLI total dram size: 90.6224 MB, alex size: 36.2737, table size: 54.3486
-/mnt/pmem1/lbl/data used: 414678784 bytes. (0.3862 Gib)
-/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
-/mnt/pmem1/lbl/data used: 414678784 bytes. (395 Mib, 479kib. free 0 Mib, 0kib.)
-/mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Mib, 0kib. free 0 Mib, 0kib.)
+to 20% hit rate, tot_get: 213680, hit_cnt: 42736

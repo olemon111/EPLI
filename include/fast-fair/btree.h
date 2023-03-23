@@ -75,6 +75,7 @@ namespace FastFair
     void btree_search_range(entry_key_t, entry_key_t, unsigned long *);
     void btree_search_range(entry_key_t, entry_key_t, std::vector<pair<entry_key_t, uint64_t>> &result, int &size);
     void btree_search_range(entry_key_t, entry_key_t, void **values, int &size);
+    int btree_search_range(entry_key_t, uint32_t, std::pair<entry_key_t, entry_key_t> *&);
     void printAll();
     void PrintInfo();
     void CalculateSapce(uint64_t &space);
@@ -758,6 +759,144 @@ namespace FastFair
 
         current = current->hdr.sibling_ptr;
       }
+    }
+
+    // Search keys with linear search
+    int linear_search_range(entry_key_t min, entry_key_t max,
+                            uint32_t to_scan, std::pair<entry_key_t, entry_key_t> *&res)
+    {
+      int i, off = 0;
+      uint8_t previous_switch_counter;
+      page *current = this;
+
+      while (current)
+      {
+        int old_off = off;
+        do
+        {
+          previous_switch_counter = current->hdr.switch_counter;
+          off = old_off;
+
+          entry_key_t tmp_key;
+          char *tmp_ptr;
+
+          if (IS_FORWARD(previous_switch_counter))
+          {
+            if ((tmp_key = current->records[0].key) > min)
+            {
+              if (tmp_key < max)
+              {
+                if ((tmp_ptr = current->records[0].ptr) != NULL)
+                {
+                  if (tmp_key == current->records[0].key)
+                  {
+                    if (tmp_ptr)
+                    {
+                      if (off < to_scan)
+                      {
+                        res[off].first = tmp_key;
+                        res[off++].second = (unsigned long)tmp_ptr;
+                      }
+                      else
+                        return off;
+                    }
+                  }
+                }
+              }
+              else
+                return off;
+            }
+
+            for (i = 1; current->records[i].ptr != NULL; ++i)
+            {
+              if ((tmp_key = current->records[i].key) > min)
+              {
+                if (tmp_key < max)
+                {
+                  if ((tmp_ptr = current->records[i].ptr) !=
+                      current->records[i - 1].ptr)
+                  {
+                    if (tmp_key == current->records[i].key)
+                    {
+                      if (tmp_ptr)
+                      {
+                        if (off < to_scan)
+                        {
+                          res[off].first = tmp_key;
+                          res[off++].second = (unsigned long)tmp_ptr;
+                        }
+                        else
+                          return off;
+                      }
+                    }
+                  }
+                }
+                else
+                  return off;
+              }
+            }
+          }
+          else
+          {
+            for (i = count() - 1; i > 0; --i)
+            {
+              if ((tmp_key = current->records[i].key) > min)
+              {
+                if (tmp_key < max)
+                {
+                  if ((tmp_ptr = current->records[i].ptr) !=
+                      current->records[i - 1].ptr)
+                  {
+                    if (tmp_key == current->records[i].key)
+                    {
+                      if (tmp_ptr)
+                      {
+                        if (off < to_scan)
+                        {
+                          res[off].first = tmp_key;
+                          res[off++].second = (unsigned long)tmp_ptr;
+                        }
+                        else
+                          return off;
+                      }
+                    }
+                  }
+                }
+                else
+                  return off;
+              }
+            }
+
+            if ((tmp_key = current->records[0].key) > min)
+            {
+              if (tmp_key < max)
+              {
+                if ((tmp_ptr = current->records[0].ptr) != NULL)
+                {
+                  if (tmp_key == current->records[0].key)
+                  {
+                    if (tmp_ptr)
+                    {
+                      if (off < to_scan)
+                      {
+                        res[off].first = tmp_key;
+                        res[off++].second = (unsigned long)tmp_ptr;
+                      }
+                      else
+                        return off;
+                    }
+                  }
+                }
+              }
+              else
+                return off;
+            }
+          }
+        } while (previous_switch_counter != current->hdr.switch_counter);
+
+        current = current->hdr.sibling_ptr;
+      }
+      return off;
     }
 
     char *linear_search(entry_key_t key)
@@ -1550,6 +1689,27 @@ namespace FastFair
         break;
       }
     }
+  }
+
+  int btree::btree_search_range(entry_key_t start_key, uint32_t to_scan, std::pair<entry_key_t, entry_key_t> *&res)
+  {
+    int elems_cnt = 0;
+    page *p = (page *)root;
+    while (p)
+    {
+      if (p->hdr.leftmost_ptr != NULL)
+      {
+        // The current page is internal
+        p = (page *)p->linear_search(start_key);
+      }
+      else
+      {
+        // Found a leaf
+        elems_cnt = p->linear_search_range(start_key, UINT64_MAX, to_scan, res);
+        break;
+      }
+    }
+    return elems_cnt;
   }
 
   void btree::printAll()

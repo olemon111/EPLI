@@ -12,7 +12,7 @@ using namespace epltree;
 // #define MIN_HIT_RATE 0.1
 // #define USE_SWTABLE // comment this line to disable SWTable
 #ifdef USE_SWTABLE
-// #define SWTABLE_AUTO_CLOSE // comment this line to close SWTable when hit rate is too low
+#define SWTABLE_AUTO_CLOSE // comment this line to close SWTable when hit rate is too low
 #endif
 
 class EPLI
@@ -90,6 +90,11 @@ public:
 #else
         tree->Get(key, val);
 #endif
+    }
+
+    int Scan(uint64_t start_key, int len, std::vector<std::pair<uint64_t, uint64_t>> &results)
+    {
+        return tree->Scan(start_key, len, results);
     }
 
     int RangeScan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)

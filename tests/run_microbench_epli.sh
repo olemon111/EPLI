@@ -106,8 +106,11 @@ function test_read_write() {
 }
 
 function run_all() {
-    dbs="epli apex lbtree fastfair"
+    dbs="epli"
+    # dbs="fastfair"
+    # dbs="lbtree fastfair"
     for dbname in $dbs; do
+    
         echo "Run: " $dbname
         Run $dbname $1 $2 $3 $4 $5 $6 $7
         sleep 100
@@ -157,10 +160,12 @@ function main() {
     fi
 }
 
-main apex 400000000 10000000 0 1 0 r ycsb
+# main apex 400000000 10000000 0 1 0 r ycsb
 # main epli 400000000 10000000 0 1 0 w ycsb
 # main epli 400000000 10000000 0 1 0 a llt
-main lbtree 400000000 10000000 0 1 0 r ycsb
+# main lbtree 400000000 10000000 0 1 0 r ycsb
 # main apex 400000000 10000000 0 1 0 a
-# main epli 2000000 10000000 0 1 0 a
 # main fastfair 400000000 10000000 0 1 0 a ycsb
+
+# # Test Operation
+main all 400000000 10000000 0 1 0 o llt

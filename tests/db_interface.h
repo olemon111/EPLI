@@ -238,7 +238,7 @@ namespace dbInter
       return 1;
     }
 
-    int Update(uint64_t key, uint64_t value) // TODO:
+    int Update(uint64_t key, uint64_t value)
     {
       epli_->Update(key, value);
       return 1;
@@ -246,11 +246,14 @@ namespace dbInter
 
     int Delete(uint64_t key)
     {
+      epli_->Remove(key);
       return 1;
     }
 
     int Scan(uint64_t start_key, int len, std::vector<std::pair<uint64_t, uint64_t>> &results)
     {
+      epli_->Scan(start_key, len, results);
+      return 1;
     }
 
     int Range_scan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
@@ -323,24 +326,34 @@ namespace dbInter
       apex_->insert(key, value);
       return 1;
     }
+
     int Get(uint64_t key, uint64_t &value)
     {
       apex_->search(key, &value);
       // assert(value == key);
       return 1;
     }
+
     int Update(uint64_t key, uint64_t value)
     {
       apex_->update(key, value);
       return 1;
     }
+
     int Delete(uint64_t key)
     {
       apex_->erase(key);
       return 1;
     }
+
     int Scan(uint64_t start_key, int len, std::vector<std::pair<uint64_t, uint64_t>> &results)
     {
+      std::pair<key_type, val_type> *res = nullptr;
+      apex_->range_scan_by_size(start_key, len, res);
+      for (int i = 0; i < len; i++)
+      {
+        results.push_back(res[i]);
+      }
       return 1;
     }
 
@@ -420,7 +433,6 @@ namespace dbInter
 
     void Bulk_load(const std::pair<uint64_t, uint64_t> data[], int size)
     {
-      // tree_->bulkload(size, );
     }
 
     int Put(uint64_t key, uint64_t value)
@@ -451,12 +463,22 @@ namespace dbInter
 
     int Delete(uint64_t key)
     {
-      // tree_->del(key);
+      memcpy(kp, &key, sizeof(key));
+      tree_->remove(kp, sizeof(key));
       return 1;
     }
 
     int Scan(uint64_t start_key, int len, std::vector<std::pair<uint64_t, uint64_t>> &results)
     {
+      memcpy(kp, &start_key, sizeof(start_key));
+      tree_->scan(kp, sizeof(start_key), len, vp);
+      for (int i = 0; i < len; i++)
+      {
+        uint64_t key, value;
+        memcpy(&key, vp + i * sizeof(IdxEntry), sizeof(key));
+        memcpy(&value, vp + i * sizeof(IdxEntry) + sizeof(key), sizeof(value));
+        results.push_back(std::make_pair(key, value));
+      }
       return 1;
     }
 
@@ -526,12 +548,20 @@ namespace dbInter
 
     int Scan(uint64_t start_key, int len, std::vector<std::pair<uint64_t, uint64_t>> &results)
     {
-      tree_->btree_search_range(start_key, UINT64_MAX, results, len);
+      std::pair<key_type, val_type> *res = new std::pair<key_type, val_type>[len];
+      tree_->btree_search_range(start_key, len, res);
+      for (int i = 0; i < len; i++)
+      {
+        results.push_back(res[i]);
+      }
       return 1;
     }
 
     int Range_scan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
     {
+      int size = 0;
+      tree_->btree_search_range(start_key, end_key, results, size);
+      return 1;
     }
 
     void PrintStatic()
