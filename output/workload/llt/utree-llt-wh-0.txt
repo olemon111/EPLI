@@ -1,0 +1,23 @@
+2023年 06月 24日 星期六 17:11:22 CST
+THREAD NUMBER:         1
+LOAD_SIZE:             400000000
+PUT_SIZE:              10000000
+GET_SIZE:              10000000
+DB  name:              utree
+Loads type:            4
+Workload type:         wh
+read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 1967 ms (208.439 M values/s)
+before newdb, dram space use: 3.06174 GB
+Map addrs:0x7fbd40000000
+Current addrs:0x7fbd40000000
+without pmdk!
+list_head=0x7fbd40000000
+Start loading ....
+[Metic-Load]: Load 400000000: cost 857.504s, kops/s: 466.47 .
+after load, dram space use: 12.4672 GB
+------------------------------
+Start Testing Workload: wh
+wrong get: 0
+[Metic-Operate]: Operate 10000000 read_ratio 0.3: cost 18.9772s, kops 526.948 .
+/mnt/pmem1/lbl/data used: 13024000032 bytes. (12.1295 Gib)
+/mnt/pmem1/lbl/data used: 13024000032 bytes. (12420 Mib, 670kib. free 0 Mib, 0kib.)

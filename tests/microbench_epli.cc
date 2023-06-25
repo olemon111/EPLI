@@ -867,10 +867,10 @@ void init_opts(int argc, char *argv[])
     {
         db = new LBTreeDB();
     }
-    else if (dbName == "fastfair")
-    {
-        db = new FastFairDb();
-    }
+    // else if (dbName == "fastfair")
+    // {
+    //     db = new FastFairDb();
+    // }
     else
     {
         assert(false);

@@ -502,9 +502,13 @@ void init_opts(int argc, char *argv[])
     {
         db = new LBTreeDB();
     }
-    else if (dbName == "fastfair")
+    // else if (dbName == "fastfair")
+    // {
+    //     db = new FastFairDb();
+    // }
+    else if (dbName == "utree")
     {
-        db = new FastFairDb();
+        db = new UTreeDB();
     }
     else
     {

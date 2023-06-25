@@ -11,13 +11,14 @@
 #include "../src/epli.h"
 #include "apex/apex.h"
 #include "lbtree/lbtree_wrapper.hpp"
-#include "fast-fair/btree.h"
+// #include "fast-fair/btree.h"
+#include "utree/utree.h"
 
 // #define USE_MEM
 
 using namespace std;
 using namespace epltree;
-using FastFair::btree;
+// using FastFair::btree;
 
 /*
  *file_exists -- checks if file exists
@@ -496,12 +497,90 @@ namespace dbInter
     char *kp, *vp;
   };
 
-  class FastFairDb : public ycsbc::KvDB
+  // class FastFairDb : public ycsbc::KvDB
+  // {
+  // public:
+  //   FastFairDb() : tree_(nullptr) {}
+  //   FastFairDb(btree *tree) : tree_(tree) {}
+  //   virtual ~FastFairDb()
+  //   {
+  //     NVM::env_exit();
+  //     delete tree_;
+  //   }
+  //   void Init()
+  //   {
+  //     NVM::data_init();
+  //     tree_ = new btree();
+  //     NVM::pmem_size = 0;
+  //   }
+
+  //   void Info()
+  //   {
+  //     // std::cout << "NVM WRITE : " << NVM::pmem_size << std::endl;
+  //     tree_->PrintInfo();
+  //     NVM::show_stat();
+  //   }
+
+  //   void Close()
+  //   {
+  //   }
+  //   int Put(uint64_t key, uint64_t value)
+  //   {
+  //     tree_->btree_insert(key, (char *)value);
+  //     return 1;
+  //   }
+  //   int Get(uint64_t key, uint64_t &value)
+  //   {
+  //     value = (uint64_t)tree_->btree_search(key);
+  //     return 1;
+  //   }
+  //   int Update(uint64_t key, uint64_t value)
+  //   {
+  //     tree_->btree_delete(key);
+  //     tree_->btree_insert(key, (char *)value);
+  //     return 1;
+  //   }
+
+  //   int Delete(uint64_t key)
+  //   {
+  //     tree_->btree_delete(key);
+  //     return 1;
+  //   }
+
+  //   int Scan(uint64_t start_key, int len, std::vector<std::pair<uint64_t, uint64_t>> &results)
+  //   {
+  //     std::pair<key_type, val_type> *res = new std::pair<key_type, val_type>[len];
+  //     tree_->btree_search_range(start_key, len, res);
+  //     for (int i = 0; i < len; i++)
+  //     {
+  //       results.push_back(res[i]);
+  //     }
+  //     return 1;
+  //   }
+
+  //   int Range_scan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
+  //   {
+  //     int size = 0;
+  //     tree_->btree_search_range(start_key, end_key, results, size);
+  //     return 1;
+  //   }
+
+  //   void PrintStatic()
+  //   {
+  //     NVM::show_stat();
+  //     tree_->PrintInfo();
+  //   }
+
+  // private:
+  //   btree *tree_;
+  // };
+
+  class UTreeDB : public ycsbc::KvDB
   {
   public:
-    FastFairDb() : tree_(nullptr) {}
-    FastFairDb(btree *tree) : tree_(tree) {}
-    virtual ~FastFairDb()
+    UTreeDB() : tree_(nullptr) {}
+    UTreeDB(btree *tree) : tree_(tree) {}
+    virtual ~UTreeDB()
     {
       NVM::env_exit();
       delete tree_;
@@ -516,62 +595,55 @@ namespace dbInter
     void Info()
     {
       // std::cout << "NVM WRITE : " << NVM::pmem_size << std::endl;
-      tree_->PrintInfo();
+      // tree_->PrintInfo();
       NVM::show_stat();
     }
 
     void Close()
     {
     }
+
     int Put(uint64_t key, uint64_t value)
     {
-      tree_->btree_insert(key, (char *)value);
+      tree_->insert(key, (char *)value);
       return 1;
     }
+
     int Get(uint64_t key, uint64_t &value)
     {
-      value = (uint64_t)tree_->btree_search(key);
+      // value = (uint64_t)tree_->btree_search(key);
+      value = (uint64_t)tree_->search(key);
       return 1;
     }
     int Update(uint64_t key, uint64_t value)
     {
-      tree_->btree_delete(key);
-      tree_->btree_insert(key, (char *)value);
+      tree_->insert(key, (char *)value);
       return 1;
     }
 
     int Delete(uint64_t key)
     {
-      tree_->btree_delete(key);
+      tree_->remove(key);
       return 1;
     }
 
     int Scan(uint64_t start_key, int len, std::vector<std::pair<uint64_t, uint64_t>> &results)
     {
-      std::pair<key_type, val_type> *res = new std::pair<key_type, val_type>[len];
-      tree_->btree_search_range(start_key, len, res);
-      for (int i = 0; i < len; i++)
-      {
-        results.push_back(res[i]);
-      }
       return 1;
     }
 
     int Range_scan(uint64_t start_key, uint64_t end_key, std::vector<std::pair<uint64_t, uint64_t>> &results)
     {
-      int size = 0;
-      tree_->btree_search_range(start_key, end_key, results, size);
       return 1;
     }
 
     void PrintStatic()
     {
       NVM::show_stat();
-      tree_->PrintInfo();
+      // tree_->PrintInfo();
     }
 
   private:
     btree *tree_;
   };
-
 } // namespace dbInter

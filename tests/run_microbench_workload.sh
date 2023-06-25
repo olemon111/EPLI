@@ -148,6 +148,9 @@ function main() {
 # main epli 400000000 10000000 0 1 w ycsb
 # sleep 60
 
+# main utree 400000000 10000000 0 1 rrh llt
+# main utree 400000000 10000000 0 1 wh llt
+
 # main epli 400000000 10000000 0 1 rrh llt
 # sleep 60
 # main epli 400000000 10000000 0 1 wh llt
