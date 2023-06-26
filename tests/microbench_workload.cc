@@ -18,7 +18,17 @@
 #include "util.h"
 #include "random.h"
 #include "util/zipf/utils.h"
+#include <sys/time.h>
+#include <signal.h>
 
+#define TEST_LATENCY
+
+#ifdef TEST_LATENCY
+uint64_t record[1000000];
+uint64_t latency, insert_nb = 0;
+__thread struct timespec T1, T2;
+#define LATENCY_SAMPLING 0.1
+#endif
 // #define REST // sleep between tests
 
 using epltree::Random;
@@ -584,9 +594,25 @@ void test_workload(string type)
     // Peform PUT
     for (uint64_t i = 0; i < GET_SIZE * (1 - read_ratio); i++)
     {
+#ifdef TEST_LATENCY
+        bool sampling = ranny.ScaleFactor() < LATENCY_SAMPLING;
+        if (sampling)
+        {
+            clock_gettime(CLOCK_MONOTONIC, &T1);
+        }
+#endif
         // cout << "put " << data_base[load_pos] << ", pos " << load_pos << endl;
         db->Put(data_base[load_pos], data_base[load_pos]);
         load_pos++;
+#ifdef TEST_LATENCY
+        if (sampling)
+        {
+            clock_gettime(CLOCK_MONOTONIC, &T2);
+            latency = ((T2.tv_sec - T1.tv_sec) * 1000000000 + (T2.tv_nsec - T1.tv_nsec)) / 100;
+            record[latency] += 1;
+            insert_nb += 1;
+        }
+#endif
     }
     timer.Record("stop");
     us_times = timer.Microsecond("stop", "start");
@@ -594,6 +620,39 @@ void test_workload(string type)
     std::cout << "[Metic-Operate]: Operate " << GET_SIZE << " read_ratio " << read_ratio << ": "
               << "cost " << us_times / 1000000.0 << "s, "
               << "kops " << (double)(GET_SIZE) / (double)us_times * 1000.0 << " ." << std::endl;
+#ifdef TEST_LATENCY
+    uint64_t cnt = 0;
+    uint64_t nb_50 = insert_nb / 2;
+    uint64_t nb_90 = insert_nb * 0.9;
+    uint64_t nb_99 = insert_nb * 0.99;
+    bool flag_50 = false, flag_90 = false, flag_99 = false;
+    double latency_50, latency_90, latency_99;
+
+    for (int i = 0; i < 1000000 && !(flag_50 && flag_90 && flag_99); i++)
+    {
+        cnt += record[i];
+        if (!flag_50 && cnt >= nb_50)
+        {
+            latency_50 = (double)i / 10.0;
+            flag_50 = true;
+        }
+        if (!flag_90 && cnt >= nb_90)
+        {
+            latency_90 = (double)i / 10.0;
+            flag_90 = true;
+        }
+        if (!flag_99 && cnt >= nb_99)
+        {
+            latency_99 = (double)i / 10.0;
+            flag_99 = true;
+        }
+    }
+    cout << "[TEST LATENCY]------------------------------" << endl;
+    cout << "Total calculated insert: " << insert_nb << endl;
+    cout << "50% latency: " << latency_50 << " us" << endl;
+    cout << "90% latency: " << latency_90 << " us" << endl;
+    cout << "99% latency: " << latency_99 << " us" << endl;
+#endif
 }
 
 // split the loaded data into two parts

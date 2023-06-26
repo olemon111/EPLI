@@ -1,4 +1,4 @@
-2023年 03月 15日 星期三 12:53:26 CST
+2023年 06月 26日 星期一 12:03:37 CST
 THREAD NUMBER:         1
 LOAD_SIZE:             400000000
 PUT_SIZE:              10000000
@@ -6,21 +6,26 @@ GET_SIZE:              10000000
 DB  name:              epli
 Loads type:            4
 Workload type:         w
-read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2032 ms (201.772 M values/s)
-before newdb, dram space use: 3.06178 GB
-Map addrs:0x7f5f00000000
-Current addrs:0x7f5f00000000
-Map addrs:0x7f58c0000000
-Current addrs:0x7f58c0000000
+read 410000000 values from /home/lbl/dataset/generate_random_osm_longlat.dat in 2012 ms (203.777 M values/s)
+before newdb, dram space use: 3.06175 GB
+Map addrs:0x7fc700000000
+Current addrs:0x7fc700000000
+Map addrs:0x7fc0c0000000
+Current addrs:0x7fc0c0000000
 Start loading ....
-[Metic-Load]: Load 400000000: cost 371.003s, kops/s: 1078.16 .
-after load, dram space use: 0.43449 GB
+[Metic-Load]: Load 400000000: cost 354.387s, kops/s: 1128.71 .
+after load, dram space use: 0.928417 GB
 ------------------------------
 Start Testing Workload: w
 wrong get: 0
-[Metic-Operate]: Operate 10000000 read_ratio 0: cost 9.5244s, kops 1049.93 .
-EPLI total dram size: 436.678 MB, alex size: 436.678
-/mnt/pmem1/lbl/data used: 10006040064 bytes. (9.31885 Gib)
+[Metic-Operate]: Operate 10000000 read_ratio 0: cost 10.9956s, kops 909.451 .
+[TEST LATENCY]------------------------------
+Total calculated insert: 500047
+50% latency: 0.7us
+90% latency: 2.2us
+99% latency: 5.3us
+EPLI total dram size: 936.875 MB, alex size: 936.875
+/mnt/pmem1/lbl/data used: 10622756608 bytes. (9.89321 Gib)
 /mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Gib)
-/mnt/pmem1/lbl/data used: 10006040064 bytes. (9542 Mib, 515kib. free 0 Mib, 0kib.)
+/mnt/pmem1/lbl/data used: 10622756608 bytes. (10130 Mib, 665kib. free 0 Mib, 0kib.)
 /mnt/pmem1/lbl/common-alloc used: 0 bytes. (0 Mib, 0kib. free 0 Mib, 0kib.)
